@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model audit {
+  auditID          Int       @id @default(autoincrement())
+  auditIP          String?   @db.VarChar(255)
+  auditURL         String?   @db.VarChar(255)
+  auditURLMethod   String?   @db.VarChar(255)
+  auditURLPayload  String?   @db.VarChar(255)
+  auditCreatedDate DateTime? @db.DateTime(0)
+}
+
+model user {
+  userID           Int       @id @default(autoincrement())
+  userSecretKey    String?   @db.VarChar(255)
+  userUsername     String?   @db.VarChar(255)
+  userPassword     String?   @db.VarChar(255)
+  userFullName     String?   @db.VarChar(255)
+  userEmail        String?   @db.VarChar(255)
+  userPhone        String?   @db.VarChar(255)
+  userCreatedDate  DateTime? @db.DateTime(0)
+  userModifiedDate DateTime? @db.DateTime(0)
+}
