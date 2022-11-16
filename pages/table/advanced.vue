@@ -15,6 +15,9 @@ import data from "./data.js";
           }"
           advanced
         >
+          <template v-slot:firstName="data">
+            <div class="text-blue-500">{{ data.text }}</div>
+          </template>
         </rs-table>
       </template>
     </rs-card>

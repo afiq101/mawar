@@ -32,6 +32,7 @@
     "@pinia/nuxt": "^0.4.3",
     "@prisma/client": "^4.6.1",
     "@shimyshack/uid": "^0.1.7",
+    "@sweetalert2/theme-dark": "^5.0.14",
     "@tailwindcss/line-clamp": "^0.4.2",
     "@vueup/vue-quill": "^1.0.0",
     "@vueuse/core": "^9.5.0",
@@ -61,6 +62,7 @@
     "vue3-apexcharts": "^1.4.1",
     "vue3-click-away": "^1.2.4",
     "vue3-country-flag-icon": "^0.1.2",
-    "vue3-dropzone": "^2.0.1"
+    "vue3-dropzone": "^2.0.1",
+    "vuedraggable": "^4.1.0"
   }
 }

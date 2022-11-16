@@ -2,6 +2,7 @@
 definePageMeta({
   title: "register-v2",
   layout: "empty",
+  middleware: ["redirect-dashboard"],
 });
 </script>
 
@@ -42,7 +43,7 @@ definePageMeta({
 
         <p class="mt-3 text-center text-slate-500">
           Already have an account?
-          <NuxtLink to="/auth/login-v2" class="text-primary-400 hover:underline"
+          <NuxtLink to="/login" class="text-primary-400 hover:underline"
             >Login</NuxtLink
           >
         </p>

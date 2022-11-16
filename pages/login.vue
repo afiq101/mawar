@@ -4,6 +4,7 @@ import { useUserStore } from "~/stores/user";
 definePageMeta({
   title: "login-v2",
   layout: "empty",
+  middleware: ["redirect-dashboard"],
 });
 
 const { $swal } = useNuxtApp();
@@ -36,6 +37,7 @@ const login = async () => {
       userStore.setIsAuthenticated(true);
 
       $swal.fire({
+        position: "top-end",
         title: "Success",
         text: "Login Success",
         icon: "success",

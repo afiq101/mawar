@@ -2,6 +2,7 @@
 definePageMeta({
   title: "reset-password-v2",
   layout: "empty",
+  middleware: ["redirect-dashboard"],
 });
 </script>
 
@@ -23,7 +24,7 @@ definePageMeta({
             type="password"
             outer-class="text-left"
           />
-          <NuxtLink to="/auth/login-v2">
+          <NuxtLink to="/login">
             <FormKit type="button" input-class="w-full">Reset Password</FormKit>
           </NuxtLink>
         </div>

@@ -40,7 +40,7 @@ definePageMeta({
         </div>
       </div>
       <div class="absolute bottom-5 left-5 text-xs text-slate-400">
-        © Rose UI 2022
+        © Mawar CMS 2022
       </div>
     </div>
     <div class="flex-auto w-full lg:w-7/12 m-auto hidden md:block">

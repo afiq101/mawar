@@ -47,6 +47,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  pageSize: {
+    type: Number,
+    default: 10,
+  },
 });
 
 // Default varaiable
@@ -59,7 +63,7 @@ const dataLength = ref(props.data.length);
 const currentSort = ref(0);
 const currentSortDir = ref("asc");
 const currentPage = ref(1);
-const pageSize = ref(5);
+const pageSize = ref(props.pageSize);
 const maxPageShown = ref(3);
 
 // Searching Variable
@@ -170,10 +174,14 @@ const computedData = computed(() => {
       if (keyword.value === "") return true;
       let result = false;
       Object.entries(row).forEach(([key, value]) => {
-        if (
-          value.toString().toLowerCase().includes(keyword.value.toLowerCase())
-        ) {
-          result = true;
+        try {
+          if (
+            value.toString().toLowerCase().includes(keyword.value.toLowerCase())
+          ) {
+            result = true;
+          }
+        } catch (error) {
+          result = false;
         }
       });
       return result;
@@ -353,10 +361,16 @@ watch(
       class="table-header"
       :class="{
         open: openFilter,
+        '!max-h-full': !optionsAdvanced.filterable,
       }"
       v-if="advanced"
     >
-      <div class="table-header-filter">
+      <div
+        class="table-header-filter"
+        :class="{
+          '!items-center !gap-0': !optionsAdvanced.filterable,
+        }"
+      >
         <div>
           <div class="flex gap-x-2">
             <FormKit
@@ -366,6 +380,7 @@ watch(
               outer-class="mb-0"
             />
             <rs-button
+              v-if="optionsAdvanced.filterable"
               class="!px-3 sm:!px-6"
               @click="openFilter ? (openFilter = false) : (openFilter = true)"
             >
@@ -394,7 +409,10 @@ watch(
           ></v-select> -->
         </div>
       </div>
-      <div class="flex flex-wrap items-center justify-start gap-x-3">
+      <div
+        class="flex flex-wrap items-center justify-start gap-x-3"
+        v-if="optionsAdvanced.filterable"
+      >
         <rs-dropdown
           :title="camelCasetoTitle(val)"
           size="sm"
@@ -568,7 +586,13 @@ watch(
                 v-for="(val2, index2) in columnTitle"
                 :key="index2"
               >
-                {{ filteredDatabyTitle(val1, val2) }}
+                <slot
+                  :name="val2"
+                  :text="filteredDatabyTitle(val1, val2)"
+                  :value="val1"
+                >
+                  {{ filteredDatabyTitle(val1, val2) }}
+                </slot>
               </td>
             </tr>
           </tbody>

@@ -51,7 +51,7 @@ function toggleSearch() {
           <span
             v-if="isDesktop"
             class="text-xl font-semibold text-primary-500 dark:text-white"
-            >Rose UI</span
+            >Mawar CMS</span
           >
         </div>
       </div>
@@ -92,11 +92,13 @@ function toggleSearch() {
         </VDropdown>
         <button class="icon-btn h-10 w-10 rounded-full" @click="setColorMode">
           <Icon
-            v-if="colorMode.preference != 'dark'"
+            v-if="colorMode.preference === 'light'"
             name="ic:outline-dark-mode"
-            class=""
           />
-          <Icon v-else name="ic:outline-wb-sunny" class="" />
+          <Icon
+            v-else-if="colorMode.preference === 'dark'"
+            name="ic:outline-wb-sunny"
+          />
         </button>
         <button class="icon-btn h-10 w-10 rounded-full">
           <Icon @click="toggleSearch" name="ic:round-search" class="" />
@@ -191,14 +193,14 @@ function toggleSearch() {
           </button>
           <template #popper>
             <ul class="header-dropdown w-full md:w-52">
-              <li>
+              <!-- <li>
                 <a
                   class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
                 >
                   <Icon name="ic:outline-view-sidebar" class="mr-2" />
                   {{ isVertical ? "Horizontal Layout" : "Vertical Layout" }}
                 </a>
-              </li>
+              </li> -->
               <li>
                 <a
                   class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
@@ -216,12 +218,18 @@ function toggleSearch() {
                 </a>
               </li>
               <li>
-                <a
+                <NuxtLink
+                  to="/logout"
                   class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
                 >
                   <Icon name="ic:outline-logout" class="mr-2" />
                   Logout
-                </a>
+                </NuxtLink>
+                <!-- <a
+                  class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
+                >
+                 
+                </a> -->
               </li>
             </ul>
           </template>

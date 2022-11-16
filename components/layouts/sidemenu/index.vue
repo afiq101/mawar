@@ -37,7 +37,7 @@ onMounted(() => {
           alt=""
         />
         <span class="text-xl font-semibold text-primary-500 dark:text-white"
-          >Rose UI</span
+          >Mawar CMS</span
         >
       </div>
     </div>
