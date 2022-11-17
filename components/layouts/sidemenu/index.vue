@@ -2,7 +2,16 @@
 import Menu from "~/navigation/index.js";
 import RSItem from "~/components/layouts/sidemenu/Item.vue";
 
-const menuItem = Menu;
+// const menuItem = Menu;
+
+const props = defineProps({
+  menuItem: {
+    type: Array,
+    default: () => Menu,
+    required: false,
+  },
+});
+
 onMounted(() => {
   try {
     const el = document.querySelector(".active-menu").closest(".menu-content");

@@ -7,11 +7,21 @@ definePageMeta({
   requiresAuth: true,
 });
 
+const nuxtApp = useNuxtApp();
+
+const sideMenuList = ref(Menu);
+
 const router = useRouter();
 const getRoutes = router.getRoutes();
 const getNavigation = Menu ? ref(Menu) : ref([]);
+
 const allMenus = [];
+
 const drag = ref(false);
+const showCode = ref(false);
+let i = 1;
+
+const showModal = ref(false);
 
 const kebabtoTitle = (str) => {
   return str
@@ -25,13 +35,12 @@ getRoutes.sort((a, b) => {
   return a.path.localeCompare(b.path);
 });
 
-let i = 1;
-
 // Loop through the routes and add them to the menus
 getRoutes.map((menu) => {
   allMenus.push({
     id: i++,
-    title: menu.meta.title,
+    title:
+      menu.meta && menu.meta.title ? menu.meta.title : kebabtoTitle(menu.name),
     parentMenu: menu.path.split("/")[1],
     name: menu.name,
     path: menu.path,
@@ -39,35 +48,61 @@ getRoutes.map((menu) => {
 });
 
 const clone = (obj) => {
-  return JSON.parse(JSON.stringify(obj));
+  return JSON.parse(
+    JSON.stringify({
+      title: obj.title,
+      path: obj.path,
+      icon: obj.icon ? obj.icon : "",
+      child: [],
+    })
+  );
 };
 
-console.log("getNavigation", getNavigation.value);
+const addNewHeader = () => {
+  sideMenuList.value.push({
+    header: "New Header",
+    description: "New Description",
+    child: [],
+  });
+};
 
-const list = ref([
-  {
-    name: "task 1",
-    tasks: [
-      {
-        name: "task 2",
-        tasks: [],
-      },
-    ],
-  },
-  {
-    name: "task 3",
-    tasks: [
-      {
-        name: "task 4",
-        tasks: [],
-      },
-    ],
-  },
-  {
-    name: "task 5",
-    tasks: [],
-  },
-]);
+// const onStart = (event) => {
+//   console.log("onStart", event);
+//   drag.value = true;
+// };
+
+// Modal functions
+const clickOK = () => {
+  showModal.value = false;
+};
+
+const clickCancel = () => {
+  showModal.value = false;
+};
+
+// changeSideMenuList
+
+const changeSideMenuList = (menus) => {
+  sideMenuList.value = menus;
+};
+
+const overwriteJsonFileLocal = async (menus) => {
+  const res = await useFetch("/api/admin/menu-editor", {
+    method: "POST",
+    initialCache: false,
+    body: JSON.stringify({
+      menuData: menus,
+    }),
+  });
+
+  const data = res.data.value;
+  console.log("data", data);
+
+  if (data.statusCode === 200) {
+    // refresh the page
+    nuxtApp.$router.go();
+  }
+};
 </script>
 
 <template>
@@ -114,41 +149,62 @@ const list = ref([
               </template>
             </rs-table>
           </rs-tab-item> -->
+
     <rs-card>
       <div class="pt-2">
         <rs-tab fill>
           <rs-tab-item title="Side Menu">
-            <div class="grid grid-cols-2">
-              <!-- <draggable
-                v-model="allMenus"
-                :clone="clone"
-                group="menu"
-                @start="drag = true"
-                @end="drag = false"
-                item-key="id"
+            <div class="flex justify-end items-center mb-4">
+              <rs-button
+                class="mr-2"
+                @click="showCode ? (showCode = false) : (showCode = true)"
+                >Show Code</rs-button
               >
-                <template #item="{ element }">
-                  <div>{{ element.name }}</div>
-                </template>
-              </draggable> -->
+              <rs-button @click="overwriteJsonFileLocal(sideMenuList)"
+                >Save Menu Config and Reload</rs-button
+              >
+            </div>
 
-              <!-- <draggable
-                v-model="getNavigation"
-                group="menu"
-                @start="drag = true"
-                @end="drag = false"
+            <div class="grid grid-cols-2 gap-5">
+              <draggable
                 item-key="id"
+                v-model="allMenus"
+                :group="{ name: 'menu', pull: 'clone', put: false }"
+                :clone="clone"
+                animation="200"
+                easing="cubic-bezier(1, 0, 0, 1)"
+                :sort="false"
               >
                 <template #item="{ element }">
-                  <div>{{ element }}</div>
+                  <rs-card class="p-4 mb-4">
+                    {{ kebabtoTitle(element.name) }} (
+                    <NuxtLink
+                      class="text-primary-400 hover:underline"
+                      :to="element.path"
+                      target="_blank"
+                    >
+                      {{ element.path }}
+                    </NuxtLink>
+                    )
+                  </rs-card>
                 </template>
-              </draggable> -->
+              </draggable>
+              <rs-card class="p-4 bg-gray-50" v-if="!showCode">
+                <DraggableSideMenuNested
+                  :menus="sideMenuList"
+                  groupName="menu"
+                  @changeSideMenu="changeSideMenuList"
+                />
+                <div class="flex justify-end items-center">
+                  <rs-button class="!p-2 mt-3" @click="addNewHeader">
+                    <Icon name="material-symbols:docs-add-on" size="16"></Icon>
+                  </rs-button>
+                </div>
+              </rs-card>
+              <pre v-else v-html="JSON.stringify(sideMenuList, null, 2)"></pre>
             </div>
           </rs-tab-item>
         </rs-tab>
-        <ClientOnly>
-          <DraggableNested :tasks="list" />
-        </ClientOnly>
       </div>
     </rs-card>
   </div>
