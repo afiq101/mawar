@@ -5,14 +5,15 @@ const props = defineProps({
     required: true,
     type: Array,
   },
-  groupName: {
-    required: false,
-    type: String,
-  },
   count: {
     required: false,
     default: 0,
     type: Number,
+  },
+  parentMenu: {
+    required: false,
+    default: [],
+    type: Array,
   },
 });
 
@@ -38,10 +39,6 @@ const clone = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 };
 
-const onChange = (event) => {
-  console.log("onChange", event);
-};
-
 // Modal functions
 const openModal = () => {
   showModal.value = true;
@@ -62,7 +59,6 @@ const updateMenus = (menus) => {
 
 // Save the menu
 const saveEditChanges = () => {
-  console.log("saveEditChanges");
   let newMenu = props.menus;
 
   if (type.value == "menu") {
@@ -74,6 +70,17 @@ const saveEditChanges = () => {
       }
       return menu;
     });
+
+    // Overwrite the parent child menu
+    let newParentMenu = props.parentMenu.map((menu) => {
+      if (menu.path == formMenu.value.path) {
+        menu.title = formMenu.value.title;
+        menu.icon = formMenu.value.icon;
+      }
+      return menu;
+    });
+
+    newMenu = newParentMenu;
   } else if (type.value == "header") {
     // Overwrite the props menus
     newMenu = props.menus.map((header, index) => {
@@ -91,15 +98,38 @@ const saveEditChanges = () => {
 };
 
 const removeChild = (type, data) => {
+  console.log(data);
+  console.log(type);
   let newMenu = props.menus;
   if (type == "menu") {
+    let parentMenu = props.parentMenu;
+
     // Overwrite the props menus
-    newMenu = props.menus.map((menu) => {
-      if (menu.path == data) {
-        menu.child = [];
+    newMenu = props.menus.filter((menu) => {
+      return menu.path == data;
+    });
+
+    // Remove the newMenu from the parentMenu child
+    parentMenu = parentMenu.filter((menu) => {
+      // Level 1
+      if (menu.child) {
+        menu.child.forEach((el) => {
+          // Level 2
+          if (el.child) {
+            el.child = el.child.filter((child) => {
+              return child.path != data;
+            });
+          }
+
+          if (el.path == data) {
+            menu.child.splice(menu.child.indexOf(el), 1);
+          }
+        });
       }
       return menu;
     });
+
+    newMenu = parentMenu;
   } else if (type == "header") {
     // Remove the object array from the props menus
     newMenu = props.menus.filter((header, index) => {
@@ -118,13 +148,17 @@ const removeChild = (type, data) => {
       class="dragArea"
       tag="div"
       :list="menus"
-      :group="{ name: groupName }"
+      :group="{ name: 'menu', put: props.count == 0 ? false : true }"
       :clone="clone"
-      item-key="name"
-      @change="onChange"
+      item-key="id"
     >
       <template #item="{ element }">
-        <rs-card class="p-4 my-4 mx-0 mb-0">
+        <rs-card
+          class="p-4 my-4 mx-0 mb-0"
+          :class="{
+            'py-6': count > 0,
+          }"
+        >
           <div class="flex justify-between items-center">
             <div class="text-left font-normal text-xs mb-2">
               <span class="uppercase text-primary-500 dark:text-primary-400">{{
@@ -155,7 +189,6 @@ const removeChild = (type, data) => {
               ></Icon>
             </div>
           </div>
-          <!-- <p>{{ element.header }}</p> -->
           <div class="flex justify-between items-center">
             <p class="flex items-center gap-2">
               <Icon v-if="element.icon" :name="element.icon" size="22"></Icon>
@@ -185,8 +218,13 @@ const removeChild = (type, data) => {
 
           <DraggableSideMenuNested
             :menus="element?.child ? element.child : []"
-            groupName="menu"
             :count="count + 1"
+            :parentMenu="
+              props.parentMenu && props.parentMenu.length > 0
+                ? props.parentMenu
+                : props.menus
+            "
+            @changeSideMenu="updateMenus"
           />
         </rs-card>
       </template>

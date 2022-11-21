@@ -1,10 +1,10 @@
 <script setup>
-import products from "./data";
 
 definePageMeta({
   title: "Checkout",
 });
 
+const products = ecommerceData();
 const data = ref(products);
 const formatPrice = (price) => {
   return parseFloat(price)

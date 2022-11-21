@@ -1,11 +1,11 @@
 <script setup>
-import products from "./data";
 import { Navigation, Pagination, Scrollbar, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 definePageMeta({
   title: "Product Detail",
 });
+const products = ecommerceData();
 
 const modules = [Navigation, Pagination, Scrollbar, A11y];
 

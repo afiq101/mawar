@@ -62,12 +62,13 @@ const indentStyle = computed(() => {
     >
       <NuxtLink
         v-if="
-          item.child === undefined || (item.child && item.child.length !== 0)
+          item.child === undefined || (item.child && item.child.length === 0)
         "
         class="flex items-center px-4 py-3 mx-3 rounded-lg cursor-pointer"
         :to="item.path"
         :class="activeMenu(item.path)"
       >
+        <Icon v-if="item.icon" :name="item.icon" size="18"></Icon>
         <span class="mx-4 font-normal">{{ item.title }}</span>
         <Icon
           v-if="item.child && item.child.length > 0"

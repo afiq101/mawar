@@ -1,6 +1,4 @@
 <script setup>
-import products from "./data";
-import category from "./category";
 import { useLayoutStore } from "~/stores/layout";
 import { SimpleBar } from "simplebar-vue3";
 import { useWindowSize } from "vue-window-size";
@@ -13,6 +11,9 @@ const layoutStore = useLayoutStore();
 const mobileWidth = layoutStore.mobileWidth;
 const { width } = useWindowSize();
 const windowWidth = ref(width);
+
+const category = ecommerceCategory();
+const products = ecommerceData();
 
 const data = ref(products);
 const dataLength = ref(products.length);

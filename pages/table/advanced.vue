@@ -1,5 +1,5 @@
 <script setup>
-import data from "./data.js";
+const data = tableData();
 </script>
 
 <template>

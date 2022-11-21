@@ -26,4 +26,17 @@ model user {
   userPhone        String?   @db.VarChar(255)
   userCreatedDate  DateTime? @db.DateTime(0)
   userModifiedDate DateTime? @db.DateTime(0)
+  userRoleID       Int?
+  role             role?     @relation(fields: [userRoleID], references: [roleID], onDelete: NoAction, onUpdate: NoAction, map: "UserRoleID")
+
+  @@index([userRoleID], map: "UserRoleID")
+}
+
+model role {
+  roleID           Int       @id @default(autoincrement())
+  roleName         String?   @db.VarChar(255)
+  roleDescription  String?   @db.VarChar(255)
+  roleCreatedDate  DateTime? @db.DateTime(0)
+  roleModifiedDate DateTime? @db.DateTime(0)
+  user             user[]
 }

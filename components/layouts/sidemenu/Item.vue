@@ -72,11 +72,7 @@ function activeMenu(routePath) {
           :class="activeMenu(item2.path)"
         >
           <Icon v-if="item2.icon" :name="item2.icon" size="18"></Icon>
-          <Icon
-            v-else
-            name="material-symbols:file-copy-outline-rounded"
-            size="18"
-          ></Icon>
+          <Icon v-else name="mdi:circle-slice-8" size="18"></Icon>
           <span class="mx-3 font-normal">{{ item2.title }}</span>
           <Icon
             v-if="item2.child && item2.child.length > 0"
@@ -93,7 +89,7 @@ function activeMenu(routePath) {
           <Icon v-if="item2.icon" :name="item2.icon" size="18"></Icon>
           <Icon
             v-else
-            name="material-symbols:file-copy-outline-rounded"
+            name="mdi:circle-slice-8"
             size="18"
           ></Icon>
           <span class="mx-3 font-normal">{{ item2.title }}</span>
