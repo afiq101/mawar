@@ -6,7 +6,6 @@ definePageMeta({
   middleware: ["auth"],
   requiresAuth: true,
 });
-
 const nuxtApp = useNuxtApp();
 
 const sideMenuList = ref(Menu);
@@ -27,6 +26,22 @@ const showModalEl = ref(null);
 const dropdownMenu = ref([]);
 const dropdownMenuValue = ref(null);
 
+const showModalEdit = ref(false);
+const showModalEditPath = ref(null);
+const showModalEditForm = ref({
+  title: "",
+  name: "",
+  path: "",
+});
+// const showModalEditEl = ref(null);
+
+const showModalAdd = ref(false);
+const showModalAddForm = ref({
+  title: "",
+  name: "",
+  path: "",
+});
+
 const kebabtoTitle = (str) => {
   return str
     .split("-")
@@ -39,8 +54,36 @@ getRoutes.sort((a, b) => {
   return a.path.localeCompare(b.path);
 });
 
+//----------------------------------------------------------------------------
+//-------------------------FIRST CHILD TAB ITEM (END)-------------------------
+//----------------------------------------------------------------------------
+
 // Loop through the routes and add them to the menus
 getRoutes.map((menu) => {
+  let visibleMenu = false;
+
+  // Check if the menu is visible
+  for (let i = 0; i < getNavigation.value.length; i++) {
+    if (getNavigation.value[i].child) {
+      for (let j = 0; j < getNavigation.value[i].child.length; j++) {
+        if (getNavigation.value[i].child[j].path === menu.path)
+          visibleMenu = true;
+        else if (getNavigation.value[i].child[j].child) {
+          for (
+            let k = 0;
+            k < getNavigation.value[i].child[j].child.length;
+            k++
+          ) {
+            if (getNavigation.value[i].child[j].child[k].path === menu.path)
+              visibleMenu = true;
+          }
+        }
+      }
+    }
+  }
+
+  // console.log(menu.path);
+
   allMenus.push({
     id: i++,
     title:
@@ -48,8 +91,124 @@ getRoutes.map((menu) => {
     parentMenu: menu.path.split("/")[1],
     name: menu.name,
     path: menu.path,
+    visible: visibleMenu,
+    action: "",
   });
 });
+
+const openModalEdit = (menu) => {
+  showModalEditForm.value.title = menu.title;
+  showModalEditForm.value.name = menu.name;
+  showModalEditForm.value.path = menu.path;
+
+  showModalEditPath.value = menu.path;
+
+  showModalEdit.value = true;
+};
+
+const saveEditMenu = async () => {
+  const res = await useFetch("/api/admin/menu/edit-menu", {
+    method: "POST",
+    initialCache: false,
+    body: JSON.stringify({
+      filePath: showModalEditPath.value,
+      formData: showModalEditForm.value,
+    }),
+  });
+
+  const data = res.data.value;
+  console.log(data);
+  if (data.statusCode === 200) {
+    nuxtApp.$swal.fire({
+      title: "Success",
+      text: data.message,
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+    // refresh the page
+    nuxtApp.$router.go();
+  }
+};
+
+const openModalAdd = () => {
+  showModalAddForm.value.title = "";
+  showModalAddForm.value.name = "";
+  showModalAddForm.value.path = "";
+
+  showModalAdd.value = true;
+};
+
+const saveAddMenu = async () => {
+  const res = await useFetch("/api/admin/menu/add-menu", {
+    method: "POST",
+    initialCache: false,
+    body: JSON.stringify({
+      formData: showModalAddForm.value,
+    }),
+  });
+
+  const data = res.data.value;
+  console.log(data);
+  if (data.statusCode === 200) {
+    nuxtApp.$swal.fire({
+      title: "Success",
+      text: data.message,
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+    // refresh the page
+    nuxtApp.$router.go();
+  }
+};
+
+const deleteMenu = async (menu) => {
+  nuxtApp.$swal
+    .fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    })
+    .then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await useFetch("/api/admin/menu/delete-menu", {
+          method: "POST",
+          initialCache: false,
+          body: JSON.stringify({
+            filePath: menu.path,
+          }),
+        });
+
+        const data = res.data.value;
+        console.log(data);
+        if (data.statusCode === 200) {
+          nuxtApp.$swal.fire({
+            title: "Deleted!",
+            text: data.message,
+            icon: "success",
+            timer: 2000,
+            showConfirmButton: false,
+          });
+
+          // refresh the page
+          nuxtApp.$router.go();
+        }
+      }
+    });
+};
+
+//----------------------------------------------------------------------------
+//-------------------------FIRST CHILD TAB ITEM (END)-------------------------
+//----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------
+//-------------------------SECOND CHILD TAB ITEM-------------------------
+//-----------------------------------------------------------------------
 
 const checkExistSideMenuList = (path) => {
   let exist = false;
@@ -106,7 +265,7 @@ const changeSideMenuList = (menus) => {
 
 // Save the menu
 const overwriteJsonFileLocal = async (menus) => {
-  const res = await useFetch("/api/admin/menu-editor", {
+  const res = await useFetch("/api/admin/menu/overwrite-navigation", {
     method: "POST",
     initialCache: false,
     body: JSON.stringify({
@@ -117,11 +276,20 @@ const overwriteJsonFileLocal = async (menus) => {
   const data = res.data.value;
 
   if (data.statusCode === 200) {
+    nuxtApp.$swal.fire({
+      title: "Success",
+      text: data.message,
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+
     // refresh the page
     nuxtApp.$router.go();
   }
 };
 
+// open modal
 const openModal = (menu) => {
   showModalEl.value = menu;
 
@@ -165,6 +333,7 @@ const openModal = (menu) => {
   showModal.value = true;
 };
 
+// Add new menu from list
 const addMenuFromList = () => {
   if (dropdownMenuValue.value) {
     const menuType = dropdownMenuValue.value.split("|")[0];
@@ -189,6 +358,10 @@ const addMenuFromList = () => {
     showModal.value = false;
   }
 };
+
+//-----------------------------------------------------------------------------
+//-------------------------SECOND CHILD TAB ITEM (END)-------------------------
+//-----------------------------------------------------------------------------
 </script>
 
 <template>
@@ -215,6 +388,13 @@ const addMenuFromList = () => {
       <div class="pt-2">
         <rs-tab fill>
           <rs-tab-item title="All Menu">
+            <div class="flex justify-end items-center mb-4">
+              <rs-button @click="openModalAdd">
+                <Icon name="material-symbols:add" class="mr-2"></Icon>
+                Add New Menu
+              </rs-button>
+            </div>
+            <!-- Table All Menu -->
             <rs-table
               :data="allMenus"
               :options="{
@@ -223,7 +403,7 @@ const addMenuFromList = () => {
                 borderless: true,
               }"
               :options-advanced="{
-                sortable: false,
+                sortable: true,
                 filterable: false,
                 responsive: false,
               }"
@@ -236,6 +416,42 @@ const addMenuFromList = () => {
                   target="_blank"
                   >{{ data.text }}</NuxtLink
                 >
+              </template>
+              <template v-slot:visible="data">
+                <div class="flex justify-center items-center">
+                  <Icon
+                    name="mdi:eye-outline"
+                    class="text-primary-400"
+                    size="22"
+                    v-if="data.value.visible"
+                  />
+                  <Icon
+                    name="mdi:eye-off-outline"
+                    class="text-gray-300"
+                    size="22"
+                    v-else
+                  />
+                </div>
+              </template>
+              <template v-slot:action="data">
+                <div
+                  class="flex justify-center items-center"
+                  v-if="data.value.parentMenu != 'admin'"
+                >
+                  <Icon
+                    name="material-symbols:edit-outline-rounded"
+                    class="text-primary-400 hover:text-primary-500 cursor-pointer mr-1"
+                    size="22"
+                    @click="openModalEdit(data.value)"
+                  ></Icon>
+                  <Icon
+                    name="material-symbols:close-rounded"
+                    class="text-primary-400 hover:text-primary-500 cursor-pointer"
+                    size="22"
+                    @click="deleteMenu(data.value)"
+                  ></Icon>
+                </div>
+                <div class="flex justify-center items-center" v-else>-</div>
               </template>
             </rs-table>
           </rs-tab-item>
@@ -316,7 +532,7 @@ const addMenuFromList = () => {
     </rs-card>
 
     <rs-modal
-      title="Add New Menu"
+      title="Select Menu"
       v-model="showModal"
       ok-title="Confirm"
       :ok-callback="addMenuFromList"
@@ -327,6 +543,54 @@ const addMenuFromList = () => {
         type="select"
         v-model="dropdownMenuValue"
         :options="dropdownMenu"
+      ></FormKit>
+    </rs-modal>
+
+    <rs-modal
+      title="Edit Menu"
+      v-model="showModalEdit"
+      ok-title="Confirm"
+      :ok-callback="saveEditMenu"
+    >
+      <FormKit
+        type="text"
+        label="Title"
+        v-model="showModalEditForm.title"
+      ></FormKit>
+      <FormKit
+        type="text"
+        label="Name"
+        v-model="showModalEditForm.name"
+      ></FormKit>
+      <FormKit
+        type="text"
+        label="Path"
+        help="If the last path name is '/', the name of the file will be from its name property. While if the last path name is not '/', the name of the file will be from its path property."
+        v-model="showModalEditForm.path"
+      ></FormKit>
+    </rs-modal>
+
+    <rs-modal
+      title="Add New Menu"
+      v-model="showModalAdd"
+      ok-title="Confirm"
+      :ok-callback="saveAddMenu"
+    >
+      <FormKit
+        type="text"
+        label="Title"
+        v-model="showModalAddForm.title"
+      ></FormKit>
+      <FormKit
+        type="text"
+        label="Name"
+        v-model="showModalAddForm.name"
+      ></FormKit>
+      <FormKit
+        type="text"
+        label="Path"
+        help="If the last path name is '/', the name of the file will be from its name property. While if the last path name is not '/', the name of the file will be from its path property."
+        v-model="showModalAddForm.path"
       ></FormKit>
     </rs-modal>
   </div>

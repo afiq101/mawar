@@ -2,7 +2,7 @@
 import { useUserStore } from "~/stores/user";
 
 definePageMeta({
-  title: "logout-v2",
+  title: "Logout",
   layout: "empty",
 });
 

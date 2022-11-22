@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  title: "register-v2",
+  title: "Register",
   layout: "empty",
   middleware: ["redirect-dashboard"],
 });

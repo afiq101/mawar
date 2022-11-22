@@ -5,15 +5,21 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   try {
-    const menuPath = path.join(process.cwd() + "/navigation/", "index.js");
-    fs.writeFileSync(
-      menuPath,
-      `export default ${JSON.stringify(body.menuData, null, 2)}`
+    // Get file path
+    const filePath = path.join(
+      process.cwd() + "/pages/",
+      body.filePath + ".vue"
     );
+
+    // delete file
+    fs.unlink(filePath, (err) => {
+      if (err) throw err;
+      console.log("successfully deleted file");
+    });
 
     return {
       statusCode: 200,
-      message: "Menu saved",
+      message: "Menu successfully added!",
     };
   } catch (error) {
     return {

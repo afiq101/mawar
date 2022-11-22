@@ -513,19 +513,19 @@ watch(
                   <Icon
                     class="absolute top-3 right-2 opacity-20"
                     size="1.25rem"
-                    name="mdi:sort-alphabetical-variant"
+                    name="carbon:chevron-sort"
                   />
                   <Icon
                     v-if="currentSort == index && currentSortDir == 'asc'"
                     class="absolute top-3 right-2 opacity-50"
                     size="1.25rem"
-                    name="mdi:sort-alphabetical-ascending-variant"
+                    name="carbon:chevron-sort-up"
                   />
                   <Icon
                     v-else-if="currentSort == index && currentSortDir == 'desc'"
                     class="absolute top-3 right-2 opacity-50"
                     size="1.25rem"
-                    name="mdi:sort-alphabetical-descending-variant"
+                    name="carbon:chevron-sort-down"
                   />
                 </div>
               </th>

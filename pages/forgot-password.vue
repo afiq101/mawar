@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  title: "forgot-password-v2",
+  title: "Forgot Password",
   layout: "empty",
   middleware: ["redirect-dashboard"],
 });

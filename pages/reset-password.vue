@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  title: "reset-password-v2",
+  title: "Reset Password",
   layout: "empty",
   middleware: ["redirect-dashboard"],
 });

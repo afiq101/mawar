@@ -2,7 +2,7 @@
 import { useUserStore } from "~/stores/user";
 
 definePageMeta({
-  title: "login-v2",
+  title: "Login",
   layout: "empty",
   middleware: ["redirect-dashboard"],
 });

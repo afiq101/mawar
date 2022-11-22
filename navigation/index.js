@@ -20,35 +20,11 @@ export default [
         "icon": "ci:menu-alt-03",
         "path": "/admin/menu-editor",
         "child": []
-      }
-    ]
-  },
-  {
-    "header": "Authentication",
-    "description": "Page for Authentication",
-    "child": [
+      },
       {
-        "title": "Login V1",
+        "title": "Login",
         "path": "/auth/login-v1",
-        "icon": "",
-        "child": []
-      },
-      {
-        "title": "Register V1",
-        "path": "/auth/register-v1",
-        "icon": "",
-        "child": []
-      },
-      {
-        "title": "Reset Password V1",
-        "path": "/auth/reset-password-v1",
-        "icon": "",
-        "child": []
-      },
-      {
-        "title": "Forgot Password V1",
-        "path": "/auth/forgot-password-v1",
-        "icon": "",
+        "icon": "pixelarticons:login",
         "child": []
       }
     ]
