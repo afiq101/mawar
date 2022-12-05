@@ -107,7 +107,7 @@ const openModalEdit = (menu) => {
 };
 
 const saveEditMenu = async () => {
-  const res = await useFetch("/api/admin/menu/edit-menu", {
+  const res = await useFetch("/api/admin/menu/edit", {
     method: "POST",
     initialCache: false,
     body: JSON.stringify({
@@ -140,7 +140,7 @@ const openModalAdd = () => {
 };
 
 const saveAddMenu = async () => {
-  const res = await useFetch("/api/admin/menu/add-menu", {
+  const res = await useFetch("/api/admin/menu/add", {
     method: "POST",
     initialCache: false,
     body: JSON.stringify({
@@ -176,7 +176,7 @@ const deleteMenu = async (menu) => {
     })
     .then(async (result) => {
       if (result.isConfirmed) {
-        const res = await useFetch("/api/admin/menu/delete-menu", {
+        const res = await useFetch("/api/admin/menu/delete", {
           method: "POST",
           initialCache: false,
           body: JSON.stringify({
@@ -218,6 +218,14 @@ const checkExistSideMenuList = (path) => {
       menu.child.map((child) => {
         if (child.path == path) {
           exist = true;
+        }
+
+        if (child.child) {
+          child.child.map((child2) => {
+            if (child2.path == path) {
+              exist = true;
+            }
+          });
         }
       });
     }
@@ -390,7 +398,7 @@ const addMenuFromList = () => {
           <rs-tab-item title="All Menu">
             <div class="flex justify-end items-center mb-4">
               <rs-button @click="openModalAdd">
-                <Icon name="material-symbols:add" class="mr-2"></Icon>
+                <Icon name="material-symbols:add" class="mr-1"></Icon>
                 Add New Menu
               </rs-button>
             </div>
@@ -418,7 +426,7 @@ const addMenuFromList = () => {
                 >
               </template>
               <template v-slot:visible="data">
-                <div class="flex justify-center items-center">
+                <div class="flex items-center">
                   <Icon
                     name="mdi:eye-outline"
                     class="text-primary-400"
@@ -435,7 +443,7 @@ const addMenuFromList = () => {
               </template>
               <template v-slot:action="data">
                 <div
-                  class="flex justify-center items-center"
+                  class="flex items-center"
                   v-if="data.value.parentMenu != 'admin'"
                 >
                   <Icon
@@ -451,7 +459,7 @@ const addMenuFromList = () => {
                     @click="deleteMenu(data.value)"
                   ></Icon>
                 </div>
-                <div class="flex justify-center items-center" v-else>-</div>
+                <div class="flex items-center" v-else>-</div>
               </template>
             </rs-table>
           </rs-tab-item>

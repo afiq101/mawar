@@ -34,7 +34,7 @@ const textClassification = {
     dark:border-slate-700
     placeholder-secondary 
     focus:outline-none 
-    focus:shadow-outline 
+    focus:shadow-outline
     `,
   prefix: `ml-2`,
   message: "formkit-invalid:text-red-500 dark:formkit-invalid:text-danger",

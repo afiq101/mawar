@@ -26,12 +26,12 @@ export default defineEventHandler(async (event) => {
       newFilePath,
       `<script setup>
         definePageMeta({
-          title: "${body.formData.name}",
+          title: "${body.formData.title ? body.formData.title : body.formData.name}",
         });
     </script>
     <template>
       <div>
-        Page: ${body.formData.name}
+        <LayoutsBreadcrumb />
       </div>
     </template>
     `

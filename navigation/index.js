@@ -22,9 +22,28 @@ export default [
         "child": []
       },
       {
-        "title": "Login",
-        "path": "/auth/login-v1",
-        "icon": "pixelarticons:login",
+        "title": "Manage Users",
+        "path": "/admin/user-management",
+        "icon": "ph:user-circle-gear",
+        "child": [
+          {
+            "title": "User List",
+            "path": "/admin/user-management/user-list",
+            "icon": "",
+            "child": []
+          },
+          {
+            "title": "Role List",
+            "path": "/admin/user-management/role-list",
+            "icon": "",
+            "child": []
+          }
+        ]
+      },
+      {
+        "title": "Page Editor",
+        "path": "/admin/page-editor",
+        "icon": "mdi:page-layout-sidebar-left",
         "child": []
       }
     ]

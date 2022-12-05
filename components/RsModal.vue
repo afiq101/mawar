@@ -73,7 +73,7 @@ const validateCancelCallback = () => {
       >
         <div
           v-show="modelValue"
-          class="modal-dialog"
+          class="modal-dialog w-full md:w-auto"
           :style="{
             width: size == 'sm' ? '300px' : size == 'md' ? '500px' : '800px',
           }"

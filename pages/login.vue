@@ -14,9 +14,9 @@ const userStore = useUserStore();
 
 const login = async () => {
   try {
-    console.log("login");
-    console.log("username", username.value);
-    console.log("password", password.value);
+    // console.log("login");
+    // console.log("username", username.value);
+    // console.log("password", password.value);
 
     const res = await useFetch("/api/auth/login", {
       method: "POST",
@@ -45,10 +45,10 @@ const login = async () => {
         showConfirmButton: false,
       });
 
-      console.log(userStore.username);
-      console.log(userStore.accessToken);
-      console.log(userStore.refreshToken);
-      console.log(userStore.isAuth);
+      // console.log(userStore.username);
+      // console.log(userStore.accessToken);
+      // console.log(userStore.refreshToken);
+      // console.log(userStore.isAuth);
 
       await navigateTo("/dashboard");
     } else {

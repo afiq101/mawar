@@ -95,7 +95,7 @@ if (props.optionsAdvanced.responsive) {
 watch(
   () => [props.data, props.field],
   () => {
-    if (props.field.length > 0) {
+    if (props.field && props.field.length > 0) {
       columnTitle.value = props.field;
       dataTitle.value = props.field;
     } else {
@@ -114,7 +114,7 @@ const camelCasetoTitle = (str) => {
 
 const setColumnTitle = (data) => {
   try {
-    if (props.field.length == 0) {
+    if (props.field && props.field.length == 0) {
       columnTitle.value = Object.keys(data);
     } else {
       columnTitle.value = props.field;
@@ -127,7 +127,7 @@ const setColumnTitle = (data) => {
 const filteredDatabyTitle = (data, title) => {
   let result = "";
   try {
-    if (props.field.length == 0) {
+    if (props.field && props.field.length == 0) {
       Object.entries(data).forEach(([key, value]) => {
         if (key === title) {
           result = value;
@@ -143,7 +143,7 @@ const filteredDatabyTitle = (data, title) => {
 
       result = arr[index];
     }
-    if (result === "") result = "-";
+    if (result === "" || result === null) result = "-";
     return result;
   } catch (error) {
     console.log(error);
@@ -151,7 +151,9 @@ const filteredDatabyTitle = (data, title) => {
   }
 };
 
-setColumnTitle(dataTable.value[0]);
+onMounted(() => {
+  setColumnTitle(dataTable.value[0]);
+});
 
 // Computed data
 const computedData = computed(() => {
