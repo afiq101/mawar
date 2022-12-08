@@ -6,7 +6,7 @@ definePageMeta({
   },
 });
 
-const { $swal } = useNuxtApp();
+const { $swal, $router } = useNuxtApp();
 
 const userList = ref([]);
 const userRoleList = ref([]);
@@ -29,26 +29,33 @@ const showModalRoleForm = ref({
   description: "",
 });
 
+const showModalDelete = ref(false);
+const showModalDeleteForm = ref({
+  username: "",
+});
+
 const statusDropdown = ref([
   { label: "Active", value: "ACTIVE" },
   { label: "Inactive", value: "INACTIVE" },
 ]);
 
+const checkAllRole = ref(false);
+
 const userListbyRole = ref([]);
 
 // Call API
-onMounted(async () => {
-  await getUserList();
-  await getRoleList();
-});
+// onMounted(async () => {
+//   await getUserList();
+//   await getRoleList();
+// });
 
-const getUserList = async () => {
-  console.log("masiulll");
+await getUserList();
+await getRoleList();
+
+async function getUserList() {
   const { data } = await useFetch("/api/admin/user/list", {
     initialCache: false,
   });
-
-  console.log(data.value);
 
   // Rename the key
   if (data.value?.statusCode === 200) {
@@ -56,19 +63,22 @@ const getUserList = async () => {
       username: user.userUsername,
       fullname: user.userFullName,
       email: user.userEmail,
-      role: {
-        label: user.role.roleName,
-        value: user.role.roleID,
-      },
+      phone: user.userPhone,
+      role: user.roles.map((r) => {
+        return {
+          label: r.role.roleName,
+          value: r.role.roleID,
+        };
+      }),
       status: user.userStatus,
       action: null,
     }));
 
     groupUserByRole();
   }
-};
+}
 
-const getRoleList = async () => {
+async function getRoleList() {
   const { data } = await useFetch("/api/admin/role/list", {
     initialCache: false,
   });
@@ -79,7 +89,43 @@ const getRoleList = async () => {
       value: role.roleID,
     }));
   }
-};
+}
+
+function roleWithComma(role) {
+  // Limit the number of role to 4 and add "..." if there are more than 4 role
+  const roleList = role.map((r) => r.label);
+  return roleList.length > 4
+    ? roleList.slice(0, 4).join(", ") + "..."
+    : roleList.join(", ");
+}
+
+// Watch checkAllRole value
+watch(
+  checkAllRole,
+  async (value) => {
+    if (value) {
+      showModalForm.value.role = userRoleList.value;
+    } else {
+      if (showModalForm.value.role.length === userRoleList.value.length) {
+        showModalForm.value.role = [];
+      }
+    }
+  },
+  { immediate: true }
+);
+
+// Watch showModalForm.role value
+watch(
+  showModalForm,
+  async (value) => {
+    if (value.role.length === userRoleList.value.length) {
+      checkAllRole.value = true;
+    } else {
+      checkAllRole.value = false;
+    }
+  },
+  { deep: true }
+);
 
 // Open Modal Add or Edit User
 const openModal = async (value, type) => {
@@ -88,14 +134,16 @@ const openModal = async (value, type) => {
   if (type == "edit") {
     showModalForm.value.username = value.username;
     showModalForm.value.fullname = value.fullname;
+    showModalForm.value.phone = value.phone;
     showModalForm.value.email = value.email;
-    showModalForm.value.role = value.role?.value;
+    showModalForm.value.role = value.role;
     showModalForm.value.status = value.status;
   } else {
     showModalForm.value.username = "";
     showModalForm.value.fullname = "";
+    showModalForm.value.phone = "";
     showModalForm.value.email = "";
-    showModalForm.value.role = 2;
+    showModalForm.value.role = "";
     showModalForm.value.status = "";
   }
 
@@ -118,25 +166,44 @@ const closeModalRole = () => {
   showModal.value = true;
 };
 
+// Open Modal Delete User
+const openModalDelete = async (value) => {
+  showModalDeleteForm.value.username = value.username;
+
+  showModalDelete.value = true;
+};
+
+const checkDeveloperRole = (role) => {
+  return role.some((r) => r.label === "Developer");
+};
+
 const saveUser = async () => {
   if (modalType.value == "add") {
     const { data } = await useFetch("/api/admin/user/add", {
       initialCache: false,
       method: "POST",
-      body: JSON.stringify(showModalForm.value),
+      body: JSON.stringify({
+        ...showModalForm.value,
+        module: "user",
+      }),
     });
 
     if (data.value.statusCode === 200) {
+      console.log("data.value", data.value);
       $swal.fire({
         position: "top-end",
         icon: "success",
         title: "Success",
         text: "User has been added",
-        timer: 2000,
+        timer: 1000,
         showConfirmButton: false,
       });
-      await getUserList();
-      showModal.value = false;
+      // await getUserList();
+      // showModal.value = false;
+
+      setTimeout(() => {
+        $router.go();
+      }, 1000);
     } else {
       $swal.fire({
         position: "top-end",
@@ -158,12 +225,15 @@ const saveUser = async () => {
         icon: "success",
         title: "Success",
         text: "User has been updated",
-        timer: 2000,
+        timer: 1000,
         showConfirmButton: false,
       });
-      await getUserList();
+      // await getUserList();
+      // showModal.value = false;
 
-      showModal.value = false;
+      setTimeout(() => {
+        $router.go();
+      }, 1000);
     } else {
       $swal.fire({
         position: "top-end",
@@ -172,6 +242,37 @@ const saveUser = async () => {
         text: data.value.message,
       });
     }
+  }
+};
+
+const deleteUser = async () => {
+  const { data } = await useFetch("/api/admin/user/delete", {
+    initialCache: false,
+    method: "POST",
+    body: JSON.stringify({ username: showModalDeleteForm.value.username }),
+  });
+
+  if (data.value.statusCode === 200) {
+    $swal.fire({
+      position: "top-end",
+      icon: "success",
+      title: "Success",
+      text: "User has been deleted",
+      timer: 1000,
+      showConfirmButton: false,
+    });
+
+    // Timer to wait timer in swal
+    setTimeout(() => {
+      $router.go();
+    }, 1000);
+  } else {
+    $swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Error",
+      text: data.value.message,
+    });
   }
 };
 
@@ -188,6 +289,7 @@ const saveRole = async () => {
     body: JSON.stringify({
       name: showModalRoleForm.value.role,
       description: showModalRoleForm.value.description,
+      module: "user",
     }),
   });
 
@@ -197,7 +299,7 @@ const saveRole = async () => {
       title: "Success",
       text: data.value.message,
       icon: "success",
-      timer: 2000,
+      timer: 1000,
       showConfirmButton: false,
     });
 
@@ -266,12 +368,13 @@ function groupUserByRole() {
               advanced
             >
               <template v-slot:role="data">
-                {{ data.text?.label }}
+                <!-- {{ data.text?.label }} -->
+                {{ roleWithComma(data.text) }}
               </template>
               <template v-slot:action="data">
                 <div
                   class="flex justify-center items-center"
-                  v-if="data.value.role?.value != '1'"
+                  v-if="!checkDeveloperRole(data.value.role)"
                 >
                   <Icon
                     name="material-symbols:edit-outline-rounded"
@@ -283,19 +386,19 @@ function groupUserByRole() {
                     name="material-symbols:close-rounded"
                     class="text-primary-400 hover:text-primary-500 cursor-pointer"
                     size="22"
-                    @click="deleteMenu(data.value)"
+                    @click="openModalDelete(data.value)"
                   ></Icon>
                 </div>
                 <div class="flex justify-center items-center" v-else>-</div>
               </template>
             </rs-table>
           </rs-tab-item>
-          <rs-tab-item title="User Tree">
-            <div v-for="(value, index) in userListbyRole">
-              {{ value }}
-            </div>
-          </rs-tab-item>
         </rs-tab>
+        <!-- <rs-tab-item title="User Tree">
+          <div v-for="(value, index) in userListbyRole">
+            {{ value }}
+          </div>
+        </rs-tab-item> -->
       </div>
     </rs-card>
 
@@ -333,25 +436,27 @@ function groupUserByRole() {
         label="Phone"
         mask="###########"
       />
-      <FormKit
-        type="select"
+      <div class="flex justify-between items-center mb-2">
+        <label
+          class="formkit-label flex items-center gap-x-4 font-semibold text-gray-700 dark:text-gray-200 blockfont-semibold text-sm formkit-invalid:text-red-500 dark:formkit-invalid:text-danger"
+          for="input_4"
+        >
+          Role
+        </label>
+        <rs-button size="sm" @click="openModalRole"> Add Role </rs-button>
+      </div>
+      <v-select
+        class="formkit-vselect"
         :options="userRoleList"
         v-model="showModalForm.role"
-        name="role"
-      >
-        <template #label>
-          <div class="flex justify-between items-center mb-2">
-            <label
-              class="formkit-label font-semibold text-gray-700 dark:text-gray-200 blockfont-semibold text-sm formkit-invalid:text-red-500 dark:formkit-invalid:text-danger"
-              for="input_4"
-            >
-              Role
-            </label>
-
-            <rs-button size="sm" @click="openModalRole"> Add Role </rs-button>
-          </div>
-        </template>
-      </FormKit>
+        multiple
+      ></v-select>
+      <FormKit
+        type="checkbox"
+        v-model="checkAllRole"
+        label="All Role"
+        input-class="icon-check"
+      />
       <FormKit
         type="select"
         :options="statusDropdown"
@@ -382,6 +487,21 @@ function groupUserByRole() {
         v-model="showModalRoleForm.description"
         label="Description"
       />
+    </rs-modal>
+
+    <!-- Modal Delete Confirmation -->
+    <rs-modal
+      title="Delete Confirmation"
+      ok-title="Yes"
+      cancel-title="No"
+      :ok-callback="deleteUser"
+      v-model="showModalDelete"
+    >
+      <p>
+        Are you sure want to delete this user ({{
+          showModalDeleteForm.username
+        }})?
+      </p>
     </rs-modal>
   </div>
 </template>

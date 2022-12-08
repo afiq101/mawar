@@ -1,6 +1,6 @@
 <script setup>
         definePageMeta({
-          title: "Page Editor",
+          title: "Content Editor",
         });
     </script>
     <template>

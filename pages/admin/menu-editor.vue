@@ -32,6 +32,7 @@ const showModalEditForm = ref({
   title: "",
   name: "",
   path: "",
+  guardType: "",
 });
 // const showModalEditEl = ref(null);
 
@@ -41,6 +42,12 @@ const showModalAddForm = ref({
   name: "",
   path: "",
 });
+
+const guardType = ref([
+  { text: "Public", value: "public" },
+  { text: "Auth", value: "auth" },
+  { text: "Guest", value: "guest" },
+]);
 
 const kebabtoTitle = (str) => {
   return str
@@ -487,7 +494,7 @@ const addMenuFromList = () => {
                   outer-class="mb-5"
                   v-model="searchInput"
                 />
-                <SimpleBar style="height: 625px">
+                <SimpleBar style="height: 735px">
                   <draggable
                     item-key="id"
                     v-model="menuList"
@@ -521,17 +528,22 @@ const addMenuFromList = () => {
                   </draggable>
                 </SimpleBar>
               </div>
-              <rs-card class="p-4 bg-gray-50" v-if="!showCode">
-                <DraggableSideMenuNested
-                  :menus="sideMenuList"
-                  @changeSideMenu="changeSideMenuList"
-                />
-                <div class="flex justify-end items-center">
-                  <rs-button class="!p-2 mt-3" @click="addNewHeader">
-                    <Icon name="material-symbols:docs-add-on" size="16"></Icon>
-                  </rs-button>
-                </div>
-              </rs-card>
+              <SimpleBar v-if="!showCode" style="height: 825px">
+                <rs-card class="p-4 bg-gray-50">
+                  <DraggableSideMenuNested
+                    :menus="sideMenuList"
+                    @changeSideMenu="changeSideMenuList"
+                  />
+                  <div class="flex justify-end items-center">
+                    <rs-button class="!p-2 mt-3" @click="addNewHeader">
+                      <Icon
+                        name="material-symbols:docs-add-on"
+                        size="16"
+                      ></Icon>
+                    </rs-button>
+                  </div>
+                </rs-card>
+              </SimpleBar>
               <pre v-else v-html="JSON.stringify(sideMenuList, null, 2)"></pre>
             </div>
           </rs-tab-item>

@@ -5,9 +5,8 @@ const prisma = new PrismaClient();
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
-  console.log(body);
-
   try {
+    // Update user
     const user = await prisma.user.updateMany({
       where: {
         userUsername: body.username,
@@ -17,16 +16,45 @@ export default defineEventHandler(async (event) => {
         userEmail: body?.email || "",
         userPhone: body?.phone || "",
         userStatus: body.status,
-        userRoleID: body.roleID,
         userModifiedDate: new Date(),
       },
     });
 
     if (user) {
-      return {
-        statusCode: 200,
-        message: "User updated successfully",
-      };
+      const getUserID = await prisma.user.findFirst({
+        where: {
+          userUsername: body.username,
+        },
+      });
+
+      if (getUserID) {
+        // Delete all user role
+        const userRole = await prisma.userrole.deleteMany({
+          where: {
+            userRoleUserID: getUserID.userID,
+          },
+        });
+
+        if (userRole) {
+          const userRoleList = body.role;
+
+          // Add new user role
+          userRoleList.forEach(async (role) => {
+            const userRole = await prisma.userrole.create({
+              data: {
+                userRoleUserID: getUserID.userID,
+                userRoleRoleID: role.value,
+                userRoleCreatedDate: new Date(),
+              },
+            });
+          });
+
+          return {
+            statusCode: 200,
+            message: "User updated successfully",
+          };
+        }
+      }
     }
   } catch (error) {
     return {
