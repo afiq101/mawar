@@ -4,6 +4,7 @@ export const useUserStore = defineStore({
   id: "user",
   state: () => ({
     username: null,
+    roles: null,
     accessToken: null,
     refreshToken: null,
     isAuth: false,
@@ -12,6 +13,9 @@ export const useUserStore = defineStore({
   actions: {
     setUsername(username) {
       this.username = username;
+    },
+    setRoles(roles) {
+      this.roles = roles;
     },
     setIsAuthenticated(isAuth) {
       this.isAuth = isAuth;

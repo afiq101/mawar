@@ -19,7 +19,7 @@ definePageMeta({
           </div>
           <h3 class="mb-5">Login</h3>
           <p class="text-slate-500 mb-5">
-            Welcome to Mawar CMS. Please login to continue.
+            Welcome to MawarCMS. Please login to continue.
           </p>
           <div class="grid grid-cols-2">
             <FormKit label="Username" type="text" outer-class="col-span-2" />
@@ -64,7 +64,7 @@ definePageMeta({
         </div>
       </div>
       <div class="absolute bottom-5 left-5 text-xs text-slate-400">
-        © Mawar CMS 2022
+        © MawarCMS 2022
       </div>
     </div>
     <div class="flex-auto w-full lg:w-7/12 m-auto hidden md:block">

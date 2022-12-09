@@ -35,6 +35,94 @@ const formHeader = ref({
   description: null,
 });
 
+const viewPermissionType = ref([
+  {
+    label: "All",
+    value: "all",
+  },
+  {
+    label: "User",
+    value: "user",
+  },
+  {
+    label: "Role",
+    value: "role",
+  },
+]);
+const viewPermissionTypeRadio = ref("");
+const roleList = ref([]);
+const userList = ref([]);
+
+const selectListValue = ref([]);
+
+const checkAll = ref(false);
+
+//  watch viewPermissionTypeRadio
+watch(
+  viewPermissionTypeRadio,
+  async (val) => {
+    if (val == "") viewPermissionTypeRadio.value = "all";
+    else if (val == "user") await getUserList();
+    else if (val == "role") await getRoleList();
+
+    selectListValue.value = [];
+    checkAll.value = false;
+  },
+  { immediate: true }
+);
+
+// watch checkAll
+watch(
+  checkAll,
+  (val) => {
+    if (val) {
+      if (viewPermissionTypeRadio.value == "user") {
+        selectListValue.value = userList.value.map((user) => {
+          return {
+            label: user.label,
+            value: user.value,
+          };
+        });
+      } else if (viewPermissionTypeRadio.value == "role") {
+        selectListValue.value = roleList.value.map((role) => {
+          return {
+            label: role.label,
+            value: role.value,
+          };
+        });
+      }
+    } else {
+      selectListValue.value = [];
+    }
+  },
+  { immediate: true }
+);
+
+const getUserList = async () => {
+  const { data } = await useFetch("/api/admin/menu/user-list");
+  if (data.value?.statusCode === 200) {
+    userList.value = data.value.data.map((user) => {
+      return {
+        label: user.userUsername,
+        value: user.userUsername,
+      };
+    });
+  }
+};
+
+const getRoleList = async () => {
+  const { data } = await useFetch("/api/admin/menu/role-list");
+
+  if (data.value?.statusCode === 200) {
+    roleList.value = data.value.data.map((role) => {
+      return {
+        label: role.roleName,
+        value: role.roleName,
+      };
+    });
+  }
+};
+
 const clone = (obj) => {
   return JSON.parse(JSON.stringify(obj));
 };
@@ -63,30 +151,54 @@ const saveEditChanges = () => {
 
   if (type.value == "menu") {
     // Overwrite the props menus
-    newMenu = props.menus.map((menu) => {
+    props.menus.map((menu) => {
       if (menu.path == formMenu.value.path) {
         menu.title = formMenu.value.title;
         menu.icon = formMenu.value.icon;
+        menu.meta = {};
+
+        // Add the meta auth based on viewPermissionTypeRadio
+        if (viewPermissionTypeRadio.value == "user") {
+          menu.meta.auth = {
+            user: selectListValue.value.map((user) => {
+              return user.value;
+            }),
+          };
+        } else if (viewPermissionTypeRadio.value == "role") {
+          menu.meta.auth = {
+            role: selectListValue.value.map((role) => {
+              return role.value;
+            }),
+          };
+        }
       }
-      return menu;
     });
 
-    // Overwrite the parent child menu
-    let newParentMenu = props.parentMenu.map((menu) => {
-      if (menu.path == formMenu.value.path) {
-        menu.title = formMenu.value.title;
-        menu.icon = formMenu.value.icon;
-      }
-      return menu;
-    });
-
-    newMenu = newParentMenu;
+    newMenu = props.parentMenu;
   } else if (type.value == "header") {
+    console.log("masuk ke");
     // Overwrite the props menus
     newMenu = props.menus.map((header, index) => {
+      console.log(header, index);
       if (index == formHeader.value.index) {
         header.header = formHeader.value.header;
         header.description = formHeader.value.description;
+        header.meta = {};
+
+        // Add the meta auth based on viewPermissionTypeRadio
+        if (viewPermissionTypeRadio.value == "user") {
+          header.meta.auth = {
+            user: selectListValue.value.map((user) => {
+              return user.value;
+            }),
+          };
+        } else if (viewPermissionTypeRadio.value == "role") {
+          header.meta.auth = {
+            role: selectListValue.value.map((role) => {
+              return role.value;
+            }),
+          };
+        }
       }
       return header;
     });
@@ -154,7 +266,7 @@ const removeChild = (type, data) => {
     >
       <template #item="{ element }">
         <rs-card
-          class="p-4 my-4 mx-0 mb-0"
+          class="p-4 my-4 mx-0 mb-0 relative"
           :class="{
             'py-6': count > 0,
           }"
@@ -215,6 +327,31 @@ const removeChild = (type, data) => {
               ></Icon>
             </div>
           </div>
+          <div v-if="element?.meta?.auth" class="authuser-wrapper mt-3">
+            <div class="flex">
+              <div v-for="(val, index) in element.meta.auth.user">
+                <rs-badge
+                  v-if="index < 5"
+                  variant="danger"
+                  class="mr-1 text-sm"
+                >
+                  {{ val }}
+                </rs-badge>
+              </div>
+            </div>
+
+            <div class="flex">
+              <div v-for="(val, index) in element.meta.auth.role">
+                <rs-badge
+                  v-if="index < 5"
+                  variant="warning"
+                  class="mr-1 text-sm"
+                >
+                  {{ val }}
+                </rs-badge>
+              </div>
+            </div>
+          </div>
 
           <DraggableSideMenuNested
             :menus="element?.child ? element.child : []"
@@ -259,16 +396,65 @@ const removeChild = (type, data) => {
           readonly
         ></FormKit>
         <FormKit type="text" label="Icon" v-model="formMenu.icon"></FormKit>
-
-        <p>
-          Preview Icon (<a
-            href="https://icones.js.org/"
-            class="text-primary-400 hover:underline"
-            target="_blank"
-            >list</a
-          >)
-        </p>
-        <Icon v-if="formMenu.icon" :name="formMenu.icon"></Icon>
+        <div class="mb-4 text-sm">
+          <p class="font-semibold mb-2">
+            Preview Icon (<a
+              href="https://icones.js.org/"
+              class="text-primary-400 hover:underline"
+              target="_blank"
+              >list</a
+            >)
+          </p>
+          <Icon v-if="formMenu.icon" :name="formMenu.icon"></Icon>
+        </div>
+      </div>
+      <hr class="mb-4" />
+      <h4 class="text-semibold mb-4">Menu Permission</h4>
+      <FormKit
+        type="radio"
+        label="View Type"
+        v-model="viewPermissionTypeRadio"
+        :classes="{
+          fieldset: 'border-0 !p-0',
+          legend: '!font-semibold !text-sm mb-0',
+          options: '!flex !flex-row gap-4 mt-3',
+        }"
+        :options="viewPermissionType"
+      />
+      <div
+        v-if="viewPermissionTypeRadio && viewPermissionTypeRadio != 'all'"
+        class="form-wrapper"
+      >
+        <div class="flex justify-between items-center mb-2">
+          <label
+            class="formkit-label flex items-center gap-x-4 font-semibold text-gray-700 dark:text-gray-200 blockfont-semibold text-sm formkit-invalid:text-red-500 dark:formkit-invalid:text-danger"
+            for="input_4"
+          >
+            {{ viewPermissionTypeRadio == "user" ? "User" : "Role" }}
+          </label>
+        </div>
+        <v-select
+          class="formkit-vselect"
+          :options="
+            viewPermissionTypeRadio == 'user'
+              ? userList
+              : viewPermissionTypeRadio == 'role'
+              ? roleList
+              : []
+          "
+          v-model="selectListValue"
+          multiple
+        ></v-select>
+        <FormKit
+          type="checkbox"
+          v-model="checkAll"
+          :label="
+            viewPermissionTypeRadio == 'user'
+              ? 'Check All User'
+              : 'Check All Role'
+          "
+          input-class="icon-check"
+        />
       </div>
     </rs-modal>
   </div>

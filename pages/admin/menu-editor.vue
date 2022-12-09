@@ -43,12 +43,6 @@ const showModalAddForm = ref({
   path: "",
 });
 
-const guardType = ref([
-  { text: "Public", value: "public" },
-  { text: "Auth", value: "auth" },
-  { text: "Guest", value: "guest" },
-]);
-
 const kebabtoTitle = (str) => {
   return str
     .split("-")

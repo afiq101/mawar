@@ -8,6 +8,11 @@ export default [
         path: "/dashboard",
         icon: "ic:outline-dashboard",
         child: [],
+        meta: {
+          auth: {
+            role: ["Developer", "Admin"],
+          },
+        },
       },
     ],
   },

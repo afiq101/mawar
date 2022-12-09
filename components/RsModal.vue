@@ -99,7 +99,7 @@ const validateCancelCallback = () => {
               <slot v-if="!$slots.body"></slot>
             </div>
             <div
-              class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end p-4 border-t border-gray-200 dark:border-slate-700 rounded-b-md gap-x-3"
+              class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end px-4 pb-4 rounded-b-md gap-x-3"
             >
               <slot name="footer"></slot>
               <rs-button

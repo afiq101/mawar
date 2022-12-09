@@ -3,7 +3,7 @@
 module.exports = {
   apps: [
     {
-      name: "RoseUI",
+      name: "MawarCMS",
       exec_mode: "cluster",
       instances: "max",
       script: "./.output/server/index.mjs",

@@ -184,6 +184,42 @@ $xlarge: 1280px;
   }
 }
 
+// Custom Formkit Input for VSelect
+.formkit-vselect {
+  margin-bottom: 1rem;
+
+  .vs__dropdown-toggle {
+    min-height: 2.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: #4c5562;
+
+    border-width: 1px;
+    border-radius: 0.5rem;
+    margin-bottom: 0px;
+    border-color: #d7e4f0;
+
+    .vs__selected {
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 0.25rem;
+      padding-bottom: 0.25rem;
+
+      background-color: #f17b84;
+      color: white;
+
+      border: 0;
+      border-radius: 0.5rem;
+
+      gap: 0.25rem;
+      margin-right: 0.35rem;
+      margin-left: 0;
+    }
+  }
+}
+
 // Custom Decorator
 input[type="checkbox"]:checked.icon-check + .formkit-decorator::before {
   content: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-check"><polyline points="20 6 9 17 4 12"></polyline></svg>');

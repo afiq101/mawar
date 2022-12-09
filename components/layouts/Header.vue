@@ -51,7 +51,7 @@ function toggleSearch() {
           <span
             v-if="isDesktop"
             class="text-xl font-semibold text-primary-500 dark:text-white"
-            >Mawar CMS</span
+            >MawarCMS</span
           >
         </div>
       </div>

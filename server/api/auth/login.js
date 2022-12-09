@@ -37,13 +37,37 @@ export default defineEventHandler(async (event) => {
     };
   }
 
-  const accessToken = generateAccessToken({ username: user.userUsername });
-  const refreshToken = generateRefreshToken({ username: user.userUsername });
+  // Get user roles
+  const roles = await prisma.userrole.findMany({
+    where: {
+      userRoleUserID: user.userID,
+    },
+    select: {
+      role: {
+        select: {
+          roleName: true,
+        },
+      },
+    },
+  });
+
+  const roleNames = roles.map((r) => r.role.roleName);
+
+  const accessToken = generateAccessToken({
+    username: user.userUsername,
+    roles: roleNames,
+  });
+  const refreshToken = generateRefreshToken({
+    username: user.userUsername,
+    roles: roleNames,
+  });
 
   return {
     statusCode: 200,
     message: "Login success",
     data: {
+      username: user.userUsername,
+      roles: roleNames,
       accessToken,
       refreshToken,
     },
