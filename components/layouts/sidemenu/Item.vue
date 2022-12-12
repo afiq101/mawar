@@ -70,7 +70,7 @@ function activeMenu(routePath) {
   <div v-for="(item, index) in menuItem" :key="index">
     <div
       v-if="
-        !item.meta || !item.meta?.auth || userExist(item) || roleExist(item)
+        !item.meta || !item.meta?.auth || (userExist(item) && roleExist(item))
       "
       class="navigation-wrapper"
     >

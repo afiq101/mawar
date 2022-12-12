@@ -65,7 +65,17 @@ watch(
     else if (val == "user") await getUserList();
     else if (val == "role") await getRoleList();
 
-    selectListValue.value = [];
+    // Check if selectListValue doesnt match with user or role list then reset selectListValue
+    if (val == "user") {
+      selectListValue.value = selectListValue.value.filter((item) => {
+        return userList.value.some((user) => user.value == item.value);
+      });
+    } else if (val == "role") {
+      selectListValue.value = selectListValue.value.filter((item) => {
+        return roleList.value.some((role) => role.value == item.value);
+      });
+    }
+
     checkAll.value = false;
   },
   { immediate: true }
@@ -132,6 +142,64 @@ const openModal = () => {
   showModal.value = true;
 };
 
+const assignDataMenu = (menu) => {
+  formMenu.value = {
+    index: menu.index,
+    name: menu.name,
+    title: menu.title,
+    path: menu.path,
+    icon: menu.icon,
+  };
+
+  if (menu.meta?.auth?.user) {
+    viewPermissionTypeRadio.value = "user";
+    selectListValue.value = menu.meta.auth.user.map((user) => {
+      return {
+        label: user,
+        value: user,
+      };
+    });
+  } else if (menu.meta?.auth?.role) {
+    viewPermissionTypeRadio.value = "role";
+    selectListValue.value = menu.meta.auth.role.map((role) => {
+      return {
+        label: role,
+        value: role,
+      };
+    });
+  } else {
+    viewPermissionTypeRadio.value = "all";
+  }
+};
+
+const assignDataHeader = (header) => {
+  formHeader.value = {
+    index: props.menus.indexOf(header),
+    header: header.header,
+    description: header.description,
+  };
+
+  if (header.meta?.auth?.user) {
+    viewPermissionTypeRadio.value = "user";
+    selectListValue.value = menu.meta.auth.user.map((user) => {
+      return {
+        label: user,
+        value: user,
+      };
+    });
+  } else if (header.meta?.auth?.role) {
+    viewPermissionTypeRadio.value = "role";
+    selectListValue.value = menu.meta.auth.role.map((role) => {
+      return {
+        label: role,
+        value: role,
+      };
+    });
+  } else {
+    viewPermissionTypeRadio.value = "all";
+  }
+};
+
 const clickOK = () => {
   showModal.value = false;
 };
@@ -176,10 +244,8 @@ const saveEditChanges = () => {
 
     newMenu = props.parentMenu;
   } else if (type.value == "header") {
-    console.log("masuk ke");
     // Overwrite the props menus
     newMenu = props.menus.map((header, index) => {
-      console.log(header, index);
       if (index == formHeader.value.index) {
         header.header = formHeader.value.header;
         header.description = formHeader.value.description;
@@ -287,9 +353,7 @@ const removeChild = (type, data) => {
                 size="20"
                 @click="
                   type = 'header';
-                  formHeader.index = menus.indexOf(element);
-                  formHeader.header = element.header;
-                  formHeader.description = element.description;
+                  assignDataHeader(element);
                   openModal();
                 "
               ></Icon>
@@ -313,9 +377,7 @@ const removeChild = (type, data) => {
                 size="20"
                 @click="
                   type = 'menu';
-                  formMenu.title = element.title;
-                  formMenu.path = element.path;
-                  formMenu.icon = element.icon;
+                  assignDataMenu(element);
                   openModal();
                 "
               ></Icon>
