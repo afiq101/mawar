@@ -108,7 +108,12 @@ const saveCode = async () => {
       text: "The code has been saved successfully.",
       icon: "success",
       confirmButtonText: "Ok",
+      timer: 1000,
     });
+
+    setTimeout(() => {
+      $router.go();
+    }, 1000);
   }
 };
 </script>
