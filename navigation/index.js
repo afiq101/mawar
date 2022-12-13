@@ -53,6 +53,12 @@ export default [
         "path": "/admin/content-editor",
         "icon": "mdi:pencil-ruler",
         "child": []
+      },
+      {
+        "title": "API Editor",
+        "path": "/admin/api-editor",
+        "icon": "material-symbols:api-rounded",
+        "child": []
       }
     ],
     "meta": {

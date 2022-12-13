@@ -15,7 +15,7 @@ var sparkline3Data = [25, 18, 36, 41, 43, 35, 14];
 var sparkline4Data = [8, 16, 22, 41, 43, 35, 14];
 const customers = [
   {
-    name: "Ali",
+    name: "Iqmal",
     age: "25",
     city: "Kuala Lumpur",
     country: "Malaysia",
@@ -23,7 +23,7 @@ const customers = [
     purchase: 23,
   },
   {
-    name: "Kamal",
+    name: "Adi",
     age: "45",
     city: "Pulau Pinang",
     country: "Malaysia",
@@ -31,7 +31,7 @@ const customers = [
     purchase: 14,
   },
   {
-    name: "Auni",
+    name: "Raziq",
     age: "21",
     city: "Kelantan",
     country: "Malaysia",
@@ -39,7 +39,7 @@ const customers = [
     purchase: 12,
   },
   {
-    name: "Iqmal",
+    name: "Haqeem",
     age: "19",
     city: "Negeri Sembilan",
     country: "Malaysia",

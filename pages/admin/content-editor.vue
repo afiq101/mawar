@@ -21,12 +21,15 @@ const searchPages = () => {
 };
 
 const redirectCodeEditor = (pageName) => {
-  router.push({
-    name: "admin-page-code-editor",
-    query: {
-      page: pageName,
-    },
-  });
+  // router.push({
+  //   name: "admin-page-code-editor",
+  //   query: {
+  //     page: pageName,
+  //   },
+  // });
+  // redirect to code editor page
+
+  window.location.href = `/admin/page/code-editor?page=${pageName}`;
 };
 </script>
 <template>
@@ -73,7 +76,7 @@ const redirectCodeEditor = (pageName) => {
             style="min-height: 250px"
           >
             <div class="thumbnail-wrapper relative">
-              <div class="button-list absolute bottom-3 right-3 flex">
+              <div class="button-list absolute bottom-3 right-3 flex z-10">
                 <rs-button class="!py-2 !px-3 rounded-r-none">
                   <Icon
                     name="material-symbols:format-paint-outline-rounded"
@@ -95,9 +98,12 @@ const redirectCodeEditor = (pageName) => {
               <img
                 class="thumbnail rounded-tl-lg rounded-tr-lg"
                 style="height: 250px; width: 100%; object-fit: cover"
-                src="@/assets/img/default-thumbnail-upres.jpg"
+                src="@/assets/img/default-thumbnail-page.jpg"
                 alt=""
               />
+              <div
+                class="overlay-img opacity-30 bg-black text-black before:content-['Hello_World'] absolute top-0 left-0 w-full h-full"
+              ></div>
             </div>
             <div class="py-2 px-4">
               <h4 class="font-semibold">{{ page.meta.title }}</h4>
@@ -119,23 +125,14 @@ const redirectCodeEditor = (pageName) => {
 </template>
 
 <style lang="scss">
-.page:hover {
-  transform: scale(1.02);
-  transition-property: all;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 300ms;
+.thumbnail::before {
+  content: "";
+  display: block;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
 }
-// .page {
-//   .thumbnail::after {
-//     content: "";
-//     position: absolute;
-//     top: 0;
-//     left: 0;
-//     width: 100px;
-//     height: 100px;
-//     background-image: linear-gradient(120deg, #eaee44, #33d0ff);
-//     z-index: 100;
-//     opacity: 0.7;
-//   }
-// }
 </style>
