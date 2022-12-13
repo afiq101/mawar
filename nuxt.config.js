@@ -8,7 +8,7 @@ export default defineNuxtConfig({
     "nuxt-icon",
     "@vueuse/nuxt",
   ],
-  buildModules: ["@nuxtjs/pwa", "floating-vue/nuxt"],
+  buildModules: ["@nuxtjs/pwa"],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
   },
