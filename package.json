@@ -13,7 +13,7 @@
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/tailwindcss": "^6.1.2",
     "monaco-editor": "^0.34.1",
-    "nuxt": "^3.0.0-rc.14",
+    "nuxt": "^3.0.0",
     "nuxt-icon": "^0.1.7",
     "sass": "^1.55.0",
     "sass-loader": "^13.1.0",
