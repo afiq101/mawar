@@ -13,10 +13,14 @@
     "@nuxtjs/pwa": "^3.3.5",
     "@nuxtjs/tailwindcss": "^6.1.2",
     "monaco-editor": "^0.34.1",
-    "nuxt": "3.0.0-rc.12",
+    "nuxt": "^3.0.0-rc.14",
     "nuxt-icon": "^0.1.7",
     "sass": "^1.55.0",
-    "sass-loader": "^13.1.0"
+    "sass-loader": "^13.1.0",
+    "vue": "3.2.45",
+    "@vue/server-renderer": "3.2.45",
+    "@vue/runtime-core": "3.2.45",
+    "vue-bundle-renderer": "1.0.0"
   },
   "dependencies": {
     "@formkit/auto-animate": "^1.0.0-beta.3",
@@ -50,6 +54,7 @@
     "maska": "^1.5.0",
     "nodemon": "^2.0.20",
     "pinia-plugin-persistedstate": "^2.4.0",
+    "postcss-custom-properties": "^12.1.11",
     "prisma": "^4.6.1",
     "simplebar": "^5.3.9",
     "simplebar-vue3": "^0.2.0",

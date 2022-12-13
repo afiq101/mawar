@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  title: "Dashboard",
+  title: "Dashboard 2",
   middleware: ["auth"], // This is for Login Auth for page
   requiresAuth: true, // This is use for Login Auth for page
 });
