@@ -46,11 +46,10 @@ const boxClassification = {
   legend: "font-bold text-sm",
   wrapper: "flex items-center mb-3 cursor-pointer",
   help: "mb-3",
-  input: `flex 
-          items-center 
+  input: `flex items-center 
           form-check-input
           appearance-none
-          h-5 w-5 mr-2
+          mr-2
           border-2 
           border-slate-200
           dark:border-slate-700

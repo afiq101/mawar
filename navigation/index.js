@@ -8,16 +8,29 @@ export default [
         "path": "/dashboard",
         "icon": "ic:outline-dashboard",
         "child": [],
-        "meta": {
-          "auth": {
-            "role": [
-              "Developer",
-              "Admin"
-            ]
-          }
-        }
+        "meta": {}
       }
     ]
+  },
+  {
+    "header": "Store",
+    "description": "Details of the store",
+    "child": [
+      {
+        "title": "Store",
+        "path": "/store",
+        "icon": "material-symbols:storefront-outline-rounded",
+        "child": [],
+        "meta": {}
+      }
+    ],
+    "meta": {
+      "auth": {
+        "role": [
+          "Customer"
+        ]
+      }
+    }
   },
   {
     "header": "Administration",
@@ -63,8 +76,8 @@ export default [
     ],
     "meta": {
       "auth": {
-        "user": [
-          "admin"
+        "role": [
+          "Developer"
         ]
       }
     }

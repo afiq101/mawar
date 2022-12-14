@@ -9,6 +9,7 @@ const breadcrumb = computed(() => {
       path: item.path,
     };
   });
+
   return breadcrumb;
 });
 

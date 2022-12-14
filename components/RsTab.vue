@@ -207,7 +207,7 @@ provide("selectedTitle", selectedTitle);
         </li>
       </ul>
       <div
-        class="tab-content bg-white dark:bg-slate-800"
+        class="tab-content bg-white dark:bg-slate-800 rounded-lg"
         :class="{
           'flex-grow': vertical && !fill,
           'flex-1': vertical && fill,

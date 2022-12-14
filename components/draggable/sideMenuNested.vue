@@ -181,7 +181,7 @@ const assignDataHeader = (header) => {
 
   if (header.meta?.auth?.user) {
     viewPermissionTypeRadio.value = "user";
-    selectListValue.value = menu.meta.auth.user.map((user) => {
+    selectListValue.value = header.meta.auth.user.map((user) => {
       return {
         label: user,
         value: user,
@@ -189,7 +189,7 @@ const assignDataHeader = (header) => {
     });
   } else if (header.meta?.auth?.role) {
     viewPermissionTypeRadio.value = "role";
-    selectListValue.value = menu.meta.auth.role.map((role) => {
+    selectListValue.value = header.meta.auth.role.map((role) => {
       return {
         label: role,
         value: role,

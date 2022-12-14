@@ -1,11 +1,11 @@
 <script setup>
-        definePageMeta({
-          title: "Api Editor",
-        });
-    </script>
-    <template>
-      <div>
-        <LayoutsBreadcrumb />
-      </div>
-    </template>
-    
+definePageMeta({
+  title: "Api Editor",
+});
+</script>
+
+<template>
+  <div>
+    <NuxtPage />
+  </div>
+</template>

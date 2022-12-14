@@ -50,9 +50,25 @@ const { data } = await useFetch("/api/admin/content/code/file-code", {
   },
 });
 
+console.log(data.value);
+
 if (data.value.statusCode === 200) {
   fileCode.value = data.value.data;
   fileCodeConstant.value = data.value.data;
+
+  // If its index append the path
+  if (data.value?.mode == "index") page.path = page.path + "/index";
+} else {
+  $swal.fire({
+    title: "Error",
+    text: "The page you are trying to edit is not found. Please choose a page to edit. You will be redirected to the content editor page.",
+    icon: "error",
+    confirmButtonText: "Ok",
+    timer: 3000,
+  });
+  setTimeout(() => {
+    $router.push("/admin/content-editor");
+  }, 3000);
 }
 
 async function toggle() {
@@ -101,7 +117,6 @@ const saveCode = async () => {
       code: fileCode.value,
     },
   });
-
   if (data.value.statusCode === 200) {
     $swal.fire({
       title: "Success",
@@ -110,7 +125,6 @@ const saveCode = async () => {
       confirmButtonText: "Ok",
       timer: 1000,
     });
-
     setTimeout(() => {
       $router.go();
     }, 1000);

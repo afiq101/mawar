@@ -4,6 +4,10 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  mode: {
+    type: String,
+    default: "text/x-vue",
+  },
   height: {
     type: String,
     default: "400px",
@@ -17,7 +21,7 @@ const props = defineProps({
 const emits = defineEmits(["update:modelValue"]);
 
 const cmOptions = {
-  mode: "text/x-vue", // Language mode
+  mode: props.mode, // Language mode
   theme: "material-darker", // Theme
 };
 

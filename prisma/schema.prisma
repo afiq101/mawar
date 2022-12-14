@@ -28,6 +28,7 @@ model user {
   userStatus       String?    @db.VarChar(255)
   userCreatedDate  DateTime?  @db.DateTime(0)
   userModifiedDate DateTime?  @db.DateTime(0)
+  store            store[]
   userrole         userrole[]
 }
 
@@ -63,4 +64,38 @@ model userrole {
 
   @@index([userRoleRoleID], map: "FK_userrole_role")
   @@index([userRoleUserID], map: "FK_userrole_user")
+}
+
+model page {
+  pageID           Int           @id @default(autoincrement())
+  pageKey          String?       @db.VarChar(255)
+  pageTitle        String?       @db.VarChar(255)
+  pageName         String?       @db.VarChar(255)
+  pageURL          String?       @unique(map: "pageURL") @db.VarChar(255)
+  pageCreatedDate  String?       @db.VarChar(255)
+  pageModifiedDate String?       @db.VarChar(255)
+  pagecontent      pagecontent[]
+}
+
+model pagecontent {
+  pageContentID           Int       @id @default(autoincrement())
+  pageContentCode         String?   @db.LongText
+  pageContentCreatedDate  DateTime? @db.DateTime(0)
+  pageContentModifiedDate DateTime? @db.DateTime(0)
+  pageContentPageID       Int?
+  page                    page?     @relation(fields: [pageContentPageID], references: [pageID], onDelete: NoAction, onUpdate: NoAction, map: "FK__page")
+
+  @@index([pageContentPageID], map: "FK__page")
+}
+
+model store {
+  storeID           Int       @id @default(autoincrement())
+  storeName         String?   @db.VarChar(255)
+  storeDescription  String?   @db.VarChar(255)
+  storeCreatedDate  DateTime? @db.DateTime(0)
+  storeModifiedDate DateTime? @db.DateTime(0)
+  storeUserID       Int?
+  user              user?     @relation(fields: [storeUserID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "FK_store_user")
+
+  @@index([storeUserID], map: "FK_store_user")
 }

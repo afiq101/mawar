@@ -44,6 +44,7 @@ const showModalAddForm = ref({
 });
 
 const kebabtoTitle = (str) => {
+  if (!str) return str;
   return str
     .split("-")
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
@@ -83,18 +84,19 @@ getRoutes.map((menu) => {
     }
   }
 
-  // console.log(menu.path);
-
-  allMenus.push({
-    id: i++,
-    title:
-      menu.meta && menu.meta.title ? menu.meta.title : kebabtoTitle(menu.name),
-    parentMenu: menu.path.split("/")[1],
-    name: menu.name,
-    path: menu.path,
-    visible: visibleMenu,
-    action: "",
-  });
+  if (menu.name)
+    allMenus.push({
+      id: i++,
+      title:
+        menu.meta && menu.meta.title
+          ? menu.meta.title
+          : kebabtoTitle(menu.name),
+      parentMenu: menu.path.split("/")[1],
+      name: menu.name,
+      path: menu.path,
+      visible: visibleMenu,
+      action: "",
+    });
 });
 
 const openModalEdit = (menu) => {
@@ -118,7 +120,7 @@ const saveEditMenu = async () => {
   });
 
   const data = res.data.value;
-  console.log(data);
+
   if (data.statusCode === 200) {
     nuxtApp.$swal.fire({
       title: "Success",
@@ -150,7 +152,7 @@ const saveAddMenu = async () => {
   });
 
   const data = res.data.value;
-  console.log(data);
+
   if (data.statusCode === 200) {
     nuxtApp.$swal.fire({
       title: "Success",
@@ -186,7 +188,7 @@ const deleteMenu = async (menu) => {
         });
 
         const data = res.data.value;
-        console.log(data);
+
         if (data.statusCode === 200) {
           nuxtApp.$swal.fire({
             title: "Deleted!",

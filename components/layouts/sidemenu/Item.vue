@@ -20,7 +20,7 @@ const menuItem = props.items ? props.items : [];
 // validate userExist on meta.auth.user
 function userExist(item) {
   if (item.meta?.auth?.user) {
-    if (item.meta?.auth?.user.includes(username)) {
+    if (item.meta?.auth?.user.some((e) => e === username)) {
       return true;
     } else {
       return false;
@@ -32,7 +32,7 @@ function userExist(item) {
 // validate roleExist on meta.auth.role
 function roleExist(item) {
   if (item.meta?.auth?.role) {
-    if (item.meta?.auth?.role.some((r) => roles.includes(r))) {
+    if (item.meta?.auth?.role.some((e) => roles.includes(e))) {
       return true;
     } else {
       return false;
