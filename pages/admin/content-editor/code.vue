@@ -1,5 +1,6 @@
 <script setup>
-import { api as fullscreen } from "vue-fullscreen";
+// import pinia store
+import { useThemeStore } from "~/stores/theme";
 
 definePageMeta({
   title: "Code Editor",
@@ -9,18 +10,36 @@ const { $swal, $router } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
 
-const editor = ref();
 const fileCode = ref("");
 const fileCodeConstant = ref("");
-
-const state = reactive({
-  fullscreen: false,
-  teleport: true,
-});
-const root = ref();
+const componentKey = ref(0);
 
 const hasError = ref(false);
 const error = ref("");
+
+const themeStore = useThemeStore();
+const editorTheme = ref({
+  label: themeStore.codeTheme,
+  value: themeStore.codeTheme,
+});
+const dropdownThemes = ref([]);
+
+// Get all themes
+const themes = codemirrorThemes();
+
+// map the themes to the dropdown
+dropdownThemes.value = themes.map((theme) => {
+  return {
+    label: theme.name,
+    value: theme.name,
+  };
+});
+
+// watch for changes in the theme
+watch(editorTheme, (theme) => {
+  themeStore.setCodeTheme(theme.value);
+  forceRerender();
+});
 
 const page = router.getRoutes().find((page) => {
   return page.name === route.query?.page;
@@ -50,7 +69,7 @@ const { data } = await useFetch("/api/admin/content/code/file-code", {
   },
 });
 
-console.log(data.value);
+// console.log(data.value);
 
 if (data.value.statusCode === 200) {
   fileCode.value = data.value.data;
@@ -71,42 +90,35 @@ if (data.value.statusCode === 200) {
   }, 3000);
 }
 
-async function toggle() {
-  await fullscreen.toggle(root.value.querySelector(".fullscreen-wrapper"), {
-    teleport: state.teleport,
-    callback: (isFullscreen) => {
-      state.fullscreen = isFullscreen;
-    },
+async function formatCode() {
+  // Call API to get the code
+  const { data } = await useFetch("/api/admin/content/code/prettier-format", {
+    initialCache: false,
+    method: "POST",
+    body: JSON.stringify({
+      code: fileCode.value,
+    }),
   });
+  forceRerender();
+
+  if (data.value.statusCode === 200) {
+    fileCode.value = data.value.data;
+  }
 }
 
-// const validateCompileVueCode = () => {
-//   const codeEval = `
-//     import { createApp } from 'vue'
+const forceRerender = () => {
+  componentKey.value += 1;
+};
 
-//     createApp({
-//       data() {
-//         return {
-//           count: 0
-//         }
-//       }
-//     }).mount('#app')
-
-//     <div id="app">
-//       <button @click="count++">
-//         Count is: {{ count }}
-//       </button>
-//     </div>
-//   `;
-
-//   try {
-//     eval(codeEval);
-//   } catch (e) {
-//     hasError.value = true;
-//     error.value = e.message;
-//     console.log(e);
-//   }
-// };
+const keyPress = (key) => {
+  console.log(key);
+  const event = new KeyboardEvent("keydown", {
+    key: key,
+    ctrlKey: true,
+  });
+  console.log(event);
+  document.dispatchEvent(event);
+};
 
 const saveCode = async () => {
   const { data } = await useFetch("/api/admin/content/code/save", {
@@ -139,41 +151,53 @@ const saveCode = async () => {
     <rs-alert v-if="hasError" class="mb-4" variant="primary">{{
       error
     }}</rs-alert>
-    <rs-card>
-      <div class="flex justify-end gap-2 p-4">
-        <rs-button class="!p-2" @click="toggle">
-          <Icon name="material-symbols:fullscreen-rounded" class="mr-1" />
-          Immersive
-        </rs-button>
-        <!-- <rs-button class="!p-2" @click="toggle">
-          <Icon name="material-symbols:view-column-2-outline" class="mr-1" />
-          Playground
-        </rs-button> -->
-        <rs-button class="!p-2" @click="saveCode">
-          <Icon name="material-symbols:save-outline-rounded" class="mr-1" />
-          Save
-        </rs-button>
-      </div>
-      <div ref="root">
-        <div class="fullscreen-wrapper">
-          <ClientOnly>
-            <rs-code-mirror
-              v-model="fileCode"
-              :height="state.fullscreen ? '100vh' : '80vh'"
+    <rs-card class="mb-0">
+      <div class="p-4">
+        <div class="flex justify-between gap-2 mb-4">
+          <div>
+            <!-- <FormKit
+              type="select"
+              label="Which country is the smallest?"
+              name="small_country"
+              :options="['Monaco', 'Vatican City', 'Maldives', 'Tuvalu']"
+            /> -->
+
+            <v-select
+              v-model="editorTheme"
+              name="themes"
+              style="width: 200px"
+              placeholder="Select Themes"
+              :options="dropdownThemes"
+            ></v-select>
+          </div>
+          <div class="flex gap-2">
+            <rs-button class="!p-2" @click.prevent="keyPress('F11')">
+              <Icon name="material-symbols:fullscreen-rounded" size="20px" class="mr-1" />
+              Fullscreen</rs-button
             >
-            </rs-code-mirror>
-          </ClientOnly>
-          <!-- <ClientOnly>
-            <MonacoEditor v-model="fileCode" lang="typescript" />
-          </ClientOnly> -->
+            <rs-button class="!p-2" @click="formatCode">
+              <Icon name="simple-icons:prettier" size="20px" class="mr-1" />
+              Format Code</rs-button
+            >
+            <rs-button class="!p-2" @click="saveCode">
+              <Icon
+                name="material-symbols:save-outline-rounded"
+                size="20px"
+                class="mr-1"
+              />
+              Save
+            </rs-button>
+          </div>
         </div>
+        <ClientOnly>
+          <rs-code-mirror
+            :key="componentKey"
+            v-model="fileCode"
+            :theme="editorTheme.value"
+          >
+          </rs-code-mirror>
+        </ClientOnly>
       </div>
     </rs-card>
   </div>
 </template>
-
-<style lang="scss" scoped>
-.fullscreen-wrapper {
-  z-index: 10000;
-}
-</style>

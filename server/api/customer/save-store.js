@@ -16,7 +16,7 @@ export default defineEventHandler(async (event) => {
         },
       });
 
-      console.log("user", user);
+      // console.log("user", user);
 
       const store = await prisma.store.create({
         data: {

@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  title: "User List",
+  title: "User List 3",
   keepalive: {
     exclude: ["rs-table"],
   },
@@ -189,7 +189,7 @@ const saveUser = async () => {
     });
 
     if (data.value.statusCode === 200) {
-      console.log("data.value", data.value);
+      // console.log("data.value", data.value);
       $swal.fire({
         position: "top-end",
         icon: "success",

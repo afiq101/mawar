@@ -5,6 +5,7 @@ export const useThemeStore = defineStore({
   state: () => ({
     theme: "light",
     layoutType: "vertical",
+    codeTheme: "monokai",
   }),
   actions: {
     setTheme(theme) {
@@ -12,6 +13,9 @@ export const useThemeStore = defineStore({
     },
     setLayoutType(layoutType) {
       this.layoutType = layoutType;
+    },
+    setCodeTheme(codeTheme) {
+      this.codeTheme = codeTheme;
     },
   },
 });

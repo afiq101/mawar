@@ -276,8 +276,8 @@ const saveEditChanges = () => {
 };
 
 const removeChild = (type, data) => {
-  console.log(data);
-  console.log(type);
+  // console.log(data);
+  // console.log(type);
   let newMenu = props.menus;
   if (type == "menu") {
     let parentMenu = props.parentMenu;

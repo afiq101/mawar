@@ -2,7 +2,7 @@
 import { useUserStore } from "~/stores/user";
 
 definePageMeta({
-  title: "Store",
+  title: "Store Detail",
 });
 
 const { $swal } = useNuxtApp();

@@ -15,8 +15,6 @@ export default defineEventHandler(async (event) => {
     },
   });
 
-  console.log("user", user);
-
   if (!user || user.length == 0)
     return {
       statusCode: 404,

@@ -17,7 +17,7 @@ export default [
     "description": "Details of the store",
     "child": [
       {
-        "title": "Store",
+        "title": "Store Detail",
         "path": "/store",
         "icon": "material-symbols:storefront-outline-rounded",
         "child": [],
