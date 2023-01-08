@@ -32,7 +32,7 @@ function userExist(item) {
 // validate roleExist on meta.auth.role
 function roleExist(item) {
   if (item.meta?.auth?.role) {
-    if (item.meta?.auth?.role.some((e) => roles.includes(e))) {
+    if (item.meta?.auth?.role.some((e) => roles?.includes(e))) {
       return true;
     } else {
       return false;

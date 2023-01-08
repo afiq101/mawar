@@ -14,6 +14,8 @@
     "@nuxtjs/tailwindcss": "^6.1.2",
     "@vue/runtime-core": "3.2.45",
     "@vue/server-renderer": "3.2.45",
+    "eslint": "^8.31.0",
+    "eslint-plugin-vue": "^9.8.0",
     "monaco-editor": "^0.34.1",
     "nuxt": "^3.0.0",
     "nuxt-icon": "^0.1.7",
@@ -23,6 +25,7 @@
     "vue-bundle-renderer": "1.0.0"
   },
   "dependencies": {
+    "@babel/eslint-parser": "^7.19.1",
     "@emmetio/codemirror-plugin": "^1.2.4",
     "@formkit/auto-animate": "^1.0.0-beta.3",
     "@formkit/nuxt": "^1.0.0-beta.11",
@@ -35,6 +38,7 @@
     "@fullcalendar/scrollgrid": "^5.11.3",
     "@fullcalendar/timegrid": "^5.11.3",
     "@fullcalendar/vue3": "^5.11.2",
+    "@kiwicom/eslint-config": "^12.7.3",
     "@pinia/nuxt": "^0.4.3",
     "@prisma/client": "^4.6.1",
     "@shimyshack/uid": "^0.1.7",

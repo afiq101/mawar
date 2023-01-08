@@ -24,6 +24,11 @@ const editorTheme = ref({
 });
 const dropdownThemes = ref([]);
 
+const linterError = ref(false);
+const linterErrorText = ref("");
+const linterErrorColumn = ref(0);
+const linterErrorLine = ref(0);
+
 // Get all themes
 const themes = codemirrorThemes();
 
@@ -106,6 +111,29 @@ async function formatCode() {
   }
 }
 
+async function checkLinterVue() {
+  // Call API to get the code
+  const { data } = await useFetch("/api/admin/content/code/linter", {
+    initialCache: false,
+    method: "POST",
+    body: JSON.stringify({
+      code: fileCode.value,
+    }),
+  });
+
+  if (data.value.statusCode === 200) {
+    linterError.value = false;
+    linterErrorText.value = "";
+    linterErrorColumn.value = 0;
+    linterErrorLine.value = 0;
+  } else if (data.value.statusCode === 400) {
+    linterError.value = true;
+    linterErrorText.value = data.value.data.message;
+    linterErrorColumn.value = data.value.data.column;
+    linterErrorLine.value = data.value.data.line;
+  }
+}
+
 const forceRerender = () => {
   componentKey.value += 1;
 };
@@ -121,6 +149,19 @@ const keyPress = (key) => {
 };
 
 const saveCode = async () => {
+  // Check Linter Vue
+  await checkLinterVue();
+
+  if (linterError.value) {
+    $swal.fire({
+      title: "Error",
+      text: "There is an error in your code. Please fix it before saving.",
+      icon: "error",
+      confirmButtonText: "Ok",
+    });
+    return;
+  }
+
   const { data } = await useFetch("/api/admin/content/code/save", {
     initialCache: false,
     method: "POST",
@@ -172,7 +213,11 @@ const saveCode = async () => {
           </div>
           <div class="flex gap-2">
             <rs-button class="!p-2" @click.prevent="keyPress('F11')">
-              <Icon name="material-symbols:fullscreen-rounded" size="20px" class="mr-1" />
+              <Icon
+                name="material-symbols:fullscreen-rounded"
+                size="20px"
+                class="mr-1"
+              />
               Fullscreen</rs-button
             >
             <rs-button class="!p-2" @click="formatCode">
@@ -189,6 +234,23 @@ const saveCode = async () => {
             </rs-button>
           </div>
         </div>
+        <Transition>
+          <rs-alert class="mb-4" v-if="linterError">
+            <div class="flex gap-2">
+              <Icon name="material-symbols:error-outline-rounded" size="20px" />
+              <div>
+                <div class="font-bold">ESLint Error</div>
+                <div class="text-sm">
+                  {{ linterErrorText }}
+                </div>
+                <div class="text-xs mt-2">
+                  Line: {{ linterErrorLine }} Column: {{ linterErrorColumn }}
+                </div>
+              </div>
+            </div>
+          </rs-alert>
+        </Transition>
+
         <ClientOnly>
           <rs-code-mirror
             :key="componentKey"

@@ -7,7 +7,13 @@ const router = useRouter();
 const getPages = router.getRoutes();
 
 const pages = getPages.filter((page) => {
-  return page.meta?.title && page.meta?.title !== "Home" && page.name;
+  // filter out the pages that are not in the admin folder
+  return (
+    page.path.includes("/admin") === false &&
+    page.meta?.title &&
+    page.meta?.title !== "Home" &&
+    page.name
+  );
 });
 
 const searchText = ref("");

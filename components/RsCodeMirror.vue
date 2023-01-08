@@ -96,7 +96,7 @@ const props = defineProps({
   },
   height: {
     type: String,
-    default: "400px",
+    default: "77vh",
   },
   modelValue: {
     type: String,
@@ -106,6 +106,10 @@ const props = defineProps({
     type: String,
     default: "monokai",
   },
+  readOnly: {
+    type: String,
+    default: "",
+  },
 });
 
 const emits = defineEmits(["update:modelValue"]);
@@ -114,13 +118,21 @@ const el = ref(null);
 
 const code = props.modelValue
   ? ref(props.modelValue)
+  : props.mode == "application/json"
+  ? ref(`{}`)
   : ref(`<template></template>`);
 
 const addonOptions = {
+  readOnly: props.readOnly,
   autoCloseBrackets: true,
   autoCloseTags: true,
   foldGutter: true,
-  gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+  gutters: [
+    "CodeMirror-linenumbers",
+    "CodeMirror-foldgutter",
+    "CodeMirror-lint-markers",
+  ],
+  lint: true,
   extraKeys: {
     Tab: "emmetExpandAbbreviation",
     Esc: "emmetResetAbbreviation",
@@ -151,6 +163,7 @@ async function initEditor() {
   editor.on("change", () => {
     emits("update:modelValue", editor?.getValue());
   });
+
   // watchEffect(() => {
   //   editor!.setValue(props.value)
   // })
@@ -171,7 +184,7 @@ onMounted(() => {
 
 <style>
 .editor > .CodeMirror {
-  height: 77vh;
+  height: v-bind("props.height");
   border-radius: 0.5rem;
 }
 
