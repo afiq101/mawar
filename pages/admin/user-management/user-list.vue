@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  title: "User List 3",
+  title: "User List",
   keepalive: {
     exclude: ["rs-table"],
   },

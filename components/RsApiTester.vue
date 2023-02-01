@@ -14,7 +14,7 @@ const params = ref([
   },
 ]);
 
-const method = ref("GET");
+const method = ref("POST");
 const dropdownMethods = ref([
   {
     label: "GET",
@@ -127,7 +127,7 @@ const hitAPI = async () => {
     <FormKit
       type="textarea"
       :classes="{
-        input: 'bg-[#272822] text-white dark:bg-gray-800 dark:text-gray-200',
+        input: '!bg-[#272822] text-white dark:bg-gray-800 dark:text-gray-200',
       }"
       rows="10"
       v-model="response"

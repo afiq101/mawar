@@ -115,7 +115,12 @@ const saveEditMenu = async () => {
     initialCache: false,
     body: JSON.stringify({
       filePath: showModalEditPath.value,
-      formData: showModalEditForm.value,
+      formData: {
+        title: showModalEditForm.value.title || "",
+        name: showModalEditForm.value.name || "",
+        path: "/" + showModalEditForm.value.path || "",
+      },
+      // formData: showModalEditForm.value,
     }),
   });
 
@@ -147,7 +152,12 @@ const saveAddMenu = async () => {
     method: "POST",
     initialCache: false,
     body: JSON.stringify({
-      formData: showModalAddForm.value,
+      formData: {
+        title: showModalAddForm.value.title || "",
+        name: showModalAddForm.value.name || "",
+        path: "/" + showModalAddForm.value.path || "",
+      },
+      // formData: showModalAddForm.value
     }),
   });
 
@@ -402,7 +412,7 @@ const addMenuFromList = () => {
             <div class="flex justify-end items-center mb-4">
               <rs-button @click="openModalAdd">
                 <Icon name="material-symbols:add" class="mr-1"></Icon>
-                Add New Menu
+                Add Menu
               </rs-button>
             </div>
             <!-- Table All Menu -->
@@ -550,7 +560,7 @@ const addMenuFromList = () => {
     <rs-modal
       title="Select Menu"
       v-model="showModal"
-      ok-title="Confirm"
+      ok-title="Save"
       :ok-callback="addMenuFromList"
     >
       <FormKit
@@ -565,7 +575,7 @@ const addMenuFromList = () => {
     <rs-modal
       title="Edit Menu"
       v-model="showModalEdit"
-      ok-title="Confirm"
+      ok-title="Save"
       :ok-callback="saveEditMenu"
     >
       <FormKit
@@ -583,13 +593,19 @@ const addMenuFromList = () => {
         label="Path"
         help="If the last path name is '/', the name of the file will be from its name property. While if the last path name is not '/', the name of the file will be from its path property."
         v-model="showModalEditForm.path"
-      ></FormKit>
+      >
+        <template #prefix>
+          <div class="bg-slate-100 dark:bg-slate-700 h-full rounded-l-md p-3">
+            /
+          </div>
+        </template>
+      </FormKit>
     </rs-modal>
 
     <rs-modal
-      title="Add New Menu"
+      title="Add Menu"
       v-model="showModalAdd"
-      ok-title="Confirm"
+      ok-title="Save"
       :ok-callback="saveAddMenu"
     >
       <FormKit
@@ -607,7 +623,13 @@ const addMenuFromList = () => {
         label="Path"
         help="If the last path name is '/', the name of the file will be from its name property. While if the last path name is not '/', the name of the file will be from its path property."
         v-model="showModalAddForm.path"
-      ></FormKit>
+      >
+        <template #prefix>
+          <div class="bg-slate-100 dark:bg-slate-700 h-full rounded-l-md p-3">
+            /
+          </div>
+        </template>
+      </FormKit>
     </rs-modal>
   </div>
 </template>

@@ -3,6 +3,7 @@
   "scripts": {
     "build": "nuxt build",
     "dev": "cross-env NODE_ENV=development nodemon --exec node_modules/.bin/nuxi dev --port=3000 --watch ./server -e js,json,ts,vue,less",
+    "dev:api": "cross-env NODE_ENV=development nodemon server/api --watch ./server/api -e js,json,ts",
     "dev:old": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",

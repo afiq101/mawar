@@ -3,7 +3,7 @@
 import { useThemeStore } from "~/stores/theme";
 
 definePageMeta({
-  title: "Code Editor",
+  title: "API Code Editor",
 });
 
 const { $swal, $router } = useNuxtApp();
@@ -146,6 +146,7 @@ const saveCode = async () => {
     body: {
       path: route.query?.path,
       code: fileCode.value,
+      type: "update",
     },
   });
   if (data.value.statusCode === 200) {
