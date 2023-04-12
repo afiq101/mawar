@@ -41,6 +41,7 @@ const props = defineProps({
       sortable: true,
       filterable: true,
       responsive: false,
+      outsideBorder: false,
     }),
   },
   grid: {
@@ -49,7 +50,14 @@ const props = defineProps({
   },
   pageSize: {
     type: Number,
-    default: 10,
+    default: 5,
+  },
+  sort: {
+    type: Object,
+    default: () => ({
+      column: "",
+      direction: "asc",
+    }),
   },
 });
 
@@ -75,9 +83,8 @@ const openFilter = ref(false);
 
 const hideTable = ref(false);
 
-// if (dataLength.value == 0) {
-//   return
-// }
+// Other Variable
+const sortColumnFirstTime = ref(false);
 
 const isDesktop = computed(() => {
   return windowWidth.value >= mobileWidth ? true : false;
@@ -163,8 +170,26 @@ const computedData = computed(() => {
     .slice()
     .sort((a, b) => {
       let modifier = 1;
-      let a1 = a[columnTitle.value[currentSort.value]];
-      let b1 = b[columnTitle.value[currentSort.value]];
+
+      columnTitle.value.forEach((title, index) => {
+        // First sort by column title
+        if (title === props.sort.column && !sortColumnFirstTime.value) {
+          currentSort.value = index;
+          currentSortDir.value = props.sort.direction;
+          sortColumnFirstTime.value = true;
+        }
+      });
+
+      // Check if column title is number or string and convert spacing to camelcase
+      let a1 = filteredDatabyTitle(a, columnTitle.value[currentSort.value]);
+      let b1 = filteredDatabyTitle(b, columnTitle.value[currentSort.value]);
+
+      if (typeof a1 === "string") a1 = a1.toLowerCase();
+      if (typeof b1 === "string") b1 = b1.toLowerCase();
+
+      // Convert string to number if possible
+      if (isNumeric(a1)) a1 = parseFloat(a1);
+      if (isNumeric(b1)) b1 = parseFloat(b1);
 
       if (currentSortDir.value === "desc") modifier = -1;
       if (a1 < b1) return -1 * modifier;
@@ -181,6 +206,7 @@ const computedData = computed(() => {
             value.toString().toLowerCase().includes(keyword.value.toLowerCase())
           ) {
             result = true;
+            currentPage.value = 1;
           }
         } catch (error) {
           result = false;
@@ -197,6 +223,10 @@ const computedData = computed(() => {
   dataLength.value = totalData;
   return result;
 });
+
+const isNumeric = (n) => {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
 
 const totalEntries = computed(() => {
   return dataLength.value;
@@ -354,9 +384,10 @@ watch(
 
 <template>
   <div
+    v-if="dataTable && dataTable.length > 0"
     class="table-wrapper"
     :class="{
-      '!border': advanced && !hideTable,
+      '!border': advanced && !hideTable && optionsAdvanced.outsideBorder,
     }"
   >
     <div
@@ -370,7 +401,7 @@ watch(
       <div
         class="table-header-filter"
         :class="{
-          '!items-center !gap-0': !optionsAdvanced.filterable,
+          '!items-center !gap-3': !optionsAdvanced.filterable,
         }"
       >
         <div>

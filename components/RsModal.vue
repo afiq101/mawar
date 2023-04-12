@@ -45,6 +45,10 @@ const props = defineProps({
     type: Function,
     default: () => {},
   },
+  hideFooter: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const closeModal = () => {
@@ -64,6 +68,7 @@ const validateCancelCallback = () => {
         v-if="modelValue"
         @click.self="closeModal"
         class="modal fixed top-0 left-0 w-full h-full overflow-hidden"
+        style="z-index: 100000"
         :class="{
           'flex items-start': position == 'top',
           'flex items-center': position == 'center',
@@ -95,10 +100,13 @@ const validateCancelCallback = () => {
               ></Icon>
             </div>
             <div class="modal-body relative p-4">
-              <slot name="body"></slot>
-              <slot v-if="!$slots.body"></slot>
+              <SimpleBar style="max-height: 70vh">
+                <slot name="body"></slot>
+                <slot v-if="!$slots.body"></slot>
+              </SimpleBar>
             </div>
             <div
+              v-if="!hideFooter"
               class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end px-4 pb-4 rounded-b-md gap-x-3"
             >
               <slot name="footer"></slot>

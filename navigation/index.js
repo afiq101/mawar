@@ -13,26 +13,6 @@ export default [
     ]
   },
   {
-    "header": "Store",
-    "description": "Details of the store",
-    "child": [
-      {
-        "title": "Store Detail",
-        "path": "/store",
-        "icon": "material-symbols:storefront-outline-rounded",
-        "child": [],
-        "meta": {}
-      }
-    ],
-    "meta": {
-      "auth": {
-        "role": [
-          "Customer"
-        ]
-      }
-    }
-  },
-  {
     "header": "Administration",
     "description": "Manage your application",
     "child": [

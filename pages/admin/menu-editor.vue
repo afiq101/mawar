@@ -102,7 +102,12 @@ getRoutes.map((menu) => {
 const openModalEdit = (menu) => {
   showModalEditForm.value.title = menu.title;
   showModalEditForm.value.name = menu.name;
-  showModalEditForm.value.path = menu.path;
+
+  // If there is a slash in the path, remove it
+  if (menu.path.includes("/")) {
+    const path = menu.path.split("/");
+    showModalEditForm.value.path = path[1];
+  } else showModalEditForm.value.path = menu.path;
 
   showModalEditPath.value = menu.path;
 
@@ -173,6 +178,14 @@ const saveAddMenu = async () => {
     });
     // refresh the page
     nuxtApp.$router.go();
+  } else {
+    nuxtApp.$swal.fire({
+      title: "Error",
+      text: data.message,
+      icon: "error",
+      timer: 2000,
+      showConfirmButton: false,
+    });
   }
 };
 
