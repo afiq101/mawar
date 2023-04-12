@@ -191,7 +191,7 @@ const saveUser = async () => {
     if (data.value.statusCode === 200) {
       // console.log("data.value", data.value);
       $swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "success",
         title: "Success",
         text: "User has been added",
@@ -206,7 +206,7 @@ const saveUser = async () => {
       }, 1000);
     } else {
       $swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "error",
         title: "Error",
         text: data.value.message,
@@ -221,7 +221,7 @@ const saveUser = async () => {
 
     if (data.value.statusCode === 200) {
       $swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "success",
         title: "Success",
         text: "User has been updated",
@@ -236,7 +236,7 @@ const saveUser = async () => {
       }, 1000);
     } else {
       $swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "error",
         title: "Error",
         text: data.value.message,
@@ -254,7 +254,7 @@ const deleteUser = async () => {
 
   if (data.value.statusCode === 200) {
     $swal.fire({
-      position: "top-end",
+      position: "center",
       icon: "success",
       title: "Success",
       text: "User has been deleted",
@@ -268,7 +268,7 @@ const deleteUser = async () => {
     }, 1000);
   } else {
     $swal.fire({
-      position: "top-end",
+      position: "center",
       icon: "error",
       title: "Error",
       text: data.value.message,
@@ -295,7 +295,7 @@ const saveRole = async () => {
 
   if (data.value.statusCode === 200) {
     $swal.fire({
-      position: "top-end",
+      position: "center",
       title: "Success",
       text: data.value.message,
       icon: "success",
@@ -307,7 +307,7 @@ const saveRole = async () => {
     closeModalRole();
   } else {
     $swal.fire({
-      position: "top-end",
+      position: "center",
       title: "Error",
       text: data.value.message,
       icon: "error",

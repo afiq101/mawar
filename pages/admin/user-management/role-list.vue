@@ -223,7 +223,7 @@ const saveRole = async () => {
 
     if (data.value.statusCode === 200) {
       $swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "success",
         title: "Success",
         text: "Role has been updated successfully",
@@ -253,7 +253,7 @@ const saveRole = async () => {
 
     if (data.value.statusCode === 200) {
       $swal.fire({
-        position: "top-end",
+        position: "center",
         icon: "success",
         title: "Success",
         text: "Role has been added",
@@ -286,7 +286,7 @@ const deleteRole = async () => {
 
   if (data.value.statusCode === 200) {
     $swal.fire({
-      position: "top-end",
+      position: "center",
       icon: "success",
       title: "Success",
       text: "User has been deleted",
@@ -300,7 +300,7 @@ const deleteRole = async () => {
     }, 1000);
   } else {
     $swal.fire({
-      position: "top-end",
+      position: "center",
       icon: "error",
       title: "Error",
       text: data.value.message,

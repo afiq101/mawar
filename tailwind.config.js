@@ -1,8 +1,7 @@
 module.exports = {
-    content: [],
+    content: ['/app.vue'],
     plugins: [
       require("@formkit/themes/tailwindcss"),
-      require("@tailwindcss/line-clamp"),
     ],
     presets: [],
     darkMode: "class", // or 'class'

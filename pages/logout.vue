@@ -17,7 +17,7 @@ userStore.setRefreshToken("");
 userStore.setIsAuthenticated(false);
 
 $swal.fire({
-  position: "top-end",
+  position: "center",
   title: "Success",
   text: "Logout Success",
   icon: "success",

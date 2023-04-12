@@ -13,6 +13,9 @@ var sparkline1Data = [47, 45, 54, 38, 56, 24, 65];
 var sparkline2Data = [61, 35, 66, 41, 59, 25, 32];
 var sparkline3Data = [25, 18, 36, 41, 43, 35, 14];
 var sparkline4Data = [8, 16, 22, 41, 43, 35, 14];
+
+const changeKey = ref(0);
+
 const customers = [
   {
     name: "Iqmal",
@@ -221,6 +224,12 @@ const chartOptionsTransaction = computed(() => ({
     },
   },
 }));
+
+onMounted(() => {
+  setTimeout(() => {
+    changeKey.value++;
+  }, 500);
+});
 </script>
 
 <template>
@@ -250,6 +259,7 @@ const chartOptionsTransaction = computed(() => ({
         </div>
         <ClientOnly>
           <VueApexCharts
+            :key="changeKey"
             width="100%"
             height="53"
             :options="{
@@ -284,6 +294,7 @@ const chartOptionsTransaction = computed(() => ({
         </div>
         <ClientOnly>
           <VueApexCharts
+            :key="changeKey"
             width="100%"
             height="53"
             :options="{
@@ -315,6 +326,7 @@ const chartOptionsTransaction = computed(() => ({
         </div>
         <ClientOnly>
           <VueApexCharts
+            :key="changeKey"
             width="100%"
             height="53"
             :options="{
@@ -348,6 +360,7 @@ const chartOptionsTransaction = computed(() => ({
         </div>
         <ClientOnly>
           <VueApexCharts
+            :key="changeKey"
             width="100%"
             height="53"
             :options="{
@@ -372,6 +385,7 @@ const chartOptionsTransaction = computed(() => ({
           <template #body>
             <ClientOnly>
               <VueApexCharts
+                :key="changeKey"
                 width="100%"
                 height="300"
                 name="area"
@@ -426,6 +440,7 @@ const chartOptionsTransaction = computed(() => ({
           <template #body>
             <ClientOnly>
               <VueApexCharts
+                :key="changeKey"
                 width="100%"
                 height="300"
                 name="radialBar"

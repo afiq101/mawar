@@ -41,7 +41,7 @@ const props = defineProps({
       sortable: true,
       filterable: true,
       responsive: false,
-      outsideBorder: false,
+      outsideBorder: true,
     }),
   },
   grid: {
@@ -387,7 +387,7 @@ watch(
     v-if="dataTable && dataTable.length > 0"
     class="table-wrapper"
     :class="{
-      '!border': advanced && !hideTable && optionsAdvanced.outsideBorder,
+      '!border': advanced && !hideTable,
     }"
   >
     <div

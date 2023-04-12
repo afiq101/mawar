@@ -8,10 +8,16 @@ const colorMode = useColorMode();
 
 // Change color mode
 function setColorMode() {
-  if (colorMode.preference === "dark") {
-    colorMode.preference = "light";
-  } else {
+  if (colorMode.preference == "light") {
     colorMode.preference = "dark";
+
+    document.documentElement.classList.remove("light");
+    document.documentElement.classList.add("dark");
+  } else {
+    colorMode.preference = "light";
+
+    document.documentElement.classList.remove("dark");
+    document.documentElement.classList.add("light");
   }
 }
 
@@ -91,14 +97,7 @@ function toggleSearch() {
           </template>
         </VDropdown>
         <button class="icon-btn h-10 w-10 rounded-full" @click="setColorMode">
-          <Icon
-            v-if="colorMode.preference === 'light'"
-            name="ic:outline-dark-mode"
-          />
-          <Icon
-            v-else-if="colorMode.preference === 'dark'"
-            name="ic:outline-wb-sunny"
-          />
+          <Icon size="22px" name="mdi:theme-light-dark" />
         </button>
         <button class="icon-btn h-10 w-10 rounded-full">
           <Icon @click="toggleSearch" name="ic:round-search" class="" />

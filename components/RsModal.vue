@@ -68,7 +68,7 @@ const validateCancelCallback = () => {
         v-if="modelValue"
         @click.self="closeModal"
         class="modal fixed top-0 left-0 w-full h-full overflow-hidden"
-        style="z-index: 100000"
+        style="z-index: 1000"
         :class="{
           'flex items-start': position == 'top',
           'flex items-center': position == 'center',

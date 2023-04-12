@@ -39,7 +39,7 @@ const login = async () => {
       userStore.setIsAuthenticated(true);
 
       $swal.fire({
-        position: "top-end",
+        position: "center",
         title: "Success",
         text: "Login Success",
         icon: "success",
