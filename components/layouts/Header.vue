@@ -52,23 +52,21 @@ onMounted(() => {
         ></span>
       </div>
       <div class="flex" v-else>
-        <div class="flex flex-auto gap-3 justify-center items-center">
-          <img
-            class="h-10 w-10 block dark:hidden"
-            src="@/assets/img/logo/logo.png"
-            alt=""
-          />
-          <img
+        <nuxt-link to="/">
+          <div class="flex flex-auto gap-3 justify-center items-center">
+            <img class="h-10" src="@/assets/img/logo/logo-full.png" alt="" />
+            <!-- <img
             class="h-10 w-10 hidden dark:block"
             src="@/assets/img/logo/logo-white.png"
             alt=""
-          />
-          <span
+          /> -->
+            <!-- <span
             v-if="isDesktop"
             class="text-xl font-semibold text-primary-500 dark:text-white"
-            >MawarCMS</span
-          >
-        </div>
+            >Mawar</span
+          > -->
+          </div>
+        </nuxt-link>
       </div>
 
       <div class="flex gap-2 item-center justify-items-end">
@@ -111,74 +109,72 @@ onMounted(() => {
         <button class="icon-btn h-10 w-10 rounded-full">
           <Icon @click="toggleSearch" name="ic:round-search" class="" />
         </button>
-        <VTooltip>
-          <template #popper> 10 unread notification </template>
-          <VDropdown placement="bottom-end" distance="13" name="notification">
-            <button class="relative icon-btn h-10 w-10 rounded-full">
-              <span
-                class="w-3 h-3 absolute top-1 right-2 rounded-full bg-primary-400"
-              ></span>
-              <Icon name="ic:round-notifications-none" class="" />
-            </button>
-            <template #popper>
-              <ul class="header-dropdown w-full md:w-80">
-                <li class="d-head flex items-center justify-between py-2 px-4">
-                  <span class="font-semibold">Notification</span>
-                  <div
-                    class="flex items-center text-primary-400 cursor-pointer hover:underline"
-                  >
-                    <a class="ml-2">View All</a>
+
+        <VDropdown placement="bottom-end" distance="13" name="notification">
+          <button class="relative icon-btn h-10 w-10 rounded-full">
+            <span
+              class="w-3 h-3 absolute top-1 right-2 rounded-full bg-primary-400"
+            ></span>
+            <Icon name="ic:round-notifications-none" class="" />
+          </button>
+          <template #popper>
+            <ul class="header-dropdown w-full md:w-80">
+              <li class="d-head flex items-center justify-between py-2 px-4">
+                <span class="font-semibold">Notification</span>
+                <div
+                  class="flex items-center text-primary-400 cursor-pointer hover:underline"
+                >
+                  <a class="ml-2">View All</a>
+                </div>
+              </li>
+              <SimpleBar>
+                <li>
+                  <div class="bg-slate-100 dark:bg-slate-700 py-2 px-4">
+                    Today
                   </div>
-                </li>
-                <SimpleBar>
-                  <li>
-                    <div class="bg-slate-100 dark:bg-slate-700 py-2 px-4">
-                      Today
+                  <a class="py-2 px-4 block">
+                    <div class="flex items-center">
+                      <Icon
+                        name="ic:outline-circle"
+                        class="text-primary-400 flex-none"
+                      />
+                      <span class="mx-2"
+                        >Terdapat Satu Pembayaran yang berlaku menggunakan bil
+                        Kuih Raya Cik Kiah</span
+                      >
+                      <div class="w-12 h-12 rounded-full ml-auto flex-none">
+                        <img
+                          class="rounded-full"
+                          src="https://ui-avatars.com/api/?name=Raziq Danish"
+                          alt=""
+                        />
+                      </div>
                     </div>
-                    <a class="py-2 px-4 block">
-                      <div class="flex items-center">
-                        <Icon
-                          name="ic:outline-circle"
-                          class="text-primary-400 flex-none"
+                  </a>
+                  <a class="py-2 px-4 block">
+                    <div class="flex items-center">
+                      <Icon
+                        name="ic:outline-circle"
+                        class="text-primary-400 flex-none"
+                      />
+                      <span class="mx-2"
+                        >Terdapat Satu Pembayaran yang berlaku menggunakan bil
+                        Mercun</span
+                      >
+                      <div class="w-12 h-12 rounded-full ml-auto flex-none">
+                        <img
+                          class="rounded-full"
+                          src="https://ui-avatars.com/api/?name=Iqmal Rizal"
+                          alt=""
                         />
-                        <span class="mx-2"
-                          >Terdapat Satu Pembayaran yang berlaku menggunakan bil
-                          Kuih Raya Cik Kiah</span
-                        >
-                        <div class="w-12 h-12 rounded-full ml-auto flex-none">
-                          <img
-                            class="rounded-full"
-                            src="https://ui-avatars.com/api/?name=Raziq Danish"
-                            alt=""
-                          />
-                        </div>
                       </div>
-                    </a>
-                    <a class="py-2 px-4 block">
-                      <div class="flex items-center">
-                        <Icon
-                          name="ic:outline-circle"
-                          class="text-primary-400 flex-none"
-                        />
-                        <span class="mx-2"
-                          >Terdapat Satu Pembayaran yang berlaku menggunakan bil
-                          Mercun</span
-                        >
-                        <div class="w-12 h-12 rounded-full ml-auto flex-none">
-                          <img
-                            class="rounded-full"
-                            src="https://ui-avatars.com/api/?name=Iqmal Rizal"
-                            alt=""
-                          />
-                        </div>
-                      </div>
-                    </a>
-                  </li>
-                </SimpleBar>
-              </ul>
-            </template>
-          </VDropdown>
-        </VTooltip>
+                    </div>
+                  </a>
+                </li>
+              </SimpleBar>
+            </ul>
+          </template>
+        </VDropdown>
 
         <VDropdown placement="bottom-end" distance="13" name="profile">
           <button

@@ -8,8 +8,8 @@ definePageMeta({
 });
 
 const { $swal } = useNuxtApp();
-const username = ref("admin");
-const password = ref("R@iden28");
+const username = ref("");
+const password = ref("");
 const userStore = useUserStore();
 
 const login = async () => {
@@ -74,7 +74,7 @@ const login = async () => {
       <rs-card class="h-screen md:h-auto px-10 md:px-16 py-12 md:py-20 mb-0">
         <h3 class="mb-4">Login</h3>
         <p class="text-slate-500 mb-6">
-          Welcome to MawarCMS. Please login to continue.
+          Welcome to Mawar. Please login to continue.
         </p>
         <div class="grid grid-cols-2">
           <FormKit
