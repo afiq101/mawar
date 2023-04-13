@@ -22,13 +22,22 @@ function setColorMode() {
 }
 
 // Toggle Open/Close menu
-const toggleMenu = (event) => emit("toggleMenu", event);
+const toggleMenu = (event) => {
+  emit("toggleMenu", event);
+};
 
 // Focus on search input
 function toggleSearch() {
   document.getElementById("header-search").value = "";
   document.getElementById("header-search").focus();
 }
+
+onMounted(() => {
+  // If mobile toggleMenu
+  if (window.innerWidth < 768) {
+    emit("toggleMenu", true);
+  }
+});
 </script>
 
 <template>

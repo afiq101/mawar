@@ -6,22 +6,17 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Get file path
-    const filePath = path.join(
-      process.cwd() + "/pages/",
-      body.filePath + ".vue"
-    );
+    const filePath = path.join(process.cwd() + "/pages/", body.filePath);
 
-    // delete file
-    fs.unlink(filePath, (err) => {
-      if (err) throw err;
-      console.log("successfully deleted file");
-    });
+    // Delete path
+    fs.rmSync(filePath, { recursive: true, force: true });
 
     return {
       statusCode: 200,
       message: "Menu successfully added!",
     };
   } catch (error) {
+    console.log(error);
     return {
       statusCode: 500,
       message: error.message,

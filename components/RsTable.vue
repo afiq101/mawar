@@ -680,7 +680,7 @@ watch(
       <div class="table-footer-page">
         <rs-button
           variant="primary-outline"
-          class="rounded-full !p-1 w-8 h-8"
+          class="!rounded-full !p-1 !w-8 !h-8"
           @click="firstPage"
           :disabled="currentPage == 1"
         >
@@ -688,7 +688,7 @@ watch(
         </rs-button>
         <rs-button
           variant="primary-outline"
-          class="rounded-full !p-1 w-8 h-8"
+          class="!rounded-full !p-1 !w-8 !h-8"
           @click="prevPage"
           :disabled="currentPage == 1"
         >
@@ -696,7 +696,7 @@ watch(
         </rs-button>
         <rs-button
           :variant="currentPage == val ? 'primary' : 'primary-outline'"
-          class="rounded-full !p-1 w-8 h-8"
+          class="!rounded-full !p-1 !w-8 !h-8"
           v-for="(val, index) in pages"
           :key="index"
           @click="pageChange(val)"
@@ -705,7 +705,7 @@ watch(
         </rs-button>
         <rs-button
           variant="primary-outline"
-          class="rounded-full !p-1 w-8 h-8"
+          class="!rounded-full !p-1 !w-8 !h-8"
           @click="nextPage"
           :disabled="currentPage == totalPage"
         >
@@ -713,7 +713,7 @@ watch(
         </rs-button>
         <rs-button
           variant="primary-outline"
-          class="rounded-full !p-1 w-8 h-8"
+          class="!rounded-full !p-1 !w-8 !h-8"
           @click="lastPage"
           :disabled="currentPage == totalPage"
         >

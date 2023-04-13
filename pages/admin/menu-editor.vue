@@ -103,11 +103,12 @@ const openModalEdit = (menu) => {
   showModalEditForm.value.title = menu.title;
   showModalEditForm.value.name = menu.name;
 
-  // If there is a slash in the path, remove it
-  if (menu.path.includes("/")) {
-    const path = menu.path.split("/");
-    showModalEditForm.value.path = path[1];
-  } else showModalEditForm.value.path = menu.path;
+  // If there is a slash in the beggining of the path, remove it
+  if (menu.path.charAt(0) === "/") {
+    showModalEditForm.value.path = menu.path.slice(1);
+  } else {
+    showModalEditForm.value.path = menu.path;
+  }
 
   showModalEditPath.value = menu.path;
 

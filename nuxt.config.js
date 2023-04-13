@@ -1,5 +1,15 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  // Used in EC2 development for hmr. Please refer : https://github.com/nuxt/nuxt/issues/12003
+  // vite: {
+  //   server: {
+  //     hmr: {
+  //       protocol: "wss",
+  //       clientPort: 443,
+  //       path: "hmr/",
+  //     },
+  //   },
+  // },
   modules: [
     "@nuxtjs/tailwindcss",
     "@nuxtjs/color-mode",

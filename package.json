@@ -2,8 +2,8 @@
   "private": true,
   "scripts": {
     "build": "nuxt build",
-    "dev:old": "cross-env NODE_ENV=development nodemon --exec node_modules/.bin/nuxi dev --port=3000 --watch ./server -e js,json,ts,vue,less",
-    "dev": "nuxt dev",
+    "dev": "cross-env NODE_ENV=development nodemon --exec node_modules/.bin/nuxi dev --port=3000 --watch ./server -e js,json,ts,vue,less",
+    "dev:old": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"

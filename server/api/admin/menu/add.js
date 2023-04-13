@@ -1,13 +1,14 @@
 import fs from "fs";
 import path from "path";
+import { exec } from "child_process";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);
 
   try {
-    // Check if last character is a slash
-    if (body.formData.path.slice(-1) == "/") {
-      body.formData.path = body.formData.path + body.formData.name;
+    // Check if last character is not slash
+    if (body.formData.path.slice(-1) != "/") {
+      body.formData.path = body.formData.path + "/";
     }
 
     // Check if the path already exists
@@ -46,6 +47,18 @@ export default defineEventHandler(async (event) => {
       </template>
       `
     );
+
+    exec("yarn dev", (error, stdout, stderr) => {
+      if (error) {
+        console.log(`error: ${error.message}`);
+        return;
+      }
+      if (stderr) {
+        console.log(`stderr: ${stderr}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+    });
 
     return {
       statusCode: 200,
