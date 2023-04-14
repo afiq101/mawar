@@ -4,7 +4,11 @@ const isDesktop = ref(true);
 
 const emit = defineEmits(["toggleMenu"]);
 
+// const { locale } = useI18n();
 const colorMode = useColorMode();
+const langList = languageList();
+
+const locale = ref("en");
 
 // Change color mode
 function setColorMode() {
@@ -32,6 +36,15 @@ function toggleSearch() {
   document.getElementById("header-search").focus();
 }
 
+// Change language
+const changeLanguage = (lang) => {
+  locale.value = lang;
+};
+
+const languageNow = computed(() => {
+  return langList.find((lang) => lang.value == locale.value);
+});
+
 onMounted(() => {
   // If mobile toggleMenu
   if (window.innerWidth < 768) {
@@ -54,7 +67,11 @@ onMounted(() => {
       <div class="flex" v-else>
         <nuxt-link to="/">
           <div class="flex flex-auto gap-3 justify-center items-center">
-            <img class="h-10" src="@/assets/img/logo/logo-full.png" alt="" />
+            <img
+              class="h-12"
+              src="@/assets/img/logo/logo-full-transparent.webp"
+              alt=""
+            />
             <!-- <img
             class="h-10 w-10 hidden dark:block"
             src="@/assets/img/logo/logo-white.png"
@@ -72,32 +89,20 @@ onMounted(() => {
       <div class="flex gap-2 item-center justify-items-end">
         <VDropdown placement="bottom-end" distance="13" name="language">
           <button class="icon-btn h-10 w-10 rounded-full">
-            <country-flag iso="GB" />
+            <country-flag :iso="languageNow.flagCode" />
           </button>
           <template #popper>
             <ul class="header-dropdown w-full md:w-32">
               <li
+                v-for="lang in langList"
                 class="flex items-center justify-center hover:bg-slate-200 hover:dark:bg-slate-700"
               >
-                <button class="py-2 px-4">
-                  <country-flag iso="GB" />
-                  <span class="ml-2">English</span>
-                </button>
-              </li>
-              <li
-                class="flex items-center justify-center hover:bg-slate-200 hover:dark:bg-slate-700"
-              >
-                <button class="py-2 px-4">
-                  <country-flag iso="MY" />
-                  <span class="ml-2">Melayu</span>
-                </button>
-              </li>
-              <li
-                class="flex items-center justify-center hover:bg-slate-200 hover:dark:bg-slate-700"
-              >
-                <button class="py-2 px-4">
-                  <country-flag iso="EG" />
-                  <span class="ml-2">Arabic</span>
+                <button
+                  @click="changeLanguage(lang.value)"
+                  class="w-full py-2 px-2"
+                >
+                  <country-flag :iso="lang.flagCode" />
+                  <span class="ml-2">{{ lang.name }}</span>
                 </button>
               </li>
             </ul>
@@ -182,7 +187,7 @@ onMounted(() => {
           >
             <img
               class="w-8 h-8 object-cover rounded-full"
-              src="https://ui-avatars.com/api/?name=John Doe"
+              src="@/assets/img/user/default.svg"
             />
             <div
               v-if="isDesktop"

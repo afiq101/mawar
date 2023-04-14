@@ -405,7 +405,7 @@ onMounted(() => {
             >
               <div class="flex items-center gap-x-4">
                 <img
-                  :src="`https://avatars.dicebear.com/api/adventurer-neutral/${val.name}.svg`"
+                  src="@/assets/img/avatar/user.webp"
                   class="h-10 w-10 rounded-lg"
                 />
                 <div class="flex-1">
@@ -460,9 +460,7 @@ onMounted(() => {
               :key="index"
             >
               <img
-                :src="`https://picsum.photos/id/${Math.round(
-                  Math.random() * 100
-                )}/200/300`"
+                src="@/assets/img/default-thumbnail.jpg"
                 class="h-20 w-20 object-cover rounded-lg"
               />
               <div class="flex-1 flex items-center">

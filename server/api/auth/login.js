@@ -1,4 +1,4 @@
-import sha256 from "crypto-js/sha256";
+import sha256 from "crypto-js/sha256.js";
 import jwt from "jsonwebtoken";
 import { PrismaClient } from "@prisma/client";
 

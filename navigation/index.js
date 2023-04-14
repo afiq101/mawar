@@ -19,23 +19,23 @@ export default [
       {
         "title": "Menu Editor",
         "icon": "ci:menu-alt-03",
-        "path": "/admin/menu-editor",
+        "path": "/devtool/menu-editor",
         "child": []
       },
       {
         "title": "Manage Users",
-        "path": "/admin/user-management",
+        "path": "/devtool/user-management",
         "icon": "ph:user-circle-gear",
         "child": [
           {
             "title": "User List",
-            "path": "/admin/user-management/user-list",
+            "path": "/devtool/user-management/user-list",
             "icon": "",
             "child": []
           },
           {
             "title": "Role List",
-            "path": "/admin/user-management/role-list",
+            "path": "/devtool/user-management/role-list",
             "icon": "",
             "child": []
           }
@@ -43,13 +43,13 @@ export default [
       },
       {
         "title": "Content Editor",
-        "path": "/admin/content-editor",
+        "path": "/devtool/content-editor",
         "icon": "mdi:pencil-ruler",
         "child": []
       },
       {
         "title": "API Editor",
-        "path": "/admin/api-editor",
+        "path": "/devtool/api-editor",
         "icon": "material-symbols:api-rounded",
         "child": []
       }

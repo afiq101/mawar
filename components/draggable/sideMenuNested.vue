@@ -109,7 +109,7 @@ watch(
 );
 
 const getUserList = async () => {
-  const { data } = await useFetch("/api/admin/menu/user-list");
+  const { data } = await useFetch("/api/devtool/menu/user-list");
   if (data.value?.statusCode === 200) {
     userList.value = data.value.data.map((user) => {
       return {
@@ -121,7 +121,7 @@ const getUserList = async () => {
 };
 
 const getRoleList = async () => {
-  const { data } = await useFetch("/api/admin/menu/role-list");
+  const { data } = await useFetch("/api/devtool/menu/role-list");
 
   if (data.value?.statusCode === 200) {
     roleList.value = data.value.data.map((role) => {
