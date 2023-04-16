@@ -1,10 +1,10 @@
 import knex from "knex";
 
-const client = process.env.KNEX_DB_CLIENT;
-const database = process.env.KNEX_DB_DATABASE;
-const host = process.env.KNEX_DB_HOST;
-const user = process.env.KNEX_DB_USER;
-const password = process.env.KNEX_DB_PASSWORD;
+const client = process.env.KNEX_DB_CLIENT || "";
+const database = process.env.KNEX_DB_DATABASE || "";
+const host = process.env.KNEX_DB_HOST || "";
+const user = process.env.KNEX_DB_USER || "";
+const password = process.env.KNEX_DB_PASSWORD || "";
 
 const connection = {
   host,
