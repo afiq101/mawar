@@ -89,7 +89,7 @@ onMounted(() => {
       <div class="flex gap-2 item-center justify-items-end">
         <VDropdown placement="bottom-end" distance="13" name="language">
           <button class="icon-btn h-10 w-10 rounded-full">
-            <country-flag :iso="languageNow.flagCode" />
+            <country-flag :country="languageNow.flagCode" />
           </button>
           <template #popper>
             <ul class="header-dropdown w-full md:w-32">
@@ -99,10 +99,12 @@ onMounted(() => {
               >
                 <button
                   @click="changeLanguage(lang.value)"
-                  class="w-full py-2 px-2"
+                  class="w-full py-2 px-2 flex justify-center items-center h-10"
                 >
-                  <country-flag :iso="lang.flagCode" />
-                  <span class="ml-2">{{ lang.name }}</span>
+                  <div class="ml-3 flex justify-center items-center">
+                    <country-flag :country="lang.flagCode" />
+                  </div>
+                  <span class="grow">{{ lang.name }}</span>
                 </button>
               </li>
             </ul>
@@ -150,8 +152,7 @@ onMounted(() => {
                       <div class="w-12 h-12 rounded-full ml-auto flex-none">
                         <img
                           class="rounded-full"
-                          src="https://ui-avatars.com/api/?name=Raziq Danish"
-                          alt=""
+                          src="@/assets/img/user/default.svg"
                         />
                       </div>
                     </div>
