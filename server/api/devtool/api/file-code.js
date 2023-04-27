@@ -15,6 +15,7 @@ export default defineEventHandler(async (event) => {
       data: code,
     };
   } catch (error) {
+    // console.log(error);
     return {
       statusCode: 500,
       message: "File not found",

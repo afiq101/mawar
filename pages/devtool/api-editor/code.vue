@@ -174,45 +174,19 @@ const saveCode = async () => {
     <rs-card>
       <rs-tab fill>
         <rs-tab-item title="Editor">
-          <div class="flex justify-between gap-2 mb-4">
-            <div>
-              <!-- <FormKit
-              type="select"
-              label="Which country is the smallest?"
-              name="small_country"
-              :options="['Monaco', 'Vatican City', 'Maldives', 'Tuvalu']"
-            /> -->
-
-              <v-select
-                v-model="editorTheme"
-                name="themes"
-                style="width: 200px"
-                placeholder="Select Themes"
-                :options="dropdownThemes"
-              ></v-select>
-            </div>
-            <div class="flex gap-2">
-              <rs-button class="!p-2" @click.prevent="keyPress('F11')">
-                <Icon
-                  name="material-symbols:fullscreen-rounded"
-                  size="20px"
-                  class="mr-1"
-                />
-                Fullscreen</rs-button
-              >
-              <rs-button class="!p-2" @click="formatCode">
-                <Icon name="simple-icons:prettier" size="20px" class="mr-1" />
-                Format Code</rs-button
-              >
-              <rs-button class="!p-2" @click="saveCode">
-                <Icon
-                  name="material-symbols:save-outline-rounded"
-                  size="20px"
-                  class="mr-1"
-                />
-                Save
-              </rs-button>
-            </div>
+          <div class="flex justify-end gap-2 mb-4">
+            <rs-button class="!p-2" @click="formatCode">
+              <Icon name="simple-icons:prettier" size="20px" class="mr-1" />
+              Format Code</rs-button
+            >
+            <rs-button class="!p-2" @click="saveCode">
+              <Icon
+                name="material-symbols:save-outline-rounded"
+                size="20px"
+                class="mr-1"
+              />
+              Save API
+            </rs-button>
           </div>
           <Transition>
             <rs-alert class="mb-4" v-if="linterError">
@@ -234,15 +208,11 @@ const saveCode = async () => {
             </rs-alert>
           </Transition>
 
-          <ClientOnly>
-            <rs-code-mirror
-              :key="componentKey"
-              v-model="fileCode"
-              mode="text/javascript"
-              :theme="editorTheme.value"
-            >
-            </rs-code-mirror>
-          </ClientOnly>
+          <rs-code-mirror
+            :key="componentKey"
+            v-model="fileCode"
+            mode="javascript"
+          />
         </rs-tab-item>
         <rs-tab-item title="API Tester">
           <rs-api-tester :url="route.query?.path" />

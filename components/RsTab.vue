@@ -38,7 +38,7 @@ provide("selectedTitle", selectedTitle);
 </script>
 
 <template>
-  <ClientOnly>
+  <client-only>
     <div
       class="tab rounded-md"
       :class="{
@@ -224,5 +224,5 @@ provide("selectedTitle", selectedTitle);
         <slot></slot>
       </div>
     </div>
-  </ClientOnly>
+  </client-only>
 </template>

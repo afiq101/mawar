@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
   const query = await getQuery(event);
 
   let code = "";
+  // console.log(query.path);
 
   try {
     // Get vue code from path in query
@@ -16,18 +17,15 @@ export default defineEventHandler(async (event) => {
         message: "Code successfully loaded",
         data: code,
       };
-    } catch (error) {
-      console.log("File not found");
-    }
+    } catch (error) {}
 
-    // Check if there is NuxtPage component in code
-    if (code.includes("NuxtPage") || !code) {
-      const filePathIndex = path.join(
-        process.cwd() + "/pages/",
-        query.path + "/index.vue"
-      );
-      code = fs.readFileSync(filePathIndex, "utf8");
-    }
+    // Check if there is path with index.vue
+    const filePathIndex = path.join(
+      process.cwd() + "/pages/",
+      query.path + "/index.vue"
+    );
+
+    code = fs.readFileSync(filePathIndex, "utf8");
 
     return {
       statusCode: 200,

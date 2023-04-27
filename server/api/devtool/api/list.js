@@ -33,7 +33,7 @@ function getFilesAndFolders(folderPath) {
 
   folderFiles.forEach((file) => {
     const filePath = path.join(folderPath + "/" + file);
-    if (file == "admin") return;
+    if (file == "devtool") return;
     if (fs.lstatSync(filePath).isDirectory()) {
       folders.push(getFilesAndFolders(filePath));
     } else {

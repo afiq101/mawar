@@ -41,7 +41,7 @@ const props = defineProps({
       sortable: true,
       filterable: true,
       responsive: false,
-      outsideBorder: true,
+      outsideBorder: false,
     }),
   },
   grid: {
@@ -98,13 +98,40 @@ if (props.optionsAdvanced.responsive) {
   }
 }
 
+const camelCasetoTitle = (str) => {
+  return str.replace(/([A-Z])/g, " $1").replace(/^./, (str) => {
+    return str.toUpperCase();
+  });
+};
+
+const spacingCharactertoCamelCase = (array) => {
+  // Loop array string and convert to camel case
+
+  let result = [];
+
+  array.forEach((element) => {
+    if (element.charAt(0) == element.charAt(0).toUpperCase()) {
+      result.push(
+        element
+          .toLowerCase()
+          .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
+      );
+    } else {
+      result.push(element);
+    }
+  });
+
+  // console.log(result);
+  return result;
+};
+
 // watch props.data change and redo all the data
 watch(
   () => [props.data, props.field],
   () => {
     if (props.field && props.field.length > 0) {
-      columnTitle.value = props.field;
-      dataTitle.value = props.field;
+      columnTitle.value = spacingCharactertoCamelCase(props.field);
+      dataTitle.value = spacingCharactertoCamelCase(props.field);
     } else {
       columnTitle.value = Object.keys(dataTable.value[0]);
       dataTitle.value = Object.keys(dataTable.value[0]);
@@ -113,18 +140,12 @@ watch(
   { immediate: true }
 );
 
-const camelCasetoTitle = (str) => {
-  return str.replace(/([A-Z])/g, " $1").replace(/^./, (str) => {
-    return str.toUpperCase();
-  });
-};
-
 const setColumnTitle = (data) => {
   try {
     if (props.field && props.field.length == 0) {
       columnTitle.value = Object.keys(data);
     } else {
-      columnTitle.value = props.field;
+      columnTitle.value = spacingCharactertoCamelCase(props.field);
     }
   } catch (error) {
     console.log(error);
@@ -172,6 +193,7 @@ const computedData = computed(() => {
       let modifier = 1;
 
       columnTitle.value.forEach((title, index) => {
+        // console.log(title, props.sort.column);
         // First sort by column title
         if (title === props.sort.column && !sortColumnFirstTime.value) {
           currentSort.value = index;
@@ -485,7 +507,7 @@ watch(
       </div>
     </div>
     <div class="w-full overflow-x-auto">
-      <ClientOnly>
+      <client-only>
         <table
           v-if="!hideTable"
           class="table-content"
@@ -538,7 +560,7 @@ watch(
                 v-for="(val, index) in columnTitle"
                 :key="index"
               >
-                {{ field.length > 0 ? val : camelCasetoTitle(val) }}
+                {{ camelCasetoTitle(val) }}
                 <div
                   v-if="optionsAdvanced.sortable && advanced"
                   class="sortable"
@@ -668,7 +690,7 @@ watch(
             </rs-collapse-item>
           </rs-collapse>
         </div>
-      </ClientOnly>
+      </client-only>
     </div>
     <div v-if="advanced" class="table-footer">
       <div class="flex justify-center items-center gap-x-2">

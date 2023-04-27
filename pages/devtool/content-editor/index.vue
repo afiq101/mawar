@@ -5,16 +5,19 @@ definePageMeta({
 
 const router = useRouter();
 const getPages = router.getRoutes();
+// console.log(getPages);
 
 const pages = getPages.filter((page) => {
   // filter out the pages that are not in the admin folder
   return (
-    page.path.includes("/admin") === false &&
+    page.path.includes("/devtool") === false &&
     page.meta?.title &&
     page.meta?.title !== "Home" &&
     page.name
   );
 });
+
+// console.log(pages);
 
 const searchText = ref("");
 

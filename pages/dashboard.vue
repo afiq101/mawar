@@ -257,7 +257,7 @@ onMounted(() => {
             >
           </div>
         </div>
-        <ClientOnly>
+        <client-only>
           <VueApexCharts
             :key="changeKey"
             width="100%"
@@ -272,7 +272,7 @@ onMounted(() => {
             }"
             :series="data1"
           ></VueApexCharts>
-        </ClientOnly>
+        </client-only>
       </rs-card>
       <!-- Summary Card #2 -->
       <rs-card>
@@ -292,7 +292,7 @@ onMounted(() => {
             >
           </div>
         </div>
-        <ClientOnly>
+        <client-only>
           <VueApexCharts
             :key="changeKey"
             width="100%"
@@ -307,7 +307,7 @@ onMounted(() => {
             }"
             :series="data2"
           ></VueApexCharts>
-        </ClientOnly>
+        </client-only>
       </rs-card>
       <!-- Summary Card #3 -->
       <rs-card>
@@ -324,7 +324,7 @@ onMounted(() => {
             >
           </div>
         </div>
-        <ClientOnly>
+        <client-only>
           <VueApexCharts
             :key="changeKey"
             width="100%"
@@ -339,7 +339,7 @@ onMounted(() => {
             }"
             :series="data3"
           ></VueApexCharts>
-        </ClientOnly>
+        </client-only>
       </rs-card>
       <!-- Summary Card #4 -->
       <rs-card>
@@ -358,7 +358,7 @@ onMounted(() => {
             >
           </div>
         </div>
-        <ClientOnly>
+        <client-only>
           <VueApexCharts
             :key="changeKey"
             width="100%"
@@ -373,7 +373,7 @@ onMounted(() => {
             }"
             :series="data4"
           ></VueApexCharts>
-        </ClientOnly>
+        </client-only>
       </rs-card>
     </div>
 
@@ -383,7 +383,7 @@ onMounted(() => {
         <rs-card class="flex-1">
           <template #header> Transaction </template>
           <template #body>
-            <ClientOnly>
+            <client-only>
               <VueApexCharts
                 :key="changeKey"
                 width="100%"
@@ -392,7 +392,7 @@ onMounted(() => {
                 :options="chartOptionsTransaction"
                 :series="transactionData"
               ></VueApexCharts
-            ></ClientOnly>
+            ></client-only>
           </template>
         </rs-card>
         <rs-card class="flex-1">
@@ -438,7 +438,7 @@ onMounted(() => {
         <rs-card class="flex-1">
           <template #header> Monthly Target </template>
           <template #body>
-            <ClientOnly>
+            <client-only>
               <VueApexCharts
                 :key="changeKey"
                 width="100%"
@@ -447,7 +447,7 @@ onMounted(() => {
                 :options="chartOptionsRadial"
                 :series="radialData"
               ></VueApexCharts>
-            </ClientOnly>
+            </client-only>
             <hr class="my-4" />
             <p class="text-xl py-5 font-medium">Products</p>
             <div

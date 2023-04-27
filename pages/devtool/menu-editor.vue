@@ -286,7 +286,8 @@ const clone = (obj) => {
 
 // Add Header
 const addNewHeader = () => {
-  sideMenuList.value.push({
+  // Push index = 1
+  sideMenuList.value.splice(1, 0, {
     header: "New Header",
     description: "New Description",
     child: [],
@@ -497,16 +498,15 @@ const addMenuFromList = () => {
                 @click="showCode ? (showCode = false) : (showCode = true)"
               >
                 <Icon name="ic:baseline-code" class="mr-2"></Icon>
-
-                Show JSON</rs-button
-              >
+                {{ showCode ? "Hide" : "Show" }} JSON Code
+              </rs-button>
               <rs-button @click="overwriteJsonFileLocal(sideMenuList)">
                 <Icon name="mdi:content-save-outline" class="mr-2"></Icon>
-                Save Menu Config File
+                Save Menu
               </rs-button>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-5">
               <div>
                 <FormKit
                   type="search"
@@ -514,7 +514,10 @@ const addMenuFromList = () => {
                   outer-class="mb-5"
                   v-model="searchInput"
                 />
-                <SimpleBar style="height: 735px">
+                <perfect-scrollbar
+                  style="height: 735px"
+                  class="px-5 pt-5 border !bg-slate-200/60 rounded-md"
+                >
                   <draggable
                     item-key="id"
                     v-model="menuList"
@@ -523,7 +526,7 @@ const addMenuFromList = () => {
                     :sort="false"
                   >
                     <template #item="{ element }">
-                      <rs-card class="p-4 mb-4">
+                      <rs-card class="p-4 mb-4 border-2 !shadow-none">
                         <div class="flex justify-between items-center">
                           <p>
                             {{ kebabtoTitle(element.name) }} (
@@ -546,24 +549,28 @@ const addMenuFromList = () => {
                       </rs-card>
                     </template>
                   </draggable>
-                </SimpleBar>
+                </perfect-scrollbar>
               </div>
-              <SimpleBar v-if="!showCode" style="height: 825px">
-                <rs-card class="p-4 bg-gray-50">
+              <perfect-scrollbar v-if="!showCode" style="height: 825px">
+                <rs-card
+                  class="p-4 bg-gray-50 border !bg-slate-200/60 rounded-md"
+                >
+                  <div class="flex justify-end items-center">
+                    <rs-button class="!p-2 mt-3 justify-center items-center" @click="addNewHeader">
+                      <Icon
+                      class="mr-1"
+                        name="material-symbols:docs-add-on"
+                        size="18"
+                      ></Icon>
+                      Add Header
+                    </rs-button>
+                  </div>
                   <DraggableSideMenuNested
                     :menus="sideMenuList"
                     @changeSideMenu="changeSideMenuList"
                   />
-                  <div class="flex justify-end items-center">
-                    <rs-button class="!p-2 mt-3" @click="addNewHeader">
-                      <Icon
-                        name="material-symbols:docs-add-on"
-                        size="16"
-                      ></Icon>
-                    </rs-button>
-                  </div>
                 </rs-card>
-              </SimpleBar>
+              </perfect-scrollbar>
               <pre v-else v-html="JSON.stringify(sideMenuList, null, 2)"></pre>
             </div>
           </rs-tab-item>
@@ -574,7 +581,7 @@ const addMenuFromList = () => {
     <rs-modal
       title="Select Menu"
       v-model="showModal"
-      ok-title="Save"
+      ok-title="Confirm"
       :ok-callback="addMenuFromList"
     >
       <FormKit

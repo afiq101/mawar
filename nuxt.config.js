@@ -37,7 +37,6 @@ export default defineNuxtConfig({
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
-
   tailwindcss: {
     cssPath: "~/assets/style/css/tailwind.css",
     configPath: "tailwind.config",
@@ -523,7 +522,7 @@ export default defineNuxtConfig({
     },
   },
   security: {
-    // options for the security module
+    // GLOBAL SECURITY OPTIONS
 
     // Allow 200 requests per hour (the Twitter search limit). Also understands
     // 'second', 'minute', 'day', or a number of milliseconds
@@ -532,6 +531,44 @@ export default defineNuxtConfig({
       interval: "minute",
       fireImmediately: false,
       throwError: false, // optional
+    },
+  },
+  routeRules: {
+    "/api/devtool/content/code/save": {
+      security: {
+        xssValidator: false,
+        requestSizeLimiter: false,
+      },
+    },
+    "/api/devtool/content/code/prettier-format": {
+      security: {
+        xssValidator: false,
+        requestSizeLimiter: false,
+      },
+    },
+    "/api/devtool/content/code/linter": {
+      security: {
+        xssValidator: false,
+        requestSizeLimiter: false,
+      },
+    },
+    "/api/devtool/api/save": {
+      security: {
+        xssValidator: false,
+        requestSizeLimiter: false,
+      },
+    },
+    "/api/devtool/api/prettier-format": {
+      security: {
+        xssValidator: false,
+        requestSizeLimiter: false,
+      },
+    },
+    "/api/devtool/api/linter": {
+      security: {
+        xssValidator: false,
+        requestSizeLimiter: false,
+      },
     },
   },
 });

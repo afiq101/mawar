@@ -332,7 +332,7 @@ const removeChild = (type, data) => {
     >
       <template #item="{ element }">
         <rs-card
-          class="p-4 my-4 mx-0 mb-0 relative"
+          class="p-4 !my-4 mx-0 mb-0 relative border-2"
           :class="{
             'py-6': count > 0,
           }"
@@ -340,10 +340,20 @@ const removeChild = (type, data) => {
           <div class="flex justify-between items-center">
             <div class="text-left font-normal text-xs mb-2">
               <span class="uppercase text-primary-500 dark:text-primary-400">{{
-                element.header
+                count == 0 && element.header
+                  ? element.header
+                  : count === 0
+                  ? "(No Header)"
+                  : ""
               }}</span>
               <p class="text-gray-500 dark:text-secondary">
-                {{ element.description }}
+                {{
+                  count == 0 && element.description
+                    ? element.description
+                    : count === 0
+                    ? "There will be no header shown"
+                    : ""
+                }}
               </p>
             </div>
             <div v-if="count == 0">
@@ -432,7 +442,7 @@ const removeChild = (type, data) => {
     <rs-modal
       :title="type == 'header' ? 'Edit Header' : 'Edit Menu'"
       v-model="showModal"
-      ok-title="Save"
+      ok-title="Confirm"
       :ok-callback="saveEditChanges"
       :cancel-callback="clickCancel"
     >
@@ -461,10 +471,10 @@ const removeChild = (type, data) => {
         <div class="mb-4 text-sm">
           <p class="font-semibold mb-2">
             Preview Icon (<a
-              href="https://icones.js.org/"
+              href="https://icones.js.org/collection/all"
               class="text-primary-400 hover:underline"
               target="_blank"
-              >list</a
+              >https://icones.js.org/collection/all</a
             >)
           </p>
           <Icon v-if="formMenu.icon" :name="formMenu.icon"></Icon>

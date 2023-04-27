@@ -100,10 +100,10 @@ const validateCancelCallback = () => {
               ></Icon>
             </div>
             <div class="modal-body relative p-4">
-              <SimpleBar style="max-height: 70vh">
+              <perfect-scrollbar style="max-height: 70vh">
                 <slot name="body"></slot>
                 <slot v-if="!$slots.body"></slot>
-              </SimpleBar>
+              </perfect-scrollbar>
             </div>
             <div
               v-if="!hideFooter"

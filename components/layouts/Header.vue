@@ -134,7 +134,7 @@ onMounted(() => {
                   <a class="ml-2">View All</a>
                 </div>
               </li>
-              <SimpleBar>
+              <perfect-scrollbar>
                 <li>
                   <div class="bg-slate-100 dark:bg-slate-700 py-2 px-4">
                     Today
@@ -170,14 +170,14 @@ onMounted(() => {
                       <div class="w-12 h-12 rounded-full ml-auto flex-none">
                         <img
                           class="rounded-full"
-                          src="https://ui-avatars.com/api/?name=Iqmal Rizal"
+                          src="@/assets/img/user/default.svg"
                           alt=""
                         />
                       </div>
                     </div>
                   </a>
                 </li>
-              </SimpleBar>
+              </perfect-scrollbar>
             </ul>
           </template>
         </VDropdown>

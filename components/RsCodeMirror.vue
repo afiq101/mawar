@@ -1,89 +1,11 @@
 <script setup>
-import CodeMirror from "codemirror";
-import "codemirror/lib/codemirror.css";
+import { useThemeStore } from "~/stores/theme";
 
-import emmet from "@emmetio/codemirror-plugin";
+import { vue } from "@codemirror/lang-vue";
+import { javascript } from "@codemirror/lang-javascript";
 
-// modes
-import "codemirror/mode/vue/vue.js";
-import "codemirror/mode/javascript/javascript.js";
-
-// addons
-import "codemirror/addon/edit/closebrackets.js";
-import "codemirror/addon/edit/closetag.js";
-import "codemirror/addon/comment/comment.js";
-import "codemirror/addon/fold/foldcode.js";
-import "codemirror/addon/fold/foldgutter.js";
-import "codemirror/addon/fold/brace-fold.js";
-import "codemirror/addon/fold/indent-fold.js";
-import "codemirror/addon/fold/comment-fold.js";
-import "codemirror/addon/hint/show-hint.js";
-import "codemirror/addon/hint/html-hint.js";
-import "codemirror/addon/hint/css-hint.js";
-import "codemirror/addon/display/fullscreen.js";
-
-// import all theme
-import "codemirror/theme/3024-day.css";
-import "codemirror/theme/3024-night.css";
-import "codemirror/theme/abcdef.css";
-import "codemirror/theme/ambiance-mobile.css";
-import "codemirror/theme/ambiance.css";
-import "codemirror/theme/ayu-dark.css";
-import "codemirror/theme/ayu-mirage.css";
-import "codemirror/theme/base16-dark.css";
-import "codemirror/theme/base16-light.css";
-import "codemirror/theme/bespin.css";
-import "codemirror/theme/blackboard.css";
-import "codemirror/theme/cobalt.css";
-import "codemirror/theme/colorforth.css";
-import "codemirror/theme/darcula.css";
-import "codemirror/theme/dracula.css";
-import "codemirror/theme/duotone-dark.css";
-import "codemirror/theme/duotone-light.css";
-import "codemirror/theme/eclipse.css";
-import "codemirror/theme/elegant.css";
-import "codemirror/theme/erlang-dark.css";
-import "codemirror/theme/gruvbox-dark.css";
-import "codemirror/theme/hopscotch.css";
-import "codemirror/theme/icecoder.css";
-import "codemirror/theme/idea.css";
-import "codemirror/theme/isotope.css";
-import "codemirror/theme/lesser-dark.css";
-import "codemirror/theme/liquibyte.css";
-import "codemirror/theme/lucario.css";
-import "codemirror/theme/material-darker.css";
-import "codemirror/theme/material-ocean.css";
-import "codemirror/theme/material-palenight.css";
-import "codemirror/theme/material.css";
-import "codemirror/theme/mbo.css";
-import "codemirror/theme/mdn-like.css";
-import "codemirror/theme/midnight.css";
-import "codemirror/theme/monokai.css";
-import "codemirror/theme/moxer.css";
-import "codemirror/theme/neat.css";
-import "codemirror/theme/neo.css";
-import "codemirror/theme/night.css";
-import "codemirror/theme/nord.css";
-import "codemirror/theme/oceanic-next.css";
-import "codemirror/theme/panda-syntax.css";
-import "codemirror/theme/paraiso-dark.css";
-import "codemirror/theme/paraiso-light.css";
-import "codemirror/theme/pastel-on-dark.css";
-import "codemirror/theme/railscasts.css";
-import "codemirror/theme/rubyblue.css";
-import "codemirror/theme/seti.css";
-import "codemirror/theme/shadowfox.css";
-import "codemirror/theme/solarized.css";
-import "codemirror/theme/the-matrix.css";
-import "codemirror/theme/tomorrow-night-bright.css";
-import "codemirror/theme/tomorrow-night-eighties.css";
-import "codemirror/theme/ttcn.css";
-import "codemirror/theme/twilight.css";
-import "codemirror/theme/vibrant-ink.css";
-import "codemirror/theme/xq-dark.css";
-import "codemirror/theme/xq-light.css";
-import "codemirror/theme/yeti.css";
-import "codemirror/theme/zenburn.css";
+import { oneDark } from "@codemirror/theme-one-dark";
+import { amy, ayuLight, barf, clouds, cobalt, dracula } from "thememirror";
 
 const props = defineProps({
   options: {
@@ -92,11 +14,11 @@ const props = defineProps({
   },
   mode: {
     type: String,
-    default: "text/x-vue",
+    default: "vue",
   },
   height: {
     type: String,
-    default: "77vh",
+    default: "70vh",
   },
   modelValue: {
     type: String,
@@ -104,7 +26,7 @@ const props = defineProps({
   },
   theme: {
     type: String,
-    default: "monokai",
+    default: "oneDark",
   },
   readOnly: {
     type: String,
@@ -114,97 +36,187 @@ const props = defineProps({
 
 const emits = defineEmits(["update:modelValue"]);
 
-const el = ref(null);
+const themeStore = useThemeStore();
+const editorTheme = ref(themeStore.codeTheme);
 
-const code = props.modelValue
-  ? ref(props.modelValue)
-  : props.mode == "application/json"
-  ? ref(`{}`)
-  : ref(`<template></template>`);
-
-const addonOptions = {
-  readOnly: props.readOnly,
-  autoCloseBrackets: true,
-  autoCloseTags: true,
-  foldGutter: true,
-  gutters: [
-    "CodeMirror-linenumbers",
-    "CodeMirror-foldgutter",
-    "CodeMirror-lint-markers",
-  ],
-  lint: true,
-  extraKeys: {
-    Tab: "emmetExpandAbbreviation",
-    Esc: "emmetResetAbbreviation",
-    Enter: "emmetInsertLineBreak",
-    "Ctrl-/": "toggleComment",
-    F11: function (cm) {
-      cm.setOption("fullScreen", !cm.getOption("fullScreen"));
-    },
-    Esc: function (cm) {
-      if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
-    },
+const dropdownThemes = ref([
+  {
+    label: "default",
+    value: "clouds",
   },
-  hintOptions: {
-    completeSingle: false,
+  {
+    label: "oneDark",
+    value: "oneDark",
   },
-};
+  {
+    label: "amy",
+    value: "amy",
+  },
+  {
+    label: "ayu",
+    value: "ayuLight",
+  },
+  {
+    label: "barf",
+    value: "barf",
+  },
+  {
+    label: "cobalt",
+    value: "cobalt",
+  },
+  {
+    label: "dracula",
+    value: "dracula",
+  },
+]);
 
-async function initEditor() {
-  const editor = CodeMirror(el.value, {
-    value: code.value,
-    theme: props.theme,
-    mode: props.mode,
-    tabSize: 2,
-    lineWrapping: true,
-    lineNumbers: true,
-    ...addonOptions,
-  });
-  editor.on("change", () => {
-    emits("update:modelValue", editor?.getValue());
-  });
-
-  // watchEffect(() => {
-  //   editor!.setValue(props.value)
-  // })
-  watchEffect(() => {
-    editor.refresh();
-  });
+const value = ref(props.modelValue);
+const extensions = ref([]);
+if (props.mode == "vue") {
+  extensions.value = [vue(), oneDark];
+} else {
+  extensions.value = [javascript(), oneDark];
 }
 
-onMounted(() => {
-  emmet(CodeMirror);
-  nextTick(async () => await initEditor());
-});
+const totalLines = ref(0);
+const totalLength = ref(0);
+
+// Codemirror EditorView instance ref
+const view = shallowRef();
+const handleReady = (payload) => {
+  view.value = payload.view;
+  totalLines.value = view.value.state.doc.lines;
+  totalLength.value = view.value.state.doc.length;
+};
+
+watch(
+  () => editorTheme.value,
+  (themeVal) => {
+    // themeStore.setCodeTheme(newValue.value);
+
+    if (props.mode == "vue") {
+      extensions.value = [
+        vue(),
+        themeVal === "oneDark"
+          ? oneDark
+          : themeVal === "amy"
+          ? amy
+          : themeVal === "ayuLight"
+          ? ayuLight
+          : themeVal === "barf"
+          ? barf
+          : themeVal === "cobalt"
+          ? cobalt
+          : themeVal === "dracula"
+          ? dracula
+          : clouds,
+      ];
+    } else {
+      extensions.value = [
+        javascript(),
+        themeVal === "oneDark"
+          ? oneDark
+          : themeVal === "amy"
+          ? amy
+          : themeVal === "ayuLight"
+          ? ayuLight
+          : themeVal === "barf"
+          ? barf
+          : themeVal === "cobalt"
+          ? cobalt
+          : themeVal === "dracula"
+          ? dracula
+          : clouds,
+      ];
+    }
+  }
+);
+
+// Status is available at all times via Codemirror EditorView
+const getCodemirrorStates = () => {
+  const state = view.value.state;
+  const ranges = state.selection.ranges;
+  const selected = ranges.reduce((r, range) => r + range.to - range.from, 0);
+  const cursor = ranges[0].anchor;
+  const length = state.doc.length;
+  const lines = state.doc.lines;
+
+  console.log("state", view.value.state);
+};
+
+const onChange = (value) => {
+  // console.log("onChange", value);
+  emits("update:modelValue", value);
+  totalLines.value = view.value.state.doc.lines;
+  totalLength.value = view.value.state.doc.length;
+};
+
+const onFocus = (value) => {
+  // console.log("onFocus", value);
+};
+
+const onBlur = (value) => {
+  // console.log("onBlur", value);
+};
+
+const onUpdate = (value) => {
+  // console.log("onUpdate", value);
+};
+
+function numberComma(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 </script>
 
 <template>
-  <div ref="el" class="editor"></div>
+  <div
+    class="flex justify-between items-center gap-2 p-2 bg-[#282C34] text-[#abb2bf]"
+  >
+    <div class="flex items-center gap-2">
+      Theme:
+      <FormKit
+        v-model="editorTheme"
+        type="select"
+        placeholder="Select Themes"
+        :options="dropdownThemes"
+        :classes="{
+          input:
+            '!bg-[#282C34] !text-[#abb2bf] !border-[#abb2bf] hover:cursor-pointer h-6 w-[100px]',
+          inner: ' !rounded-none !mb-0',
+          outer: '!mb-0',
+        }"
+      />
+    </div>
+    <!-- <rs-button
+      class="!p-2"
+      variant="primary-outline"
+      @click="getCodemirrorStates"
+    >
+      Get state</rs-button
+    > -->
+  </div>
+  <client-only>
+    <CodeMirror
+      v-model="value"
+      placeholder="Code goes here..."
+      :style="{ height: height }"
+      :autofocus="true"
+      :indent-with-tab="true"
+      :tab-size="2"
+      :extensions="extensions"
+      @ready="handleReady"
+      @change="onChange($event)"
+      @focus="onFocus($event)"
+      @blur="onBlur($event)"
+      @update="onUpdate($event)"
+    />
+  </client-only>
+  <div
+    class="footer flex justify-end items-center gap-2 p-2 bg-[#282C34] text-[#abb2bf]"
+  >
+    <span class="">Lines: {{ numberComma(totalLines) }}</span>
+    <span class="">Length: {{ numberComma(totalLength) }}</span>
+  </div>
 </template>
 
-<style>
-.editor > .CodeMirror {
-  height: v-bind("props.height");
-  border-radius: 0.5rem;
-}
-
-.emmet-abbreviation-preview {
-  z-index: 10;
-  background-color: #212121;
-}
-
-.emmet-abbreviation-preview > .CodeMirror {
-  background-color: #212121;
-  border: 1px solid rgb(50, 50, 50);
-}
-
-.CodeMirror-fullscreen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: auto;
-  z-index: 100;
-}
-</style>
+<style lang="scss" scoped></style>

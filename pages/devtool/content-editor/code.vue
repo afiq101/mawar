@@ -1,7 +1,4 @@
 <script setup>
-// import pinia store
-import { useThemeStore } from "~/stores/theme";
-
 definePageMeta({
   title: "Code Editor",
 });
@@ -17,34 +14,10 @@ const componentKey = ref(0);
 const hasError = ref(false);
 const error = ref("");
 
-const themeStore = useThemeStore();
-const editorTheme = ref({
-  label: themeStore.codeTheme,
-  value: themeStore.codeTheme,
-});
-const dropdownThemes = ref([]);
-
 const linterError = ref(false);
 const linterErrorText = ref("");
 const linterErrorColumn = ref(0);
 const linterErrorLine = ref(0);
-
-// Get all themes
-const themes = codemirrorThemes();
-
-// map the themes to the dropdown
-dropdownThemes.value = themes.map((theme) => {
-  return {
-    label: theme.name,
-    value: theme.name,
-  };
-});
-
-// watch for changes in the theme
-watch(editorTheme, (theme) => {
-  themeStore.setCodeTheme(theme.value);
-  forceRerender();
-});
 
 const page = router.getRoutes().find((page) => {
   return page.name === route.query?.page;
@@ -139,12 +112,12 @@ const forceRerender = () => {
 };
 
 const keyPress = (key) => {
-  console.log(key);
+  // console.log(key);
   const event = new KeyboardEvent("keydown", {
     key: key,
     ctrlKey: true,
   });
-  console.log(event);
+  // console.log(event);
   document.dispatchEvent(event);
 };
 
@@ -183,6 +156,10 @@ const saveCode = async () => {
     }, 1000);
   }
 };
+
+watch(fileCode, (code) => {
+  console.log(code);
+});
 </script>
 
 <template>
@@ -194,45 +171,19 @@ const saveCode = async () => {
     }}</rs-alert>
     <rs-card class="mb-0">
       <div class="p-4">
-        <div class="flex justify-between gap-2 mb-4">
-          <div>
-            <!-- <FormKit
-              type="select"
-              label="Which country is the smallest?"
-              name="small_country"
-              :options="['Monaco', 'Vatican City', 'Maldives', 'Tuvalu']"
-            /> -->
-
-            <v-select
-              v-model="editorTheme"
-              name="themes"
-              style="width: 200px"
-              placeholder="Select Themes"
-              :options="dropdownThemes"
-            ></v-select>
-          </div>
-          <div class="flex gap-2">
-            <rs-button class="!p-2" @click.prevent="keyPress('F11')">
-              <Icon
-                name="material-symbols:fullscreen-rounded"
-                size="20px"
-                class="mr-1"
-              />
-              Fullscreen</rs-button
-            >
-            <rs-button class="!p-2" @click="formatCode">
-              <Icon name="simple-icons:prettier" size="20px" class="mr-1" />
-              Format Code</rs-button
-            >
-            <rs-button class="!p-2" @click="saveCode">
-              <Icon
-                name="material-symbols:save-outline-rounded"
-                size="20px"
-                class="mr-1"
-              />
-              Save
-            </rs-button>
-          </div>
+        <div class="flex justify-end gap-2">
+          <rs-button class="!p-2" @click="formatCode">
+            <Icon name="simple-icons:prettier" size="20px" class="mr-1" />
+            Format Code</rs-button
+          >
+          <rs-button class="!p-2" @click="saveCode">
+            <Icon
+              name="material-symbols:save-outline-rounded"
+              size="20px"
+              class="mr-1"
+            />
+            Save Code
+          </rs-button>
         </div>
         <Transition>
           <rs-alert class="mb-4" v-if="linterError">
@@ -250,16 +201,9 @@ const saveCode = async () => {
             </div>
           </rs-alert>
         </Transition>
-
-        <ClientOnly>
-          <rs-code-mirror
-            :key="componentKey"
-            v-model="fileCode"
-            :theme="editorTheme.value"
-          >
-          </rs-code-mirror>
-        </ClientOnly>
       </div>
+
+      <rs-code-mirror :key="componentKey" v-model="fileCode" />
     </rs-card>
   </div>
 </template>
