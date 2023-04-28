@@ -12,6 +12,8 @@ const username = ref("");
 const password = ref("");
 const userStore = useUserStore();
 
+const togglePasswordVisibility = ref(false);
+
 const login = async () => {
   try {
     // console.log("login");
@@ -89,7 +91,7 @@ const login = async () => {
             }"
           />
           <FormKit
-            type="password"
+            :type="togglePasswordVisibility ? 'text' : 'password'"
             label="Password"
             v-model="password"
             validation="required"
@@ -98,7 +100,21 @@ const login = async () => {
               label: 'text-left',
               messages: 'text-left',
             }"
-          />
+          >
+            <template #suffix>
+              <div
+                class="bg-gray-100 hover:bg-slate-200 dark:bg-slate-700 hover:dark:bg-slate-900 h-full rounded-r-md p-3 flex justify-center items-center cursor-pointer"
+                @click="togglePasswordVisibility = !togglePasswordVisibility"
+              >
+                <Icon
+                  v-if="!togglePasswordVisibility"
+                  name="ion:eye-outline"
+                  size="19"
+                ></Icon>
+                <Icon v-else name="ion:eye-off-outline" size="19"></Icon>
+              </div>
+            </template>
+          </FormKit>
           <FormKit type="checkbox" label="Remember Me" />
           <NuxtLink
             class="flex items-center justify-end h-5 mt-1 text-primary-400 hover:underline"

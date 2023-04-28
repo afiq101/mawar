@@ -4,6 +4,9 @@ definePageMeta({
   layout: "empty",
   middleware: ["redirect-dashboard"],
 });
+
+const togglePasswordVisibility = ref(false);
+const togglePasswordVisibility2 = ref(false);
 </script>
 
 <template>
@@ -18,12 +21,46 @@ definePageMeta({
         </p>
         <FormKit label="Username" type="text" label-class="text-left" />
         <FormKit label="Email" type="email" label-class="text-left" />
-        <FormKit label="Password" type="password" label-class="text-left" />
         <FormKit
+          :type="togglePasswordVisibility ? 'text' : 'password'"
+          label="Password"
+          type="password"
+          label-class="text-left"
+        >
+          <template #suffix>
+            <div
+              class="bg-gray-100 hover:bg-slate-200 dark:bg-slate-700 hover:dark:bg-slate-900 h-full rounded-r-md p-3 flex justify-center items-center cursor-pointer"
+              @click="togglePasswordVisibility = !togglePasswordVisibility"
+            >
+              <Icon
+                v-if="!togglePasswordVisibility"
+                name="ion:eye-outline"
+                size="19"
+              ></Icon>
+              <Icon v-else name="ion:eye-off-outline" size="19"></Icon>
+            </div>
+          </template>
+        </FormKit>
+        <FormKit
+          :type="togglePasswordVisibility2 ? 'text' : 'password'"
           label="Re-enter Password"
           type="password"
           label-class="text-left"
-        />
+        >
+          <template #suffix>
+            <div
+              class="bg-gray-100 hover:bg-slate-200 dark:bg-slate-700 hover:dark:bg-slate-900 h-full rounded-r-md p-3 flex justify-center items-center cursor-pointer"
+              @click="togglePasswordVisibility2 = !togglePasswordVisibility2"
+            >
+              <Icon
+                v-if="!togglePasswordVisibility2"
+                name="ion:eye-outline"
+                size="19"
+              ></Icon>
+              <Icon v-else name="ion:eye-off-outline" size="19"></Icon>
+            </div>
+          </template>
+        </FormKit>
         <FormKit
           type="checkbox"
           label="agreement"
