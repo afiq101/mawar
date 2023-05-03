@@ -41,13 +41,14 @@ onMounted(() => {
   <Transition name="fade-up">
     <div
       v-if="showComponent"
-      class="visible flex items-center justify-between w-100 py-2 px-3 rounded-lg"
+      class="visible flex items-center justify-between w-100 py-3 px-3 rounded-lg"
       :class="{
-        'bg-blue-100  text-blue-500  ': variant === 'info',
-        'bg-primary-100  text-primary-500 ': variant === 'primary',
-        'bg-green-100  text-green-500  ': variant === 'success',
-        'bg-orange-100  text-orange-500  ': variant === 'warning',
-        'bg-red-100  text-red-500  ': variant === 'danger',
+        'bg-primary/20  text-primary ': variant === 'primary',
+        'bg-secondary/20  text-secondary ': variant === 'secondary',
+        'bg-info/20  text-info  ': variant === 'info',
+        'bg-success/20 text-success  ': variant === 'success',
+        'bg-warning/20  text-warning  ': variant === 'warning',
+        'bg-danger/20  text-danger  ': variant === 'danger',
       }"
     >
       <slot />

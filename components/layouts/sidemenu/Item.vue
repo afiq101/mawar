@@ -57,10 +57,12 @@ function openMenu(event) {
 function activeMenu(routePath) {
   return route.path == routePath
     ? ` shadow-lg
-            shadow-primary-700/30
-            dark:shadow-primary-500/10
+            shadow-primary/50
+            dark:shadow-primary/10
             text-white
-            bg-primary-400
+            bg-gradient-to-r
+            from-primary
+            to-primary/90
             active-menu`
     : `transition-all	duration-300 hover:ml-4`;
 }
@@ -78,10 +80,10 @@ function activeMenu(routePath) {
         v-if="item.header"
         class="text-left font-normal text-xs mx-6 mt-5 mb-2"
       >
-        <span class="uppercase text-primary-500 dark:text-primary-400">
+        <span class="uppercase text-primary dark:text-primary">
           {{ item.header ? item.header : "" }}
         </span>
-        <p class="text-gray-500 dark:text-secondary">
+        <p class="text-gray-500 dark:text-gray-500">
           {{ item.description ? item.description : "" }}
         </p>
       </div>

@@ -95,7 +95,7 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
         />
         <div
           v-else
-          class="h-full flex items-center justify-center opacity-50 text-primary-400 font-semibold uppercase text-xl whitespace-nowrap"
+          class="h-full flex items-center justify-center opacity-50 text-primary font-semibold uppercase text-xl whitespace-nowrap"
         >
           {{
             file.data.name.slice(

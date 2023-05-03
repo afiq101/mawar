@@ -447,7 +447,7 @@ const addMenuFromList = () => {
             >
               <template v-slot:name="data">
                 <NuxtLink
-                  class="text-primary-400 hover:underline"
+                  class="text-primary hover:underline"
                   :to="data.value.path"
                   target="_blank"
                   >{{ data.text }}</NuxtLink
@@ -457,7 +457,7 @@ const addMenuFromList = () => {
                 <div class="flex items-center">
                   <Icon
                     name="mdi:eye-outline"
-                    class="text-primary-400"
+                    class="text-primary"
                     size="22"
                     v-if="data.value.visible"
                   />
@@ -476,13 +476,13 @@ const addMenuFromList = () => {
                 >
                   <Icon
                     name="material-symbols:edit-outline-rounded"
-                    class="text-primary-400 hover:text-primary-500 cursor-pointer mr-1"
+                    class="text-primary hover:text-primary/90 cursor-pointer mr-1"
                     size="22"
                     @click="openModalEdit(data.value)"
                   ></Icon>
                   <Icon
                     name="material-symbols:close-rounded"
-                    class="text-primary-400 hover:text-primary-500 cursor-pointer"
+                    class="text-primary hover:text-primary/90 cursor-pointer"
                     size="22"
                     @click="deleteMenu(data.value)"
                   ></Icon>
@@ -531,7 +531,7 @@ const addMenuFromList = () => {
                           <p>
                             {{ kebabtoTitle(element.name) }} (
                             <NuxtLink
-                              class="text-primary-400 hover:underline"
+                              class="text-primary hover:underline"
                               :to="element.path"
                               target="_blank"
                             >
@@ -542,7 +542,7 @@ const addMenuFromList = () => {
                           <Icon
                             v-if="checkExistSideMenuList(element.path) == false"
                             name="ic:baseline-arrow-circle-right"
-                            class="text-primary-400 cursor-pointer transition-all duration-150 hover:scale-110"
+                            class="text-primary cursor-pointer transition-all duration-150 hover:scale-110"
                             @click="openModal(element)"
                           ></Icon>
                         </div>

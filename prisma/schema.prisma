@@ -28,7 +28,6 @@ model user {
   userStatus       String?    @db.VarChar(255)
   userCreatedDate  DateTime?  @db.DateTime(0)
   userModifiedDate DateTime?  @db.DateTime(0)
-  store            store[]
   userrole         userrole[]
 }
 
@@ -86,16 +85,4 @@ model pagecontent {
   page                    page?     @relation(fields: [pageContentPageID], references: [pageID], onDelete: NoAction, onUpdate: NoAction, map: "FK__page")
 
   @@index([pageContentPageID], map: "FK__page")
-}
-
-model store {
-  storeID           Int       @id @default(autoincrement())
-  storeName         String?   @db.VarChar(255)
-  storeDescription  String?   @db.VarChar(255)
-  storeCreatedDate  DateTime? @db.DateTime(0)
-  storeModifiedDate DateTime? @db.DateTime(0)
-  storeUserID       Int?
-  user              user?     @relation(fields: [storeUserID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "FK_store_user")
-
-  @@index([storeUserID], map: "FK_store_user")
 }

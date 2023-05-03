@@ -9,7 +9,6 @@ const breadcrumb = computed(() => {
       path: item.path,
     };
   });
-
   return breadcrumb;
 });
 
@@ -41,7 +40,7 @@ async function navigateMenu(path) {
       <span
         v-for="(item, index) in breadcrumb"
         :key="index"
-        class="flex items-center text-primary-400"
+        class="flex items-center text-primary"
       >
         <Icon
           v-if="index != 0"
@@ -51,7 +50,7 @@ async function navigateMenu(path) {
         ></Icon>
         <a
           @click="navigateMenu(item.path)"
-          class="underline cursor-pointer hover:text-primary-300 pr-1"
+          class="underline cursor-pointer hover:text-primary/90 pr-1"
           >{{ item.name }}</a
         >
       </span>

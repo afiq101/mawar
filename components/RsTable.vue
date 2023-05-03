@@ -98,10 +98,16 @@ if (props.optionsAdvanced.responsive) {
   }
 }
 
-const camelCasetoTitle = (str) => {
-  return str.replace(/([A-Z])/g, " $1").replace(/^./, (str) => {
-    return str.toUpperCase();
-  });
+const camelCasetoTitle = (str, exclusions = []) => {
+  if (exclusions.includes(str)) {
+    return str.replace(/([A-Z])/g, " $1").trim();
+  } else if (/\(.*\)/.test(str)) {
+    return str; // if the string contains parentheses, return the original string
+  } else {
+    return str.replace(/([A-Z])/g, " $1").replace(/^./, (str) => {
+      return str.toUpperCase();
+    });
+  }
 };
 
 const spacingCharactertoCamelCase = (array) => {
@@ -111,11 +117,21 @@ const spacingCharactertoCamelCase = (array) => {
 
   array.forEach((element) => {
     if (element.charAt(0) == element.charAt(0).toUpperCase()) {
-      result.push(
-        element
-          .toLowerCase()
-          .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
-      );
+      // Camelcase the string and remove spacing
+      // and if there is () in the string, do Uppercase inside the () and dont spacing it
+
+      let camelCase = element
+        .replace(/([A-Z])/g, " $1")
+        .replace(/^./, (str) => {
+          return str.toUpperCase();
+        })
+        .replace(/\s/g, "");
+
+      let resultCamelCase = camelCase.replace(/\(([^)]+)\)/, (str) => {
+        return str.toUpperCase();
+      });
+
+      result.push(resultCamelCase);
     } else {
       result.push(element);
     }
@@ -406,10 +422,10 @@ watch(
 
 <template>
   <div
-    v-if="dataTable && dataTable.length > 0"
+    v-if="data && data.length > 0 && dataTable && dataTable.length > 0"
     class="table-wrapper"
     :class="{
-      '!border': advanced && !hideTable,
+      '!border': advanced && !hideTable && optionsAdvanced.outsideBorder,
     }"
   >
     <div
@@ -450,7 +466,7 @@ watch(
           <!-- <rs-button class="mt-2">asdaasd</rs-button> -->
         </div>
         <div class="flex justify-center items-center gap-x-2">
-          <span class="text-secondary">Result per page:</span>
+          <span class="text-gray-500">Result per page:</span>
           <FormKit
             type="select"
             v-model="pageSize"
@@ -492,7 +508,7 @@ watch(
     >
       <div class="flex flex-wrap items-center justify-start gap-x-2">
         <div
-          class="flex items-center justify-center gap-x-2 border border-primary-400 text-primary-400 rounded-lg py-1 px-2"
+          class="flex items-center justify-center gap-x-2 border border-primary text-primary rounded-lg py-1 px-2"
           v-for="(val, index) in filterComputed"
           :key="index"
         >
@@ -523,17 +539,16 @@ watch(
               'border-y': !options.borderless,
               'border-gray-200 bg-gray-100 dark:bg-gray-800':
                 options.variant === 'default',
-              'border-primary-200 bg-primary-400 text-white ':
+              'border-primary/50 bg-primary text-white ':
                 options.variant === 'primary',
-              'border-gray-200 bg-secondary text-white':
+              'border-secondary/50 bg-secondary text-white':
                 options.variant === 'secondary',
-              'border-blue-200 bg-blue-500 text-white ':
-                options.variant === 'info',
-              'border-green-200 bg-green-500 text-white':
+              'border-info/50 bg-info text-white ': options.variant === 'info',
+              'border-success/50 bg-success text-white':
                 options.variant === 'success',
-              'border-orange-200 bg-warning text-white':
+              'border-warning/50 bg-warning text-white':
                 options.variant === 'warning',
-              'border-red-200 bg-red-500 text-white':
+              'border-danger/50 bg-danger text-white':
                 options.variant === 'danger',
             }"
           >
@@ -544,12 +559,12 @@ watch(
                   'border-r last:border-l last:border-r-0':
                     options.bordered && !options.borderless,
                   'border-gray-300': options.variant === 'default',
-                  'border-primary-300': options.variant === 'primary',
-                  'border-gray-300': options.variant === 'secondary',
-                  'border-blue-300': options.variant === 'info',
-                  'border-green-300': options.variant === 'success',
-                  'border-orange-300': options.variant === 'warning',
-                  'border-red-300': options.variant === 'danger',
+                  'border-primary/80': options.variant === 'primary',
+                  'border-secondary/80': options.variant === 'secondary',
+                  'border-info/80': options.variant === 'info',
+                  'border-success/80': options.variant === 'success',
+                  'border-warning/80': options.variant === 'warning',
+                  'border-danger/80': options.variant === 'danger',
                   'w-36': options.fixed,
                   'cursor-pointer': optionsAdvanced.sortable && advanced,
                 }"
@@ -595,31 +610,31 @@ watch(
                 'border-b-0': options.borderless,
                 'border-gray-200 odd:bg-white even:bg-slate-50 dark:even:bg-slate-700 dark:odd:bg-slate-800':
                   options.variant === 'default' && options.striped,
-                'border-primary-100 odd:bg-white even:bg-primary-50':
+                'border-primary/20 odd:bg-white even:bg-primary/5':
                   options.variant === 'primary' && options.striped,
-                'border-gray-100 odd:bg-white even:bg-gray-50':
+                'border-secondary/20 odd:bg-white even:bg-secondary/5':
                   options.variant === 'secondary' && options.striped,
-                'border-blue-100 odd:bg-white even:bg-blue-50':
+                'border-info/20 odd:bg-white even:bg-info/5':
                   options.variant === 'info' && options.striped,
-                'border-green-100 odd:bg-white even:bg-green-50':
+                'border-success/20 odd:bg-white even:bg-success/5':
                   options.variant === 'success' && options.striped,
-                'border-orange-100 odd:bg-white even:bg-orange-50':
+                'border-warning/20 odd:bg-white even:bg-warning/5':
                   options.variant === 'warning' && options.striped,
-                'border-red-100 odd:bg-white even:bg-red-50':
+                'border-danger/20 odd:bg-white even:bg-danger/5':
                   options.variant === 'danger' && options.striped,
                 'cursor-pointer hover:bg-gray-50':
                   options.hover && options.variant === 'default',
-                'cursor-pointer hover:bg-primary-50':
+                'cursor-pointer hover:bg-primary/5':
                   options.hover && options.variant === 'primary',
-                'cursor-pointer hover:bg-gray-50':
+                'cursor-pointer hover:bg-secondary/5':
                   options.hover && options.variant === 'secondary',
-                'cursor-pointer hover:bg-blue-50':
+                'cursor-pointer hover:bg-info/5':
                   options.hover && options.variant === 'info',
-                'cursor-pointer hover:bg-green-50':
+                'cursor-pointer hover:bg-success/5':
                   options.hover && options.variant === 'success',
-                'cursor-pointer hover:bg-orange-50':
+                'cursor-pointer hover:bg-warning/5':
                   options.hover && options.variant === 'warning',
-                'cursor-pointer hover:bg-red-50':
+                'cursor-pointer hover:bg-danger/5':
                   options.hover && options.variant === 'danger',
               }"
               v-for="(val1, index1) in computedData"
@@ -631,12 +646,12 @@ watch(
                   'border-r last:border-l last:border-r-0':
                     options.bordered && !options.borderless,
                   'border-gray-100': options.variant === 'default',
-                  'border-primary-100': options.variant === 'primary',
-                  'border-gray-100': options.variant === 'secondary',
-                  'border-blue-100': options.variant === 'info',
-                  'border-green-100': options.variant === 'success',
-                  'border-orange-100': options.variant === 'warning',
-                  'border-red-100': options.variant === 'danger',
+                  'border-primary/20': options.variant === 'primary',
+                  'border-secondary/20': options.variant === 'secondary',
+                  'border-info/20': options.variant === 'info',
+                  'border-success/20': options.variant === 'success',
+                  'border-warning/20': options.variant === 'warning',
+                  'border-danger/20': options.variant === 'danger',
                 }"
                 v-for="(val2, index2) in columnTitle"
                 :key="index2"
@@ -694,14 +709,16 @@ watch(
     </div>
     <div v-if="advanced" class="table-footer">
       <div class="flex justify-center items-center gap-x-2">
-        <span class="text-sm text-secondary hidden md:block"
+        <span class="text-sm text-gray-500 hidden md:block"
           >Showing {{ pageSize * currentPage - pageSize + 1 }} to
           {{ pageSize * currentPage }} of {{ totalEntries }} entries</span
         >
       </div>
       <div class="table-footer-page">
         <rs-button
-          variant="primary-outline"
+          :variant="`${
+            options.variant == 'default' ? 'primary' : options.variant
+          }-outline`"
           class="!rounded-full !p-1 !w-8 !h-8"
           @click="firstPage"
           :disabled="currentPage == 1"
@@ -709,7 +726,9 @@ watch(
           <Icon name="ic:round-keyboard-double-arrow-left" size="1rem"></Icon>
         </rs-button>
         <rs-button
-          variant="primary-outline"
+          :variant="`${
+            options.variant == 'default' ? 'primary' : options.variant
+          }-outline`"
           class="!rounded-full !p-1 !w-8 !h-8"
           @click="prevPage"
           :disabled="currentPage == 1"
@@ -717,7 +736,15 @@ watch(
           <Icon name="ic:round-keyboard-arrow-left" size="1rem"></Icon>
         </rs-button>
         <rs-button
-          :variant="currentPage == val ? 'primary' : 'primary-outline'"
+          :variant="`${
+            currentPage == val && options.variant != 'default'
+              ? options.variant
+              : currentPage == val && options.variant == 'default'
+              ? 'primary'
+              : options.variant == 'default'
+              ? 'primary-outline'
+              : options.variant + '-outline'
+          }`"
           class="!rounded-full !p-1 !w-8 !h-8"
           v-for="(val, index) in pages"
           :key="index"
@@ -726,7 +753,9 @@ watch(
           {{ val }}
         </rs-button>
         <rs-button
-          variant="primary-outline"
+          :variant="`${
+            options.variant == 'default' ? 'primary' : options.variant
+          }-outline`"
           class="!rounded-full !p-1 !w-8 !h-8"
           @click="nextPage"
           :disabled="currentPage == totalPage"
@@ -734,7 +763,9 @@ watch(
           <Icon name="ic:round-keyboard-arrow-right" size="1rem"></Icon>
         </rs-button>
         <rs-button
-          variant="primary-outline"
+          :variant="`${
+            options.variant == 'default' ? 'primary' : options.variant
+          }-outline`"
           class="!rounded-full !p-1 !w-8 !h-8"
           @click="lastPage"
           :disabled="currentPage == totalPage"

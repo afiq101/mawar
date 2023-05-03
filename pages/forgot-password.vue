@@ -25,7 +25,7 @@ definePageMeta({
         </div>
         <p class="mt-3 text-center text-slate-500">
           Already have an account?
-          <NuxtLink to="/login" class="text-primary-400 hover:underline"
+          <NuxtLink to="/login" class="text-primary hover:underline"
             >Login</NuxtLink
           >
         </p>

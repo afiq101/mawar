@@ -378,13 +378,13 @@ function groupUserByRole() {
                 >
                   <Icon
                     name="material-symbols:edit-outline-rounded"
-                    class="text-primary-400 hover:text-primary-500 cursor-pointer mr-1"
+                    class="text-primary hover:text-primary/90 cursor-pointer mr-1"
                     size="22"
                     @click="openModal(data.value, 'edit')"
                   ></Icon>
                   <Icon
                     name="material-symbols:close-rounded"
-                    class="text-primary-400 hover:text-primary-500 cursor-pointer"
+                    class="text-primary hover:text-primary/90 cursor-pointer"
                     size="22"
                     @click="openModalDelete(data.value)"
                   ></Icon>

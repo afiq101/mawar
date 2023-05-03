@@ -46,7 +46,7 @@ onMounted(() => {
             src="@/assets/img/logo/logo-full-transparent-white.webp"
             alt=""
           />
-          <!-- <span class="text-xl font-semibold text-primary-500 dark:text-white"
+          <!-- <span class="text-xl font-semibold text-primary dark:text-white"
           >Mawar</span
         > -->
         </div>
@@ -60,14 +60,14 @@ onMounted(() => {
     <!-- <div class="m-6 text-sm">
       To see documentation visit
       <a
-        class="text-primary-400 hover:underline"
+        class="text-primary hover:underline"
         href="https://mawar-cms-docs.vercel.app/"
         target="_blank"
         >mawar-cms-docs.vercel.app
       </a>
       To see ui components visit
       <a
-        class="text-primary-400 hover:underline"
+        class="text-primary hover:underline"
         href="https://roseui-nuxt.vercel.app/"
         target="_blank"
       >

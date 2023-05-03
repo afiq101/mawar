@@ -171,23 +171,23 @@ watch(dateNow, () => {
         <div class="flex gap-5">
           <button
             @click="prevMonth"
-            class="flex items-center px-2 py-2 rounded-md shadow-md bg-white text-primary-400 hover:bg-primary-300 hover:text-white"
+            class="flex items-center px-2 py-2 rounded-md shadow-md bg-white text-primary hover:bg-primary/80 hover:text-white"
           >
             <Icon size="20px" name="ic:round-keyboard-arrow-left"></Icon>
           </button>
           <button
             @click="nextMonth"
-            class="flex items-center px-2 py-2 rounded-md shadow-md bg-white text-primary-400 hover:bg-primary-300 hover:text-white"
+            class="flex items-center px-2 py-2 rounded-md shadow-md bg-white text-primary hover:bg-primary/80 hover:text-white"
           >
             <Icon size="20px" name="ic:round-keyboard-arrow-right"></Icon>
           </button>
         </div>
       </div>
     </div>
-    <div class="calendar-body rounded-md border border-primary-100">
+    <div class="calendar-body rounded-md border border-primary/20">
       <div class="calendar-body-header max-w-full">
         <ul
-          class="grid grid-cols-7 list-none bg-primary-200 text-primary-400 rounded-t-md"
+          class="grid grid-cols-7 list-none bg-primary/50 text-primary rounded-t-md"
         >
           <li
             class="flex justify-center items-center p-5"
@@ -201,9 +201,9 @@ watch(dateNow, () => {
       <div class="calendar-body-content">
         <ul class="grid grid-cols-7 list-none">
           <li
-            class="relative flex justify-center items-center h-30 border border-primary-100 whitespace-nowrap"
+            class="relative flex justify-center items-center h-30 border border-primary/10 whitespace-nowrap"
             :class="{
-              'bg-primary-50': val.isToday,
+              'bg-primary/5': val.isToday,
             }"
             v-for="(val, index) in allDate"
             :key="index"
@@ -212,15 +212,15 @@ watch(dateNow, () => {
               <label
                 class="absolute top-2 right-3 font-semibold"
                 :class="{
-                  'text-primary-100': !val.isCurrentMonth,
-                  'text-primary-300': val.isCurrentMonth,
+                  'text-primary/20': !val.isCurrentMonth,
+                  'text-primary/70': val.isCurrentMonth,
                 }"
                 for="day"
                 >{{ label(val.date) }}</label
               >
               <div class="event" v-if="val.event">
                 <div
-                  class="font-semibold p-5 bg-primary-400 text-white rounded-md"
+                  class="font-semibold p-5 bg-primary text-white rounded-md"
                   style="min-height: 5rem"
                   :class="{
                     'rounded-r-none ml-5': event.position === 'start',

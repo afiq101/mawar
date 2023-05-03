@@ -36,23 +36,23 @@ const props = defineProps({
         'h-3': size === 'sm',
         'h-4': size === 'md',
         'h-5': size === 'lg',
-        'bg-primary-200': variant == 'primary',
-        'bg-secondary-200': variant == 'secondary',
-        'bg-green-200': variant == 'success',
-        'bg-red-200': variant == 'danger',
-        'bg-orange-200': variant == 'warning',
-        'bg-blue-200': variant == 'info',
+        'bg-primary/20': variant == 'primary',
+        'bg-secondary/20': variant == 'secondary',
+        'bg-info/20': variant == 'info',
+        'bg-success/20': variant == 'success',
+        'bg-warning/20': variant == 'warning',
+        'bg-danger/20': variant == 'danger',
       }"
     >
       <div
         class="progressbar flex items-center justify-center rounded-full text-white"
         :class="{
-          'bg-primary-400': variant == 'primary',
-          'bg-secondary-400': variant == 'secondary',
-          'bg-green-400': variant == 'success',
-          'bg-red-400': variant == 'danger',
-          'bg-orange-400': variant == 'warning',
-          'bg-blue-400': variant == 'info',
+          'bg-primary': variant == 'primary',
+          'bg-secondary': variant == 'secondary',
+          'bg-info': variant == 'info',
+          'bg-success': variant == 'success',
+          'bg-warning': variant == 'warning',
+          'bg-danger': variant == 'danger',
         }"
         :style="{ width: (value / max) * 100 + '%' }"
       >

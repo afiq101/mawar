@@ -24,45 +24,45 @@ const props = defineProps({
       'text-base px-10 py-4': size === 'lg',
 
       // Filled Button
-      'text-white bg-primary-400 hover:bg-primary-500 disabled:bg-primary-50 disabled:text-primary-100 disabled:border-primary-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-white bg-primary hover:bg-primary/90 disabled:bg-primary/30 disabled:text-primary/50 disabled:border-primary/5 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'primary',
-      'text-white bg-secondary hover:bg-gray-500 disabled:bg-gray-50 disabled:text-gray-100 disabled:border-gray-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-white bg-secondary hover:bg-secondary/90 disabled:bg-secondary/30 disabled:text-secondary/50 disabled:border-secondary/5 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'secondary',
-      'text-white bg-blue-500 hover:bg-blue-600 disabled:bg-blue-50 disabled:text-blue-100 disabled:border-blue-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-white bg-info hover:bg-info/90 disabled:bg-info/30 disabled:text-info/50 disabled:border-info/5 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'info',
-      'text-white bg-green-500 hover:bg-green-600 disabled:bg-green-50 disabled:text-green-100 disabled:border-green-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-white bg-success hover:bg-success/90 disabled:bg-success/30 disabled:text-success/50 disabled:border-success/5 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'success',
-      'text-white bg-warning hover:bg-orange-500 disabled:bg-orange-50 disabled:text-orange-100 disabled:border-orange-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-white bg-warning hover:bg-warning/90 disabled:bg-warning/30 disabled:text-warning/50 disabled:border-warning/5 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'warning',
-      'text-white bg-red-500 hover:bg-red-600 disabled:bg-red-50 disabled:text-red-100 disabled:border-red-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-white bg-danger hover:bg-danger/90 disabled:bg-danger/30 disabled:text-danger/50 disabled:border-danger/5 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'danger',
 
       // Outline Button
-      'text-primary-400 border border-primary-400 hover:bg-primary-50 dark:hover:bg-slate-700 disabled:bg-primary-50 disabled:text-primary-100 disabled:border-primary-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-primary border border-primary hover:bg-primary/5 disabled:bg-primary/0 disabled:text-primary/30 disabled:border-primary/30 disabled:cursor-default dark:hover:bg-slate-700  dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'primary-outline',
-      'text-secondary border border-secondary hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-100 disabled:border-gray-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-secondary border border-secondary hover:bg-secondary/5 disabled:bg-secondary/0 disabled:text-secondary/30 disabled:border-secondary/30 disabled:cursor-default dark:hover:bg-slate-700  dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'secondary-outline',
-      'text-blue-500 border border-blue-500 hover:bg-blue-50 disabled:bg-blue-50 disabled:text-blue-100 disabled:border-blue-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-info border border-info hover:bg-info/5 disabled:bg-info/0 disabled:text-info/30 disabled:border-info/30 disabled:cursor-default dark:hover:bg-slate-700 dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'info-outline',
-      'text-green-500 border border-green-500 hover:bg-green-50 disabled:bg-green-50 disabled:text-green-100 disabled:border-green-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-success border border-success hover:bg-success/5 disabled:bg-success/0 disabled:text-success/30 disabled:border-success/30 disabled:cursor-default dark:hover:bg-slate-700 dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'success-outline',
-      'text-warning border border-warning hover:bg-orange-50 disabled:bg-orange-50 disabled:text-orange-100 disabled:border-orange-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-warning border border-warning hover:bg-warning/5 disabled:bg-warning/0 disabled:text-warning/30 disabled:border-warning/30 disabled:cursor-default dark:hover:bg-slate-700 dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'warning-outline',
-      'text-red-500 border border-red-500 hover:bg-red-50 disabled:bg-red-50 disabled:text-red-100 disabled:border-red-50 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
+      'text-danger border border-danger hover:bg-danger/5 disabled:bg-danger/0 disabled:text-danger/30 disabled:border-danger/30 disabled:cursor-default dark:hover:bg-slate-700 dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700':
         variant === 'danger-outline',
 
       //Text Button
-      'text-primary-400 hover:bg-primary-50 disabled:bg-primary-50 disabled:text-primary-100 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
+      'text-primary hover:bg-primary/10 disabled:bg-primary/5 disabled:text-primary/30 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
         variant === 'primary-text',
-      'text-secondary hover:bg-gray-50 disabled:bg-gray-50 disabled:text-gray-100 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
+      'text-secondary hover:bg-secondary/10 disabled:bg-secondary/5 disabled:text-secondary/30 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
         variant === 'secondary-text',
-      'text-blue-500 hover:bg-blue-50 disabled:bg-blue-50 disabled:text-blue-100 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
+      'text-info hover:bg-info/10 disabled:bg-info/5 disabled:text-info/30 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
         variant === 'info-text',
-      'text-green-500 hover:bg-green-50 disabled:bg-green-50 disabled:text-green-100 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
+      'text-success hover:bg-success/10 disabled:bg-success/5 disabled:text-success/30 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
         variant === 'success-text',
-      'text-warning hover:bg-orange-50 disabled:bg-orange-50 disabled:text-orange-100 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
+      'text-warning hover:bg-warning/10 disabled:bg-warning/5 disabled:text-warning/30 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
         variant === 'warning-text',
-      'text-red-500 hover:bg-red-50 disabled:bg-red-50 disabled:text-red-100 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
+      'text-danger hover:bg-danger/10 disabled:bg-danger/5 disabled:text-danger/30 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800':
         variant === 'danger-text',
     }"
   >

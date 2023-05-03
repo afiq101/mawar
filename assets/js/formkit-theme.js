@@ -17,7 +17,7 @@ const textClassification = {
     dark:formkit-invalid:border-danger
     rounded-lg mb-1
     overflow-hidden
-    focus-within:border-primary-400
+    focus-within:border-primary
     mb-0
   `,
   input: `
@@ -34,7 +34,7 @@ const textClassification = {
     dark:border-slate-700
     placeholder-secondary 
     focus:outline-none 
-    focus:shadow-outline
+    focus:shadow-outline 
     `,
   prefix: `ml-2`,
   message: "formkit-invalid:text-red-500 dark:formkit-invalid:text-danger",
@@ -46,20 +46,21 @@ const boxClassification = {
   legend: "font-bold text-sm",
   wrapper: "flex items-center mb-3 cursor-pointer",
   help: "mb-3",
-  input: `flex items-center 
+  input: `flex 
+          items-center 
           form-check-input
           appearance-none
-          mr-2
+          h-5 w-5 mr-2
           border-2 
           border-slate-200
           dark:border-slate-700
           checked:border-transparent 
-          checked:bg-primary-400
+          checked:bg-primary
           bg-white
           dark:bg-slate-800
-          dark:checked:bg-primary-400
+          dark:checked:bg-primary
           rounded-md
-          checked:shadow-sm checked:shadow-primary-500/30 
+          checked:shadow-sm checked:shadow-primary/40 
           focus:outline-none focus:ring-0 transition duration-200`,
   label:
     "text-sm text-gray-700 formkit-disabled:text-gray-300 dark:formkit-disabled:text-gray-700",
@@ -68,7 +69,7 @@ const boxClassification = {
 const buttonClassification = {
   wrapper: "mb-1",
   input:
-    "bg-primary-400 hover:bg-primary-500 text-white text-sm font-normal py-2 px-5 rounded-lg",
+    "bg-primary hover:bg-primary/90 text-white text-sm font-normal py-2 px-5 rounded-lg",
 };
 const OtpClassification = {
   label:
@@ -95,7 +96,7 @@ const OtpClassification = {
     bg-white
     dark:bg-slate-800
     placeholder-secondary
-    focus-within:border-primary-400
+    focus-within:border-primary
     focus:outline-none 
     focus:shadow-outline
 `,
@@ -110,7 +111,7 @@ export default {
   global: {
     label: "text-gray-700 dark:text-gray-200",
     outer: "mb-4 formkit-disabled:opacity-50",
-    help: "text-xs text-gray-500 dark:text-secondary mt-1",
+    help: "text-xs text-gray-500 dark:text-gray-400 mt-1",
     messages: "list-none p-0 mt-1 mb-0",
     message: "text-red-500 mb-1 text-xs",
     wrapper: "",
@@ -128,7 +129,7 @@ export default {
     label: "block mb-1 font-bold text-sm",
     inner: "w-full cursor-pointer",
     input:
-      "w-full cursor-pointer border rounded-lg text-gray-600 text-sm mb-1 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:bg-primary-400 file:text-white hover:file:bg-primary-500",
+      "w-full cursor-pointer border rounded-lg text-gray-600 text-sm mb-1 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-l-lg file:border-0 file:text-sm file:bg-primary file:text-white hover:file:bg-primary/90",
     noFiles: "block text-gray-800 text-sm my-1",
     fileItem: "block flex text-gray-800 text-sm my-1",
     removeFiles: "ml-auto text-blue-500 text-sm",

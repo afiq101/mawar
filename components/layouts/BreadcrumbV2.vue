@@ -49,7 +49,7 @@ async function navigateMenu(path) {
       <span
         v-for="(item, index) in breadcrumb"
         :key="index"
-        class="flex items-center text-primary-500"
+        class="flex items-center text-primary"
       >
         <Icon
           v-if="index != 0"
@@ -61,7 +61,7 @@ async function navigateMenu(path) {
           @click="navigateMenu(item.path)"
           class="cursor-pointer hover:underline pr-1 font-normal text-sm text-gray-500"
           :class="{
-            '!text-primary-500': breadcrumb.length - 1 == index,
+            '!text-primary': breadcrumb.length - 1 == index,
           }"
           >{{ item.name }}</a
         >

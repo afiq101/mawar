@@ -117,7 +117,7 @@ const login = async () => {
           </FormKit>
           <FormKit type="checkbox" label="Remember Me" />
           <NuxtLink
-            class="flex items-center justify-end h-5 mt-1 text-primary-400 hover:underline"
+            class="flex items-center justify-end h-5 mt-1 text-primary hover:underline"
             to="forgot-password"
             >Forgot Password?</NuxtLink
           >
@@ -134,7 +134,7 @@ const login = async () => {
         </div>
         <p class="mt-3 text-center text-slate-500">
           Don't have an account?
-          <NuxtLink to="/register" class="text-primary-400 hover:underline"
+          <NuxtLink to="/register" class="text-primary hover:underline"
             >Sign Up</NuxtLink
           >
         </p>

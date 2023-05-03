@@ -68,7 +68,7 @@ const togglePasswordVisibility2 = ref(false);
         >
           <template #label
             >I agree to the
-            <a class="text-primary-400 hover:underline ml-1"
+            <a class="text-primary hover:underline ml-1"
               >Term and Services</a
             >
           </template>
@@ -80,7 +80,7 @@ const togglePasswordVisibility2 = ref(false);
 
         <p class="mt-3 text-center text-slate-500">
           Already have an account?
-          <NuxtLink to="/login" class="text-primary-400 hover:underline"
+          <NuxtLink to="/login" class="text-primary hover:underline"
             >Login</NuxtLink
           >
         </p>

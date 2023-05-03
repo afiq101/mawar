@@ -1,5 +1,5 @@
 <script setup>
-import { directive as vClickAway } from 'vue3-click-away'
+import { directive as vClickAway } from "vue3-click-away";
 
 const props = defineProps({
   title: {
@@ -37,7 +37,6 @@ const toggle = (event) => {
 const closeMenu = (event) => {
   isOpen.value = false;
 };
-
 </script>
 
 <template>
@@ -51,39 +50,44 @@ const closeMenu = (event) => {
         'text-base px-8 py-4': size === 'lg',
 
         // Filled Button
-        'text-white focus:text-white bg-primary-400 hover:bg-primary-500 focus:bg-primary-500':
+        'text-white focus:text-white bg-primary hover:bg-primary/90 focus:bg-primary/90':
           variant === 'primary',
-        'text-white focus:text-white bg-blue-500 hover:bg-blue-600 focus:bg-blue-600':
+        'text-white focus:text-white bg-secondary hover:bg-secondary/90 focus:bg-secondary/90':
+          variant === 'secondary',
+        'text-white focus:text-white bg-info hover:bg-info/90 focus:bg-info/90':
           variant === 'info',
-        'text-white focus:text-white bg-green-500 hover:bg-green-600 focus:bg-green-600':
+        'text-white focus:text-white bg-success hover:bg-success/90 focus:bg-success/90':
           variant === 'success',
-        'text-white focus:text-white bg-warning hover:bg-orange-500 focus:bg-orange-500':
+        'text-white focus:text-white bg-warning hover:bg-warning/90 focus:bg-warning/90':
           variant === 'warning',
-        'text-white focus:text-white bg-red-500 hover:bg-red-600 focus:bg-red-600':
+        'text-white focus:text-white bg-danger hover:bg-danger/90 focus:bg-danger/90':
           variant === 'danger',
 
         // Outline Button
-        'text-primary-400 border border-primary-400 hover:bg-primary-50 focus:bg-primary-50':
+        'text-primary border border-primary hover:bg-primary/5 focus:bg-primary/5':
           variant === 'primary-outline',
-        'text-blue-500 border border-blue-500 hover:bg-blue-50 focus:bg-blue-50':
+        'text-secondary border border-secondary hover:bg-secondary/5 focus:bg-secondary/5':
+          variant === 'secondary-outline',
+        'text-info border border-blue-500 hover:bg-info/5 focus:bg-info/5':
           variant === 'info-outline',
-        'text-green-500 border border-green-500 hover:bg-green-50 focus:bg-green-50':
+        'text-success border border-success hover:bg-success/5 focus:bg-success/5':
           variant === 'success-outline',
-        'text-warning border border-warning hover:bg-orange-50 focus:bg-orange-50':
+        'text-warning border border-warning hover:bg-warning/5 focus:bg-warning/5':
           variant === 'warning-outline',
-        'text-red-500 border border-red-500 hover:bg-red-50 focus:bg-red-50':
+        'text-danger border border-danger hover:bg-danger/5 focus:bg-danger/5':
           variant === 'danger-outline',
 
         // Text Button
-        'text-primary-400 hover:bg-primary-50 focus:bg-primary-50 ':
+        'text-primary hover:bg-primary/5 focus:bg-primary/5 ':
           variant === 'primary-text',
-        'text-blue-500 hover:bg-blue-50 focus:bg-blue-50':
-          variant === 'info-text',
-        'text-green-500 hover:bg-green-50 focus:bg-green-50':
+        'text-secondary hover:bg-secondary/5 focus:bg-secondary/5 ':
+          variant === 'secondary-text',
+        'text-info hover:bg-info/5 focus:bg-info/5': variant === 'info-text',
+        'text-success hover:bg-success/5 focus:bg-success/5':
           variant === 'success-text',
-        'text-warning hover:bg-orange-50 focus:bg-orange-50':
+        'text-warning hover:bg-warning/5 focus:bg-warning/5':
           variant === 'warning-text',
-        'text-red-500 hover:bg-red-50 focus:bg-red-50':
+        'text-danger hover:bg-danger/5 focus:bg-danger/5':
           variant === 'danger-text',
       }"
       type="button"

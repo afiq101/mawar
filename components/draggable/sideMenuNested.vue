@@ -339,14 +339,14 @@ const removeChild = (type, data) => {
         >
           <div class="flex justify-between items-center">
             <div class="text-left font-normal text-xs mb-2">
-              <span class="uppercase text-primary-500 dark:text-primary-400">{{
+              <span class="uppercase text-primary dark:text-primary">{{
                 count == 0 && element.header
                   ? element.header
                   : count === 0
                   ? "(No Header)"
                   : ""
               }}</span>
-              <p class="text-gray-500 dark:text-secondary">
+              <p class="text-gray-500 dark:text-gray-500">
                 {{
                   count == 0 && element.description
                     ? element.description
@@ -359,7 +359,7 @@ const removeChild = (type, data) => {
             <div v-if="count == 0">
               <Icon
                 name="material-symbols:edit-outline-rounded"
-                class="text-primary-400 hover:text-primary-500 cursor-pointer"
+                class="text-primary hover:text-primary/90 cursor-pointer"
                 size="20"
                 @click="
                   type = 'header';
@@ -369,7 +369,7 @@ const removeChild = (type, data) => {
               ></Icon>
               <Icon
                 name="material-symbols:close-rounded"
-                class="text-primary-400 hover:text-primary-500 cursor-pointer"
+                class="text-primary hover:text-primary/90 cursor-pointer"
                 size="20"
                 @click="removeChild('header', menus.indexOf(element))"
               ></Icon>
@@ -383,7 +383,7 @@ const removeChild = (type, data) => {
             <div v-if="count > 0">
               <Icon
                 name="material-symbols:edit-outline-rounded"
-                class="text-primary-400 hover:text-primary-500 cursor-pointer"
+                class="text-primary hover:text-primary/90 cursor-pointer"
                 size="20"
                 @click="
                   type = 'menu';
@@ -393,7 +393,7 @@ const removeChild = (type, data) => {
               ></Icon>
               <Icon
                 name="material-symbols:close-rounded"
-                class="text-primary-400 hover:text-primary-500 cursor-pointer"
+                class="text-primary hover:text-primary/90 cursor-pointer"
                 size="20"
                 @click="removeChild('menu', element.path)"
               ></Icon>
@@ -472,7 +472,7 @@ const removeChild = (type, data) => {
           <p class="font-semibold mb-2">
             Preview Icon (<a
               href="https://icones.js.org/collection/all"
-              class="text-primary-400 hover:underline"
+              class="text-primary hover:underline"
               target="_blank"
               >https://icones.js.org/collection/all</a
             >)

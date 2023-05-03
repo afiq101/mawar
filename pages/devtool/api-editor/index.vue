@@ -191,7 +191,7 @@ const deleteAPI = async (apiURL) => {
         />
 
         <rs-card v-for="api in searchApi()">
-          <div class="relative p-4 border-l-8 border-primary-400 rounded">
+          <div class="relative p-4 border-l-8 border-primary rounded">
             <div class="flex justify-between items-center">
               <div class="block">
                 <span class="font-semibold text-lg">{{

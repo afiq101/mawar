@@ -45,7 +45,7 @@ provide("selectedTitle", selectedTitle);
         'flex flex-col md:flex-row': vertical,
         'shadow-md pt-4': type === 'card' && !vertical,
         'shadow-md': type === 'card' && vertical,
-        'bg-primary-400': type === 'card' && variant === 'primary',
+        'bg-primary': type === 'card' && variant === 'primary',
         'bg-secondary': type === 'card' && variant === 'secondary',
         'bg-success': type === 'card' && variant === 'success',
         'bg-danger': type === 'card' && variant === 'danger',
@@ -77,15 +77,14 @@ provide("selectedTitle", selectedTitle);
               selectedTitle === val.title && type === 'border' && vertical,
 
             // Variant Color for Border Type
-            'hover:border-primary-400 ':
-              type === 'border' && variant == 'primary',
+            'hover:border-primary ': type === 'border' && variant == 'primary',
             'hover:border-secondary ':
               type === 'border' && variant == 'secondary',
             'hover:border-info ': type === 'border' && variant == 'info',
             'hover:border-success ': type === 'border' && variant == 'success',
             'hover:border-warning ': type === 'border' && variant == 'warning',
             'hover:border-danger ': type === 'border' && variant == 'danger',
-            'border-primary-400 text-primary-400':
+            'border-primary text-primary':
               selectedTitle === val.title &&
               type === 'border' &&
               variant == 'primary',
@@ -126,7 +125,7 @@ provide("selectedTitle", selectedTitle);
                 selectedTitle === val.title && type === 'default' && vertical,
 
               // Variant Color for default type
-              'hover:border-primary-400 hover:text-primary-400':
+              'hover:border-primary hover:text-primary':
                 type === 'default' && variant == 'primary',
               'hover:border-secondary hover:text-secondary':
                 type === 'default' && variant == 'secondary',
@@ -138,7 +137,7 @@ provide("selectedTitle", selectedTitle);
                 type === 'default' && variant == 'warning',
               'hover:border-danger hover:text-danger':
                 type === 'default' && variant == 'danger',
-              'text-primary-400 border-primary-400':
+              'text-primary border-primary':
                 selectedTitle === val.title &&
                 type === 'default' &&
                 variant == 'primary',
@@ -166,33 +165,33 @@ provide("selectedTitle", selectedTitle);
               'px-5 mx-1 text-white rounded-t-md': type === 'card' && !vertical,
               'px-5 my-0 mb:my-1 mb:px-0 text-white rounded-bl-none rounded-t-md md:rounded-tr-none md:rounded-l-md':
                 type === 'card' && vertical,
-              'bg-primary-300': type === 'card' && variant == 'primary',
-              'bg-gray-300': type === 'card' && variant == 'secondary',
-              'bg-blue-300': type === 'card' && variant == 'info',
-              'bg-green-300': type === 'card' && variant == 'success',
-              'bg-orange-300': type === 'card' && variant == 'warning',
-              'bg-red-300': type === 'card' && variant == 'danger',
-              '!bg-white text-primary-300':
+              'bg-primary/90': type === 'card' && variant == 'primary',
+              'bg-secondary/90': type === 'card' && variant == 'secondary',
+              'bg-info/90': type === 'card' && variant == 'info',
+              'bg-success/90': type === 'card' && variant == 'success',
+              'bg-warning/90': type === 'card' && variant == 'warning',
+              'bg-danger/90': type === 'card' && variant == 'danger',
+              '!bg-white text-primary/90':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'primary',
-              '!bg-white text-gray-300':
+              '!bg-white text-secondary/90':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'secondary',
-              '!bg-white text-blue-300':
+              '!bg-white text-info/90':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'info',
-              '!bg-white text-green-300':
+              '!bg-white text-success/90':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'success',
-              '!bg-white text-orange-300':
+              '!bg-white text-warning/90':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'warning',
-              '!bg-white text-red-300':
+              '!bg-white text-danger/90':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'danger',
@@ -213,7 +212,7 @@ provide("selectedTitle", selectedTitle);
           'flex-1': vertical && fill,
           'border rounded-b-md': type === 'border' && !vertical,
           'border rounded-md rounded-l-none': type === 'border' && vertical,
-          'border-primary-400': type === 'border' && variant === 'primary',
+          'border-primary': type === 'border' && variant === 'primary',
           'border-secondary': type === 'border' && variant === 'secondary',
           'border-info': type === 'border' && variant === 'info',
           'border-success': type === 'border' && variant === 'success',
