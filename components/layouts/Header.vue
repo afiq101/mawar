@@ -211,7 +211,7 @@ onMounted(() => {
                   {{ isVertical ? "Horizontal Layout" : "Vertical Layout" }}
                 </a>
               </li> -->
-              <li>
+              <!-- <li>
                 <a
                   class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
                 >
@@ -226,7 +226,7 @@ onMounted(() => {
                   <Icon name="ic:outline-settings" class="mr-2" />
                   Setting
                 </a>
-              </li>
+              </li> -->
               <li>
                 <NuxtLink
                   to="/logout"
