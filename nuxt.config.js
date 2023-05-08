@@ -37,13 +37,14 @@ export default defineNuxtConfig({
     ],
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
+  css: ["~/assets/style/scss/main.scss"],
   tailwindcss: {
     cssPath: "~/assets/style/css/tailwind.css",
     configPath: "tailwind.config",
     exposeConfig: false,
     config: {},
     injectPosition: 0,
-    viewer: true,
+    viewer: false,
   },
   colorMode: {
     preference: "light", // default value of $colorMode.preference
@@ -55,7 +56,6 @@ export default defineNuxtConfig({
     classSuffix: "",
     storageKey: "nuxt-color-mode",
   },
-  css: ["~/assets/style/scss/main.scss"],
   formkit: {
     defaultConfig: true,
   },
