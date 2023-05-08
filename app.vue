@@ -9,6 +9,7 @@ useHead({
   },
 });
 
+const nuxtApp = useNuxtApp();
 const themeStore = useThemeStore();
 const loading = ref(true);
 
@@ -48,9 +49,11 @@ const setThemeGlobal = () => {
 
 onMounted(() => {
   setThemeGlobal();
-  setTimeout(() => {
+
+  // Hide loading indicator if not hydrating
+  if (!nuxtApp.isHydrating) {
     loading.value = false;
-  }, 300);
+  }
 });
 </script>
 

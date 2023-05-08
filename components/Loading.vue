@@ -1,7 +1,9 @@
 <script setup></script>
 
 <template>
-  <div class="absolute bg-white z-50 top-0 left-0 w-full h-full">
+  <div
+    class="absolute bg-white dark:bg-slate-800 z-50 top-0 left-0 w-full h-full"
+  >
     <div class="flex justify-center text-center items-center h-screen">
       <div>
         <img
