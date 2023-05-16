@@ -1,4 +1,15 @@
-<script setup></script>
+<script setup>
+const showMessage = ref(false);
+
+setTimeout(() => {
+  showMessage.value = true;
+}, 2000);
+
+const refreshPage = () => {
+  // hard refresh
+  window.location.reload(true);
+};
+</script>
 
 <template>
   <div
@@ -6,11 +17,14 @@
   >
     <div class="flex justify-center text-center items-center h-screen">
       <div>
-        <img
-          src="@/assets/img/logo/logo-full-transparent.png"
-          class="w-[220px]"
-          alt=""
-        />
+        <div class="flex justify-center items-center">
+          <img
+            src="@/assets/img/logo/logo-full-transparent.png"
+            class="w-[240px]"
+            alt=""
+          />
+        </div>
+
         <div
           class="flex justify-center items-center"
           aria-label="Loading..."
@@ -26,6 +40,15 @@
               d="M16.9497 7.05015C14.2161 4.31648 9.78392 4.31648 7.05025 7.05015C6.65973 7.44067 6.02656 7.44067 5.63604 7.05015C5.24551 6.65962 5.24551 6.02646 5.63604 5.63593C9.15076 2.12121 14.8492 2.12121 18.364 5.63593C18.7545 6.02646 18.7545 6.65962 18.364 7.05015C17.9734 7.44067 17.3403 7.44067 16.9497 7.05015Z"
             ></path>
           </svg>
+        </div>
+        <div v-if="showMessage" class="my-10 text-gray-500 font-medium">
+          If loading takes too long,
+          <br />
+          please click
+          <button @click="refreshPage">
+            <span class="text-[#F3586A]">here</span>
+          </button>
+          or hard refresh your browser.
         </div>
       </div>
     </div>
