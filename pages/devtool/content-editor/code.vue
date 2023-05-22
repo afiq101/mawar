@@ -40,7 +40,7 @@ if (!route.query.page || !page) {
 
 if (page?.path)
   page.path = page.path.replace(/:(\w+)/g, "[$1]").replace(/\(\)/g, "");
-  
+
 // Call API to get the code
 const { data } = await useFetch("/api/devtool/content/code/file-code", {
   initialCache: false,
@@ -159,10 +159,6 @@ const saveCode = async () => {
     }, 1000);
   }
 };
-
-watch(fileCode, (code) => {
-  console.log(code);
-});
 </script>
 
 <template>

@@ -18,6 +18,11 @@ export default defineEventHandler(async (event) => {
     const eslint = new ESLint({
       overrideConfig: {
         extends: ["plugin:vue/vue3-recommended"],
+        parserOptions: {
+          parser: "espree",
+          ecmaVersion: 2022,
+          sourceType: "module",
+        },
       },
       useEslintrc: false,
     });
