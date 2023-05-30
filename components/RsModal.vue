@@ -113,7 +113,7 @@ const validateCancelCallback = () => {
               <rs-button
                 v-if="!$slots.footer && !okOnly"
                 @click="validateCancelCallback"
-                class="bg-gray-500 hover:bg-gray-600"
+                variant="primary-text"
               >
                 {{ cancelTitle }}</rs-button
               >

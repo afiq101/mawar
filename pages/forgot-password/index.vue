@@ -19,7 +19,6 @@ definePageMeta({
         <div class="grid grid-cols-1">
           <FormKit label="Email" type="email" outer-class="text-left" />
           <NuxtLink to="/reset-password">
-            >
             <FormKit type="button" input-class="w-full">Validate Email</FormKit>
           </NuxtLink>
         </div>

@@ -189,40 +189,44 @@ const deleteAPI = async (apiURL) => {
           type="search"
           class="mb-4"
         />
-
-        <rs-card v-for="api in searchApi()">
-          <div class="relative p-4 border-l-8 border-primary rounded">
-            <div class="flex justify-between items-center">
-              <div class="block">
-                <span class="font-semibold text-lg">{{
-                  kebabCasetoTitleCase(api.name)
-                }}</span>
-                <br />
-                <span class="text-gray-400"> {{ api.url }}</span>
-              </div>
-              <div class="flex gap-4">
-                <rs-button
-                  variant="primary-outline"
-                  @click="redirectToApiCode(api.url)"
-                >
-                  <Icon
-                    name="material-symbols:code-blocks-outline-rounded"
-                    class="mr-2"
-                  />
-                  Code Editor
-                </rs-button>
-                <div class="flex gap-2">
-                  <rs-button @click="openModalEdit(api.url)">
-                    <Icon name="material-symbols:edit-outline-rounded" />
+        <div v-auto-animate>
+          <div
+            class="shadow-md shadow-black/5 ring-1 ring-slate-700/10 rounded-lg mb-4"
+            v-for="api in searchApi()"
+          >
+            <div class="relative p-4 border-l-8 border-primary rounded-lg">
+              <div class="flex justify-between items-center">
+                <div class="block">
+                  <span class="font-semibold text-lg">{{
+                    kebabCasetoTitleCase(api.name)
+                  }}</span>
+                  <br />
+                  <span class="text-gray-400"> {{ api.url }}</span>
+                </div>
+                <div class="flex gap-4">
+                  <rs-button
+                    variant="primary-outline"
+                    @click="redirectToApiCode(api.url)"
+                  >
+                    <Icon
+                      name="material-symbols:code-blocks-outline-rounded"
+                      class="mr-2"
+                    />
+                    Code Editor
                   </rs-button>
-                  <rs-button @click="deleteAPI(api.url)">
-                    <Icon name="carbon:trash-can" />
-                  </rs-button>
+                  <div class="flex gap-2">
+                    <rs-button @click="openModalEdit(api.url)">
+                      <Icon name="material-symbols:edit-outline-rounded" />
+                    </rs-button>
+                    <rs-button @click="deleteAPI(api.url)">
+                      <Icon name="carbon:trash-can" />
+                    </rs-button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </rs-card>
+        </div>
       </div>
     </rs-card>
 

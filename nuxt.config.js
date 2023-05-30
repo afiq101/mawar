@@ -532,39 +532,10 @@ export default defineNuxtConfig({
       fireImmediately: false,
       throwError: false, // optional
     },
+    headers: false,
   },
   routeRules: {
-    "/api/devtool/content/code/save": {
-      security: {
-        xssValidator: false,
-        requestSizeLimiter: false,
-      },
-    },
-    "/api/devtool/content/code/prettier-format": {
-      security: {
-        xssValidator: false,
-        requestSizeLimiter: false,
-      },
-    },
-    "/api/devtool/content/code/linter": {
-      security: {
-        xssValidator: false,
-        requestSizeLimiter: false,
-      },
-    },
-    "/api/devtool/api/save": {
-      security: {
-        xssValidator: false,
-        requestSizeLimiter: false,
-      },
-    },
-    "/api/devtool/api/prettier-format": {
-      security: {
-        xssValidator: false,
-        requestSizeLimiter: false,
-      },
-    },
-    "/api/devtool/api/linter": {
+    "/api/devtool/**": {
       security: {
         xssValidator: false,
         requestSizeLimiter: false,
