@@ -1,11 +1,38 @@
 <script setup>
-import { useThemeStore } from "~/stores/theme";
-
 const colorMode = useColorMode();
-const themeStore = useThemeStore();
 
 const hideConfigMenu = ref(true);
 const rgbColor = ref({});
+
+const themes = ref([
+  {
+    label: "Rose",
+    value: "rose",
+  },
+  {
+    label: "Marigold",
+    value: "marigold",
+  },
+]);
+const selectTheme = ref("rose");
+
+const removeAllStyle = () => {
+  document.documentElement.style.removeProperty("--primary-color");
+  document.documentElement.style.removeProperty("--secondary-color");
+  document.documentElement.style.removeProperty("--info-color");
+  document.documentElement.style.removeProperty("--success-color");
+  document.documentElement.style.removeProperty("--warning-color");
+  document.documentElement.style.removeProperty("--danger-color");
+};
+
+const removeAllStorage = () => {
+  localStorage.removeItem("primary-color");
+  localStorage.removeItem("secondary-color");
+  localStorage.removeItem("info-color");
+  localStorage.removeItem("success-color");
+  localStorage.removeItem("warning-color");
+  localStorage.removeItem("danger-color");
+};
 
 const hexToRgb = (hex) => {
   const r = parseInt(hex.slice(1, 3), 16);
@@ -14,15 +41,51 @@ const hexToRgb = (hex) => {
   return `${r}, ${g}, ${b}`;
 };
 
+const rgbToHex = (rgb) => {
+  const [r, g, b] = rgb.split(",");
+
+  const hexR = parseInt(r).toString(16);
+  const hexG = parseInt(g).toString(16);
+  const hexB = parseInt(b).toString(16);
+
+  return `#${hexR}${hexG}${hexB}`;
+};
+
+const getRootColor = (type) => {
+  // Check if localstorage is available for example primaryColor
+  if (localStorage.getItem(type + "-color")) {
+    return rgbToHex(localStorage.getItem(type + "-color"));
+  } else {
+    return rgbToHex(
+      getComputedStyle(document.documentElement).getPropertyValue(
+        `--${type}-color`
+      )
+    );
+  }
+};
+
+const setDefaultColor = () => {
+  rgbColor.value.primary = getRootColor("primary");
+  rgbColor.value.secondary = getRootColor("secondary");
+  rgbColor.value.info = getRootColor("info");
+  rgbColor.value.success = getRootColor("success");
+  rgbColor.value.warning = getRootColor("warning");
+  rgbColor.value.danger = getRootColor("danger");
+};
+
 const setThemeColor = (type, color) => {
-  themeStore.setThemeColor(type, color);
+  const rgbColor = hexToRgb(color);
+  // Set localstorage
+  localStorage.setItem(type + "-color", rgbColor);
 
   // Remove Color form type string
-  const colorType = type.replace("Color", "").toLowerCase();
-  document.documentElement.style.setProperty(
-    `--color-${colorType}`,
-    hexToRgb(color)
-  );
+  document.documentElement.style.setProperty(`--${type}-color`, rgbColor);
+};
+
+const resetTheme = () => {
+  removeAllStorage();
+  removeAllStyle();
+  setDefaultColor();
 };
 
 function setColorMode() {
@@ -39,48 +102,26 @@ function setColorMode() {
   }
 }
 
-const setThemeGlobal = () => {
-  rgbColor.value.primary = themeStore.primaryColor;
-  rgbColor.value.secondary = themeStore.secondaryColor;
-  rgbColor.value.info = themeStore.infoColor;
-  rgbColor.value.success = themeStore.successColor;
-  rgbColor.value.warning = themeStore.warningColor;
-  rgbColor.value.danger = themeStore.dangerColor;
+const setTheme = () => {
+  // set html to atribut data-theme
+  document.documentElement.setAttribute("data-theme", selectTheme.value);
 
-  document.documentElement.style.setProperty(
-    "--color-primary",
-    hexToRgb(themeStore.primaryColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-secondary",
-    hexToRgb(themeStore.secondaryColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-info",
-    hexToRgb(themeStore.infoColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-success",
-    hexToRgb(themeStore.successColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-warning",
-    hexToRgb(themeStore.warningColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-danger",
-    hexToRgb(themeStore.dangerColor)
-  );
+  console.log(rgbColor.value);
+  console.log(getRootColor("primary"));
+
+  // Change input color to theme color
+  rgbColor.value.primary = getRootColor("primary");
+  rgbColor.value.secondary = getRootColor("secondary");
+  rgbColor.value.info = getRootColor("info");
+  rgbColor.value.success = getRootColor("success");
+  rgbColor.value.warning = getRootColor("warning");
+  rgbColor.value.danger = getRootColor("danger");
 };
 
 onMounted(() => {
-  setThemeGlobal();
+  // setThemeGlobal();
+  setDefaultColor();
 });
-
-const resetTheme = () => {
-  themeStore.resetThemeColor();
-  setThemeGlobal();
-};
 </script>
 
 <template>
@@ -144,9 +185,15 @@ const resetTheme = () => {
           <a
             @click="resetTheme"
             class="underline text-blue-600 cursor-pointer hover:text-blue-400"
-            >Reset</a
+            >Reset All</a
           >
         </div>
+        <FormKit
+          type="select"
+          v-model="selectTheme"
+          :options="themes"
+          @change="setTheme"
+        />
 
         <div class="grid grid-cols-2">
           <FormKit
@@ -157,7 +204,7 @@ const resetTheme = () => {
               label: '!font-medium !text-sm mb-0',
               outer: '!mb-0',
             }"
-            @input="setThemeColor('primaryColor', rgbColor.primary)"
+            @input="setThemeColor('primary', rgbColor.primary)"
           />
 
           <FormKit
@@ -168,7 +215,7 @@ const resetTheme = () => {
               label: '!font-medium !text-sm mb-0',
               outer: '!mb-0',
             }"
-            @input="setThemeColor('secondaryColor', rgbColor.secondary)"
+            @input="setThemeColor('secondary', rgbColor.secondary)"
           />
 
           <FormKit
@@ -179,7 +226,7 @@ const resetTheme = () => {
               label: '!font-medium !text-sm mb-0',
               outer: '!mb-0',
             }"
-            @input="setThemeColor('infoColor', rgbColor.info)"
+            @input="setThemeColor('info', rgbColor.info)"
           />
 
           <FormKit
@@ -190,7 +237,7 @@ const resetTheme = () => {
               label: '!font-medium !text-sm mb-0',
               outer: '!mb-0',
             }"
-            @input="setThemeColor('successColor', rgbColor.success)"
+            @input="setThemeColor('success', rgbColor.success)"
           />
 
           <FormKit
@@ -201,7 +248,7 @@ const resetTheme = () => {
               label: '!font-medium !text-sm mb-0',
               outer: '!mb-0',
             }"
-            @input="setThemeColor('warningColor', rgbColor.warning)"
+            @input="setThemeColor('warning', rgbColor.warning)"
           />
 
           <FormKit
@@ -212,7 +259,7 @@ const resetTheme = () => {
               label: '!font-medium !text-sm mb-0',
               outer: '!mb-0',
             }"
-            @input="setThemeColor('dangerColor', rgbColor.danger)"
+            @input="setThemeColor('danger', rgbColor.danger)"
           />
         </div>
         <hr class="my-4" />

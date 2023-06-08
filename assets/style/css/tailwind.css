@@ -1,15 +1,28 @@
 @tailwind base;
-
 @tailwind components;
-
 @tailwind utilities;
+
+@layer base {
+  /* :root {
+    --primary-color: 243, 88, 106;
+    --secondary-color: 240, 122, 37;
+    --info-color: 65, 133, 242;
+    --success-color: 79, 192, 103;
+    --warning-color: 246, 141, 32;
+    --danger-color: 229, 83, 69;
+  }
+
+  [data-theme="marigold"] {
+    --primary-color: 234, 162, 32 !important;
+    --secondary-color: 4, 100, 4 !important;
+  } */
+}
 
 @layer components {
   .icon-btn {
     @apply flex
             items-center
             justify-center
-            transition-colors
             text-gray-500
             dark:text-gray-300
             duration-300;
