@@ -61,6 +61,11 @@ export default [
         icon: "material-symbols:api-rounded",
         child: [],
       },
+      {
+        title: "Form Builder",
+        path: "/devtool/form-builder/edit",
+        icon: "mdi:form-select",
+      },
     ],
     meta: {
       auth: {
