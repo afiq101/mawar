@@ -82,9 +82,8 @@ onMounted(() => {
       'shadow-md dark:shadow-slate-900 my-4': type === 'card',
     }"
     :style="`max-height: ${maxHeight}px; transition-property: max-height`"
-    @click="onClick"
   >
-    <div class="rs-collapse-header">
+    <div class="rs-collapse-header" @click="onClick">
       <slot v-if="!!$slots.title" name="title"></slot>
       <span v-else> {{ title }}</span>
     </div>
