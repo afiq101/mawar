@@ -15,6 +15,12 @@ import "@formkit/addons/css/floatingLabels";
 import { createMultiStepPlugin } from "@formkit/addons";
 import "@formkit/addons/css/multistep";
 
+// https://formkit.com/plugins/auto-height-textarea
+import { createAutoHeightTextareaPlugin } from "@formkit/addons";
+
+// https://formkit.com/plugins/local-storage
+import { createLocalStoragePlugin } from "@formkit/addons";
+
 export default {
   plugins: [
     createFloatingLabelsPlugin({
@@ -24,6 +30,17 @@ export default {
       // optional config
     }),
     createMultiStepPlugin(),
+    createAutoHeightTextareaPlugin(),
+    createLocalStoragePlugin({
+      // plugin defaults:
+      prefix: "formkit",
+      key: undefined,
+      control: undefined,
+      maxAge: 3600000, // 1 hour
+      debounce: 200,
+      beforeSave: undefined,
+      beforeLoad: undefined,
+    }),
   ],
   config: {
     classes: generateClasses(defaultTheme),

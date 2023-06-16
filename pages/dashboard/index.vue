@@ -1,8 +1,8 @@
 <script setup>
 definePageMeta({
   title: "Dashboard",
-  middleware: ["auth"], // This is for Login Auth for page
-  requiresAuth: true, // This is use for Login Auth for page
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const data1 = ref([]);
@@ -243,10 +243,7 @@ onMounted(() => {
           <div
             class="p-5 flex justify-center items-center bg-primary/20 rounded-2xl"
           >
-            <Icon
-              class="text-primary"
-              name="ic:outline-attach-money"
-            ></Icon>
+            <Icon class="text-primary" name="ic:outline-attach-money"></Icon>
           </div>
           <div class="flex-1 truncate">
             <span class="block font-semibold text-xl leading-tight">

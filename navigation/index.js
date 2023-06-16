@@ -17,6 +17,20 @@ export default [
     description: "Manage your application",
     child: [
       {
+        title: "Configuration",
+        icon: "ic:outline-settings",
+        child: [
+          {
+            title: "Environment",
+            path: "/devtool/config/environment",
+          },
+          {
+            title: "Application Log",
+            path: "/devtool/config/application-log",
+          },
+        ],
+      },
+      {
         title: "Menu Editor",
         icon: "ci:menu-alt-03",
         path: "/devtool/menu-editor",
@@ -60,6 +74,11 @@ export default [
         path: "/devtool/api-editor",
         icon: "material-symbols:api-rounded",
         child: [],
+      },
+      {
+        title: "Form Builder",
+        path: "/devtool/form-builder/edit",
+        icon: "mdi:form-select",
       },
     ],
     meta: {

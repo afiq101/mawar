@@ -1,6 +1,8 @@
 <script setup>
 definePageMeta({
   title: "Template Viewer",
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const id = useRoute().params.id;

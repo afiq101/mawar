@@ -139,7 +139,7 @@ export default {
   password: textClassification,
   radio: {
     ...boxClassification,
-    input: boxClassification.input.replace("rounded-sm", "rounded-full"),
+    input: boxClassification.input.replace("rounded-md", "rounded-full"),
   },
   range: {
     input:

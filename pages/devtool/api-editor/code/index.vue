@@ -4,6 +4,8 @@ import { useThemeStore } from "~/stores/theme";
 
 definePageMeta({
   title: "API Code Editor",
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const { $swal, $router } = useNuxtApp();
