@@ -28,9 +28,9 @@ const props = defineProps({
     type: String,
     default: "oneDark",
   },
-  readOnly: {
-    type: String,
-    default: "",
+  disabled: {
+    type: Boolean,
+    default: false,
   },
 });
 
@@ -204,6 +204,7 @@ function numberComma(x) {
       :indent-with-tab="true"
       :tab-size="2"
       :extensions="extensions"
+      :disabled="disabled"
       @ready="handleReady"
       @change="onChange($event)"
       @focus="onFocus($event)"
