@@ -17,6 +17,20 @@ export default [
     description: "Manage your application",
     child: [
       {
+        title: "Configuration",
+        icon: "ic:outline-settings",
+        child: [
+          {
+            title: "Environment",
+            path: "/devtool/config/environment",
+          },
+          {
+            title: "Application Log",
+            path: "/devtool/config/application-log",
+          },
+        ],
+      },
+      {
         title: "Menu Editor",
         icon: "ci:menu-alt-03",
         path: "/devtool/menu-editor",

@@ -1,6 +1,8 @@
 <script setup>
 definePageMeta({
   title: "Code Editor",
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const { $swal, $router } = useNuxtApp();

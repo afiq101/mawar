@@ -1,6 +1,8 @@
 <script setup>
 definePageMeta({
   title: "Template Editor",
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const searchText = ref("");

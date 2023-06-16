@@ -1,6 +1,8 @@
 <script setup>
 definePageMeta({
   title: "API Editor",
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const nuxtApp = useNuxtApp();

@@ -1,6 +1,8 @@
 <script setup>
 definePageMeta({
   title: "User List",
+  middleware: ["auth"],
+  requiresAuth: true,
   keepalive: {
     exclude: ["rs-table"],
   },

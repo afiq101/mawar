@@ -8,6 +8,8 @@ import rsBlockPlugin from "@@/assets/js/gjs-plugin/block/rs-component";
 
 definePageMeta({
   title: "Canvas Editor",
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const { $swal, $router } = useNuxtApp();

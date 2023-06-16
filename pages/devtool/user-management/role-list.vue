@@ -1,6 +1,8 @@
 <script setup>
 definePageMeta({
   title: "Role List",
+  middleware: ["auth"],
+  requiresAuth: true,
 });
 
 const { $swal, $router } = useNuxtApp();
