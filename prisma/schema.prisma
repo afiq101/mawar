@@ -86,3 +86,30 @@ model pagecontent {
 
   @@index([pageContentPageID], map: "FK__page")
 }
+
+model book {
+  bookID       Int     @id @default(autoincrement())
+  bookName     String?
+  bookSynopsis String? @db.VarChar(500)
+  bookAuthor   String?
+}
+
+model customer {
+  customerID      Int     @id @default(autoincrement())
+  customerName    String? @db.VarChar(255)
+  customerGender  String? @db.VarChar(255)
+  customerPhone   String? @db.VarChar(255)
+  customerStatus  String? @db.VarChar(255)
+  customerAddress String? @db.VarChar(255)
+}
+
+model stock {
+  stockID       Int     @id @default(autoincrement())
+  stockName     String? @db.VarChar(255)
+  stockType     String? @db.VarChar(255)
+  stockSize     String? @db.VarChar(255)
+  stockQuantity Int?
+  stockTotal    Int?
+  stockStatus   String? @db.VarChar(255)
+  stockImage    String? @db.VarChar(225)
+}
