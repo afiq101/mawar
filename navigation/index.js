@@ -77,7 +77,7 @@ export default [
       },
       {
         title: "Form Builder",
-        path: "/devtool/form-builder/edit",
+        path: "/devtool/form-builder",
         icon: "mdi:form-select",
       },
     ],

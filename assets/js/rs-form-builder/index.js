@@ -1,4 +1,4 @@
-import formSchema from "./form-schema";
+import formSchema from "./schema";
 
 // Export
 export default {
