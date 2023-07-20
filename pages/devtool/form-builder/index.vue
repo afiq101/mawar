@@ -54,6 +54,41 @@ const addForm = async () => {
     $router.push(`/devtool/form-builder/edit/${id}`);
   }
 };
+
+const deleteForm = async (id) => {
+  $swal
+    .fire({
+      title: "Are you sure to delete this Form?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    })
+    .then(async (result) => {
+      if (result.isConfirmed) {
+        const { data: deleteForm } = await useFetch(
+          `/api/devtool/form-builder/delete`,
+          {
+            method: "POST",
+            body: {
+              formId: id,
+            },
+          }
+        );
+
+        if (deleteForm.value.statusCode == 200) {
+          $swal.fire({
+            title: "Success",
+            text: "Form has been deleted",
+            icon: "success",
+            timer: 1000,
+          });
+        }
+      }
+    });
+};
 </script>
 
 <template>
@@ -97,16 +132,27 @@ const addForm = async () => {
             v-for="form in searchForm()"
             class="page shadow-md shadow-black/5 p-5 ring-1 ring-slate-700/10 rounded-lg"
           >
-            <nuxt-link :to="`/devtool/form-builder/edit/${form.id}`">
-              <div class="pb-4">
-                <h4 class="font-semibold">
-                  {{ form.id }}
-                </h4>
-                <p>
-                  {{ form.name }}
-                </p>
+            <div class="">
+              <h4 class="font-semibold">
+                {{ form.name }}
+              </h4>
+              <p>
+                {{ form.id }}
+              </p>
+              <div class="flex justify-between items-center mt-4">
+                <nuxt-link :to="`/devtool/form-builder/edit/${form.id}`">
+                  <rs-button> Edit Form </rs-button>
+                </nuxt-link>
+
+                <rs-button
+                  @click="deleteForm(form.id)"
+                  variant="primary-text"
+                  class="!py-2 !px-3"
+                >
+                  <Icon name="carbon:trash-can"></Icon>
+                </rs-button>
               </div>
-            </nuxt-link>
+            </div>
           </div>
         </div>
       </div>

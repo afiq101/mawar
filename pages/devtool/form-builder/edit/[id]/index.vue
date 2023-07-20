@@ -24,6 +24,7 @@ const showModalForm = ref(false);
 
 const bannerFile = ref(null);
 const showModalAddBanner = ref(false);
+const showModalAddUrl = ref(false);
 
 const originURL = ref("");
 
@@ -31,6 +32,7 @@ const form = ref({
   id: "",
   name: "",
   bannerImg: "",
+  apiURL: "",
 });
 
 const { data: getFormById } = await useFetch(
@@ -260,7 +262,6 @@ const addField = (type) => {
       title: "",
       description: "",
     });
-    return;
   }
 
   form.value.fields[sectionIndex].child.splice(fieldIndex, 0, {
@@ -282,6 +283,8 @@ const addField = (type) => {
       rules: [],
     },
   });
+
+  return;
 };
 
 const duplicateField = (sectionIndex, fieldIndex, field) => {
@@ -371,7 +374,7 @@ const selectValidationRule = (sectionIndex, fieldIndex, rule) => {
     defaultMessage: validationMessage.value,
   });
 
-  console.log(form.value.fields[sectionIndex].child[fieldIndex].validation);
+  // console.log(form.value.fields[sectionIndex].child[fieldIndex].validation);
 };
 
 const addOptionField = (sectionIndex, fieldIndex, options) => {
@@ -454,8 +457,6 @@ const assignValidationRuleModel = (
   fieldValidation.form[1].disabled = true;
 };
 
-const log = () => console.log(form.value);
-
 const validateDateValue = (value) => {
   if (DateTime.fromISO(value).isValid)
     return DateTime.fromISO(value).toFormat("dd/MM/yyyy");
@@ -474,6 +475,8 @@ const changeValidationMessage = (
       form.value.fields[sectionIndex].child[fieldIndex].validation.rules[
         fieldValidationIndex
       ];
+
+    console.log("fieldValidation", fieldValidation);
 
     // Set model value to regex 2nd field
     let newMessage = fieldValidation.defaultMessage.replace(
@@ -523,6 +526,10 @@ watchDebounced(
   },
   { debounce: 1000, maxWait: 5000 }
 );
+
+const redirectViewForm = () => {
+  window.open("/form/" + encodedFormId("view"), "_blank");
+};
 </script>
 
 <template>
@@ -548,13 +555,20 @@ watchDebounced(
           name="mdi:image-plus-outline"
           class="mr-4 hover:text-primary cursor-pointer"
         />
+
+        <Icon
+          name="material-symbols:add-link"
+          class="mr-4 hover:text-primary cursor-pointer"
+          @click="showModalAddUrl = true"
+        />
+
         <Icon
           name="material-symbols:preview"
           class="mr-4 hover:text-primary cursor-pointer"
-          @click="log"
+          @click="redirectViewForm"
         />
 
-        <VDropdown :distance="20">
+        <!-- <VDropdown :distance="20">
           <button>
             <Icon
               name="mdi:dots-vertical"
@@ -578,7 +592,7 @@ watchDebounced(
               </div>
             </div>
           </template>
-        </VDropdown>
+        </VDropdown> -->
 
         <rs-button @click="showModalForm = true"> Share </rs-button>
       </div>
@@ -592,6 +606,20 @@ watchDebounced(
     >
       <img :src="form.bannerImg" class="mb-4 object-cover h-[250px] mx-auto" />
       <FormKit id="bannerFile" type="file" @input="addBannerImage" />
+    </rs-modal>
+
+    <rs-modal
+      title="API URL"
+      v-model="showModalAddUrl"
+      cancel-only
+      cancel-title="Close"
+    >
+      <FormKit
+        v-model="form.apiURL"
+        type="text"
+        label="API URL"
+        help="Add your own API URL that will be used to submit the form."
+      />
     </rs-modal>
 
     <rs-modal title="Send Form" v-model="showModalForm">
@@ -655,7 +683,7 @@ watchDebounced(
               />
 
               <FormKit
-                type="text"
+                type="textarea"
                 v-model="section.description"
                 placeholder="Form Description"
                 :classes="{
@@ -663,6 +691,8 @@ watchDebounced(
                   input: '!font-normal',
                   outer: '!mb-0',
                 }"
+                rows="1"
+                auto-height
               />
               <br />
               <div class="flex justify-end">
@@ -865,113 +895,111 @@ watchDebounced(
                       </p>
                     </div>
                   </div>
-                </div>
-
-                <div class="flex justify-end items-center">
-                  <rs-button
-                    @click="
-                      field.showAdvancedOptions
-                        ? (field.showAdvancedOptions = false)
-                        : (field.showAdvancedOptions = true)
-                    "
-                    size="sm"
-                    class="mt-2"
-                  >
-                    Validation Rules
-                    <Icon
-                      name="ic:round-keyboard-arrow-down"
-                      class="duration-300"
-                      :class="{
-                        'transform rotate-180': field.showAdvancedOptions,
-                      }"
-                    />
-                  </rs-button>
-                </div>
-                <div v-auto-animate>
-                  <div
-                    v-if="field.showAdvancedOptions && field.type != 'title'"
-                    class="mx-4"
-                  >
-                    <p class="text-lg font-medium">Rules</p>
-                    <hr class="my-1" />
-                    <div class="flex flex-wrap gap-4 mt-3 mb-5">
-                      <rs-button
-                        v-for="(rule, ruleIndex) in formConfig.global.validation
-                          .rules"
-                        variant="primary-outline"
-                        :class="{
-                          'bg-primary hover:!bg-primary text-white':
-                            searchValidationRule(
-                              sectionIndex,
-                              fieldIndex,
-                              rule
-                            ),
-                        }"
-                        size="sm"
-                        @click="
-                          selectValidationRule(sectionIndex, fieldIndex, rule)
-                        "
-                      >
-                        {{ rule.label }}
-                      </rs-button>
-                    </div>
-
-                    <p class="text-lg font-medium">Validation</p>
-                    <hr class="my-1" />
-                    <div
-                      v-for="(fieldValidation, fieldValidationIndex) in field
-                        .validation.rules"
-                      class="grid grid-cols-3 gap-4 my-4"
+                  <div class="flex justify-end items-center">
+                    <rs-button
+                      @click="
+                        field.showAdvancedOptions
+                          ? (field.showAdvancedOptions = false)
+                          : (field.showAdvancedOptions = true)
+                      "
+                      size="sm"
                     >
-                      <FormKit
-                        v-for="(
-                          fieldForm, fieldFormIndex
-                        ) in fieldValidation.form"
-                        v-model="fieldForm.value"
-                        @change="
-                          fieldValidation.type == 'Matches'
-                            ? assignValidationRuleModel(
-                                sectionIndex,
-                                fieldIndex,
-                                fieldValidationIndex,
-                                fieldForm.value
-                              )
-                            : changeValidationMessage(
-                                sectionIndex,
-                                fieldIndex,
-                                fieldValidationIndex,
-                                fieldForm.variable,
-                                $event
-                              )
-                        "
-                        @input="
-                          fieldValidation.type != 'Matches'
-                            ? changeValidationMessage(
-                                sectionIndex,
-                                fieldIndex,
-                                fieldValidationIndex,
-                                fieldForm.variable,
-                                $event
-                              )
-                            : ''
-                        "
-                        :type="fieldForm.input"
-                        :label="fieldForm.label"
-                        :help="fieldForm.help"
-                        :options="fieldForm.options ? fieldForm.options : []"
-                        :classes="{
-                          fieldset: 'border-0 !p-0',
-                          legend: '!font-semibold !text-sm mb-0',
-                          options: '!flex !flex-row gap-4 mt-3',
+                      Validation Rules
+                      <Icon
+                        name="ic:round-keyboard-arrow-down"
+                        class="duration-300"
+                        :class="{
+                          'transform rotate-180': field.showAdvancedOptions,
                         }"
-                        :disabled="fieldForm.disabled"
                       />
-                      <FormKit
-                        type="textarea"
-                        auto-height
-                        label="Validation Message"
-                        v-model="fieldValidation.message"
-                      />
+                    </rs-button>
+                  </div>
+                  <div v-auto-animate>
+                    <div
+                      v-if="field.showAdvancedOptions && field.type != 'title'"
+                      class="mx-4"
+                    >
+                      <p class="text-lg font-medium">Rules</p>
+                      <hr class="my-1" />
+                      <div class="flex flex-wrap gap-4 mt-3 mb-5">
+                        <rs-button
+                          v-for="(rule, ruleIndex) in formConfig.global
+                            .validation.rules"
+                          variant="primary-outline"
+                          :class="{
+                            'bg-primary hover:!bg-primary text-white':
+                              searchValidationRule(
+                                sectionIndex,
+                                fieldIndex,
+                                rule
+                              ),
+                          }"
+                          size="sm"
+                          @click="
+                            selectValidationRule(sectionIndex, fieldIndex, rule)
+                          "
+                        >
+                          {{ rule.label }}
+                        </rs-button>
+                      </div>
+
+                      <p class="text-lg font-medium">Validation</p>
+                      <hr class="my-1" />
+                      <div
+                        v-for="(fieldValidation, fieldValidationIndex) in field
+                          .validation.rules"
+                        class="grid grid-cols-3 gap-4 my-4"
+                      >
+                        <FormKit
+                          v-for="(
+                            fieldForm, fieldFormIndex
+                          ) in fieldValidation.form"
+                          v-model="fieldForm.value"
+                          @change="
+                            fieldValidation.type == 'Matches'
+                              ? assignValidationRuleModel(
+                                  sectionIndex,
+                                  fieldIndex,
+                                  fieldValidationIndex,
+                                  fieldForm.value
+                                )
+                              : changeValidationMessage(
+                                  sectionIndex,
+                                  fieldIndex,
+                                  fieldValidationIndex,
+                                  fieldForm.variable,
+                                  $event
+                                )
+                          "
+                          @input="
+                            fieldValidation.type != 'Matches'
+                              ? changeValidationMessage(
+                                  sectionIndex,
+                                  fieldIndex,
+                                  fieldValidationIndex,
+                                  fieldForm.variable,
+                                  $event
+                                )
+                              : ''
+                          "
+                          :type="fieldForm.input"
+                          :label="fieldForm.label"
+                          :help="fieldForm.help"
+                          :options="fieldForm.options ? fieldForm.options : []"
+                          :classes="{
+                            fieldset: 'border-0 !p-0',
+                            legend: '!font-semibold !text-sm mb-0',
+                            options: '!flex !flex-row gap-4 mt-3',
+                          }"
+                          :disabled="fieldForm.disabled"
+                        />
+                        <FormKit
+                          type="textarea"
+                          auto-height
+                          label="Validation Message"
+                          v-model="fieldValidation.message"
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

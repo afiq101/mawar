@@ -1,0 +1,169 @@
+{
+  "id": "6851645e-9b62-4885-9501",
+  "name": "Contact Form",
+  "bannerImg": "/img/background/bg2.jpg",
+  "fields": [
+    {
+      "title": "Untitled Form",
+      "description": "",
+      "child": [
+        {
+          "type": "text",
+          "label": "Email",
+          "help": "Please insert the correct email",
+          "placeholder": "Placeholder",
+          "selectValue": "text",
+          "modelValue": "Short answer text",
+          "showAdvancedOptions": true,
+          "options": [],
+          "validation": {
+            "rules": [
+              {
+                "type": "Required",
+                "value": "required",
+                "form": [
+                  {
+                    "input": "radio",
+                    "label": "Required",
+                    "options": [
+                      {
+                        "label": "Yes",
+                        "value": "__mask_1",
+                        "__original": true
+                      }
+                    ],
+                    "value": true
+                  }
+                ],
+                "message": "Question is required.",
+                "defaultMessage": "[[label_name]] is required."
+              },
+              {
+                "type": "Email",
+                "value": "email",
+                "form": [
+                  {
+                    "input": "radio",
+                    "label": "Email",
+                    "options": [
+                      {
+                        "label": "Yes",
+                        "value": "__mask_1",
+                        "__original": true
+                      }
+                    ],
+                    "value": true
+                  }
+                ],
+                "message": "Please enter a valid email address.",
+                "defaultMessage": "Please enter a valid email address."
+              }
+            ]
+          }
+        },
+        {
+          "type": "text",
+          "label": "Length Character",
+          "placeholder": "Placeholder",
+          "help": "",
+          "selectValue": "text",
+          "modelValue": "Short answer text",
+          "showAdvancedOptions": true,
+          "options": [],
+          "validation": {
+            "rules": [
+              {
+                "type": "Length",
+                "value": "length:[[no_1]], [[no_2]]",
+                "form": [
+                  {
+                    "input": "number",
+                    "label": "Min Characters",
+                    "variable": "no_1",
+                    "options": [],
+                    "value": "1"
+                  },
+                  {
+                    "input": "number",
+                    "label": "Max Characters",
+                    "variable": "no_2",
+                    "options": [],
+                    "value": "1"
+                  }
+                ],
+                "message": "Length Character must be between 1 and 1 characters.",
+                "defaultMessage": "[[label_name]] must be between [[no_1]] and [[no_2]] characters."
+              }
+            ]
+          }
+        },
+        {
+          "type": "date",
+          "label": "Date Before",
+          "placeholder": "Placeholder",
+          "help": "",
+          "selectValue": "date",
+          "modelValue": "2023-01-01",
+          "showAdvancedOptions": true,
+          "options": [],
+          "validation": {
+            "rules": [
+              {
+                "type": "Date Before",
+                "value": "date_before:[[date]]",
+                "form": [
+                  {
+                    "input": "date",
+                    "label": "Date Before",
+                    "options": [],
+                    "value": "2023-07-11",
+                    "variable": "date"
+                  }
+                ],
+                "message": "Date Before must be before 11/07/2023",
+                "defaultMessage": "[[label_name]] must be before [[date]]"
+              }
+            ]
+          }
+        },
+        {
+          "type": "date",
+          "label": "Question",
+          "placeholder": "Placeholder",
+          "help": "",
+          "selectValue": "date",
+          "modelValue": "2023-01-01",
+          "showAdvancedOptions": true,
+          "options": [],
+          "validation": {
+            "rules": [
+              {
+                "type": "Date Between",
+                "value": "date_between:[[date_1]], [[date_2]]",
+                "form": [
+                  {
+                    "input": "date",
+                    "label": "Date 1",
+                    "variable": "date_1",
+                    "options": [],
+                    "value": "2023-07-11"
+                  },
+                  {
+                    "input": "date",
+                    "label": "Date 2",
+                    "variable": "date_2",
+                    "options": [],
+                    "value": "2023-07-31"
+                  }
+                ],
+                "message": "Question must be between 2023-07-11 and 2023-07-31",
+                "defaultMessage": "[[label_name]] must be between [[date_1]] and [[date_2]]"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "apiURL": "https://facebook.com/"
+}

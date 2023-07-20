@@ -113,7 +113,7 @@ export default {
               value: "required",
               form: [
                 {
-                  input: "checkbox",
+                  input: "radio",
                   label: "Required",
                   options: [{ label: "Yes", value: true }],
                   value: true,
@@ -125,7 +125,7 @@ export default {
               value: "email",
               form: [
                 {
-                  input: "checkbox",
+                  input: "radio",
                   label: "Email",
                   options: [{ label: "Yes", value: true }],
                   value: true,
@@ -141,7 +141,7 @@ export default {
                   label: "Min Characters",
                   variable: "no_1",
                   options: [],
-                  value: 0,
+                  value: 1,
                 },
                 {
                   input: "number",

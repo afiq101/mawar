@@ -22,6 +22,7 @@ const showModalForm = ref(false);
 
 const bannerFile = ref(null);
 const showModalAddBanner = ref(false);
+const showModalAddUrl = ref(false);
 
 const originURL = ref("");
 
@@ -30,6 +31,7 @@ const form = ref({
   id: "",
   name: "",
   bannerImg: "",
+  apiURL: "",
 });
 const mode = ref("");
 
@@ -46,6 +48,7 @@ const { data: getFormById } = await useFetch(
   }
 );
 if (getFormById.value.statusCode == 200) {
+  console.log(getFormById.value.data);
   form.value = getFormById.value.data;
 
   // if field is empty append
@@ -453,8 +456,6 @@ const assignValidationRuleModel = (
   fieldValidation.form[1].disabled = true;
 };
 
-const log = () => console.log(form.value);
-
 const validateDateValue = (value) => {
   if (DateTime.fromISO(value).isValid)
     return DateTime.fromISO(value).toFormat("dd/MM/yyyy");
@@ -524,55 +525,178 @@ watchDebounced(
   { debounce: 1000, maxWait: 5000 }
 );
 
+const redirectViewForm = () => {
+  window.open("/form/" + encodedFormId("view"), "_blank");
+};
+
 // ------------------------------------------------
 // ---------------  MODE = VIEW  ------------------
 // ------------------------------------------------
 
 const formModelValue = ref({});
+const pageSection = ref({});
 
 const formModel = () => {
   console.log(formModelValue.value);
 };
 
 const setValidationRules = (validationRules, type) => {
+  // if type is label, set validationRules as n object
+  if (type == "label" && validationRules) validationRules = [validationRules];
+
   if (validationRules && validationRules.length > 0) {
     let returnData = [];
 
     if (type == "message") returnData = {};
 
-    // console.log("validationRules");
-    // console.log(validationRules);
-
-    // change loop data to => [['required'], ['email']]
-
+    // Loop validationRules to get rules and message for each type
     validationRules.forEach((rule) => {
-      console.log(rule);
-
       if (type == "rule") {
-        if (rule.type == "Required") returnData.push(["required"]);
-        else if (rule.type == "Email") returnData.push(["email"]);
+        switch (rule.type) {
+          default:
+            break;
+
+          case "Required":
+            if (rule.form[0].value == true) returnData.push(["required"]);
+            break;
+
+          case "Email":
+            if (rule.form[0].value == true) returnData.push(["email"]);
+            break;
+
+          case "Length":
+            returnData.push([
+              "length",
+              parseInt(rule.form[0].value),
+              parseInt(rule.form[1].value),
+            ]);
+            break;
+
+          case "Date After":
+            returnData.push(["date_after", rule.form[0].value]);
+            break;
+
+          case "Date Before":
+            returnData.push(["date_before", rule.form[0].value]);
+            break;
+
+          case "Date Between":
+            returnData.push([
+              "date_between",
+              rule.form[0].value,
+              rule.form[1].value,
+            ]);
+            break;
+
+          case "Matches":
+            returnData.push(["matches", rule.form[1].value]);
+            break;
+        }
       } else if (type == "message") {
-        if (rule.type == "Required") returnData.required = rule.message;
-        else if (rule.type == "Email") returnData.email = rule.message;
+        switch (rule.type) {
+          default:
+            break;
+
+          case "Required":
+            if (rule.message) returnData.required = rule.message;
+            break;
+
+          case "Email":
+            if (rule.message) returnData.email = rule.message;
+            break;
+
+          case "Length":
+            if (rule.message) returnData.length = rule.message;
+            break;
+
+          case "Date After":
+            if (rule.message) returnData.date_after = rule.message;
+            break;
+
+          case "Date Before":
+            if (rule.message) returnData.date_before = rule.message;
+            break;
+
+          case "Date Between":
+            if (rule.message) returnData.date_between = rule.message;
+            break;
+
+          case "Matches":
+            if (rule.message) returnData.matches = rule.message;
+            break;
+        }
+      } else if (type == "label") {
+        switch (rule.type) {
+          default:
+            returnData = false;
+            break;
+
+          case "Required":
+            if (rule.form[0].value == true) returnData = "required";
+            break;
+        }
       }
     });
 
-    console.log("returnData", returnData);
-
     return returnData;
   }
+  return false;
 };
+
+const changePageSection = (type, sectionIndex) => {
+  if (type == "next") {
+    pageSection.value[`section${sectionIndex}`] = false;
+    pageSection.value[`section${sectionIndex + 1}`] = true;
+  } else {
+    pageSection.value[`section${sectionIndex}`] = false;
+    pageSection.value[`section${sectionIndex - 1}`] = true;
+  }
+};
+
+async function submitForm() {
+  console.log("asdasdas");
+  try {
+    console.log(formModelValue.value);
+
+    const hitAPI = await useFetch(form.value.apiURL, {
+      method: "POST",
+      body: formModelValue.value,
+    });
+
+    if (hitAPI.value?.data) {
+      $swal.fire({
+        icon: "success",
+        title: "Success",
+        text: "Form submitted successfully",
+      });
+    } else {
+      $swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Form submitted failed",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 onMounted(() => {
   originURL.value = window.location.origin;
 
   if (mode.value == "view") {
-    let counter = 0;
+    let counterField = 0;
+    let counterSection = 0;
     // Append formModelValue with data1 increment by field.child inside form value. field is an array of object
     form.value.fields.forEach((section) => {
       section.child.forEach((field) => {
-        formModelValue.value[`data${++counter}`] = null;
+        counterField++;
+        formModelValue.value[`data${counterField}`] = null;
       });
+
+      pageSection.value[`section${counterSection}`] =
+        counterSection == 0 ? true : false;
+      counterSection++;
     });
   }
 });
@@ -602,13 +726,20 @@ onMounted(() => {
             name="mdi:image-plus-outline"
             class="mr-4 hover:text-primary cursor-pointer"
           />
+
+          <Icon
+            name="material-symbols:add-link"
+            class="mr-4 hover:text-primary cursor-pointer"
+            @click="showModalAddUrl = true"
+          />
+
           <Icon
             name="material-symbols:preview"
             class="mr-4 hover:text-primary cursor-pointer"
-            @click="log"
+            @click="redirectViewForm"
           />
 
-          <VDropdown :distance="20">
+          <!-- <VDropdown :distance="20">
             <button>
               <Icon
                 name="mdi:dots-vertical"
@@ -632,7 +763,7 @@ onMounted(() => {
                 </div>
               </div>
             </template>
-          </VDropdown>
+          </VDropdown> -->
 
           <rs-button @click="showModalForm = true"> Share </rs-button>
         </div>
@@ -649,6 +780,20 @@ onMounted(() => {
           class="mb-4 object-cover h-[250px] mx-auto"
         />
         <FormKit id="bannerFile" type="file" @input="addBannerImage" />
+      </rs-modal>
+
+      <rs-modal
+        title="API URL"
+        v-model="showModalAddUrl"
+        cancel-only
+        cancel-title="Close"
+      >
+        <FormKit
+          v-model="form.apiURL"
+          type="text"
+          label="API URL"
+          help="Add your own API URL that will be used to submit the form."
+        />
       </rs-modal>
 
       <rs-modal title="Send Form" v-model="showModalForm">
@@ -1099,7 +1244,7 @@ onMounted(() => {
       </div>
     </div>
     <div v-else-if="mode == 'view'">
-      <div class="pt-4 max-w-[770px] mx-auto">
+      <div class="py-4 max-w-[770px] mx-auto">
         <div class="relative">
           <rs-card>
             <img
@@ -1107,71 +1252,130 @@ onMounted(() => {
               class="max-h-[195px] object-cover w-full rounded-lg"
             />
           </rs-card>
-          <div>
-            <div
-              v-for="(section, sectionIndex) in form.fields"
-              class="rs-form-section mb-16"
-              :class="{
-                active: sectionIndex == 0,
-              }"
-            >
-              <div
-                class="section-badge font-medium py-2 px-3 text-primary border border-primary bg-white mb-3 w-fit rounded-tl-lg rounded-br-lg"
-              >
-                Section {{ sectionIndex + 1 }} of {{ form.fields.length }}
-              </div>
 
-              <rs-card
-                class="p-5 border-primary border-t-4"
+          <div>
+            <FormKit type="form" :actions="false" @submit="submitForm">
+              <div
+                v-auto-animate
+                v-for="(section, sectionIndex) in form.fields"
+                class="rs-form-section"
                 :class="{
                   active: sectionIndex == 0,
                 }"
               >
-                <h4 class="!text-2xl font-semibold">{{ section.title }}</h4>
-                <p>{{ section.description }}</p>
-              </rs-card>
-              <rs-card
-                v-for="(field, fieldIndex) in section.child"
-                class="rs-form-field px-5 py-5"
-              >
-                <!-- {{ field }} <br /> -->
-
-                <FormKit
-                  v-model="
-                    formModelValue[`data${sectionIndex + fieldIndex + 1}`]
-                  "
-                  :type="field.type"
-                  :label="field.label"
-                  :help="field.help"
-                  :options="
-                    field.type == 'checkbox' || field.type == 'checkbox'
-                      ? field.options
-                      : ''
-                  "
-                  :validation="
-                    setValidationRules(field.validation.rules, 'rule')
-                  "
-                  validation-visibility="dirty"
-                  :validation-messages="
-                    setValidationRules(field.validation.rules, 'message')
-                  "
-                  :classes="{
-                    outer: 'col-span-7 !mb-0',
-                    fieldset: 'border-0 !p-0',
-                    legend: '!font-normal !text-sm !mb-2',
-                    label: '!font-normal !text-sm',
-                  }"
-                  :input-class="{
-                    '!h-10':
-                      field.type != 'checkbox' &&
-                      field.type != 'radio' &&
-                      field.type != 'file',
-                    'p-3': field.type == 'file',
-                  }"
-                />
-              </rs-card>
-            </div>
-            <rs-button @click="formModel">rerer</rs-button>
+                <div v-show="pageSection[`section${sectionIndex}`]">
+                  <rs-card
+                    class="p-5 border-primary border-t-8"
+                    :class="{
+                      active: sectionIndex == 0,
+                    }"
+                  >
+                    <h4 class="!text-2xl font-semibold">{{ section.title }}</h4>
+                    <p>{{ section.description }}</p>
+                  </rs-card>
+                  <rs-card
+                    v-for="(field, fieldIndex) in section.child"
+                    class="rs-form-field px-5 py-5"
+                  >
+                    <div v-if="field.type == 'title'">
+                      <h4 class="!text-2xl font-semibold">{{ field.title }}</h4>
+                      <p>{{ field.description }}</p>
+                    </div>
+                    <FormKit
+                      v-else
+                      v-model="
+                        formModelValue[`data${sectionIndex + fieldIndex + 1}`]
+                      "
+                      :type="field.type"
+                      :label="field.label"
+                      :help="field.help"
+                      :options="
+                        field.type == 'checkbox' || field.type == 'radio'
+                          ? field.options
+                          : ''
+                      "
+                      :validation="
+                        setValidationRules(field?.validation?.rules, 'rule')
+                      "
+                      validation-visibility="dirty"
+                      :validation-messages="
+                        setValidationRules(field?.validation?.rules, 'message')
+                      "
+                      :classes="{
+                        outer: 'col-span-7 !mb-0',
+                        fieldset: 'border-0 !p-0',
+                        legend: '!font-medium !text-base !mb-2',
+                        label: '!font-medium !text-base',
+                      }"
+                      :input-class="{
+                        '!h-10':
+                          field.type != 'checkbox' &&
+                          field.type != 'radio' &&
+                          field.type != 'file',
+                        'p-3': field.type == 'file',
+                      }"
+                    >
+                      <template
+                        v-if="
+                          setValidationRules(
+                            field?.validation?.rules[fieldIndex],
+                            'label'
+                          ) &&
+                          (field.type == 'checkbox' || field.type == 'radio')
+                        "
+                        #legend
+                      >
+                        <legend
+                          class="formkit-legend !font-medium !text-base !mb-2"
+                        >
+                          Question B <span class="text-red-600">*</span>
+                        </legend>
+                      </template>
+                      <template
+                        v-else-if="
+                          setValidationRules(
+                            field?.validation?.rules[fieldIndex],
+                            'label'
+                          )
+                        "
+                        #label
+                      >
+                        <label
+                          class="formkit-label text-gray-700 dark:text-gray-200 block mb-2 formkit-invalid:text-red-500 dark:formkit-invalid:text-danger !font-medium !text-base"
+                        >
+                          {{ field.label }} <span class="text-red-600">*</span>
+                        </label>
+                      </template>
+                    </FormKit>
+                  </rs-card>
+                  <div class="button-section flex flex-wrap gap-4 mb-3">
+                    <button
+                      v-if="sectionIndex != 0"
+                      type="button"
+                      class="w-fit rounded-lg flex justify-center items-center h-fit text-sm px-8 py-2.5 text-primary bg-transparent hover:bg-primary/10 border border-primary"
+                      @click="changePageSection('back', sectionIndex)"
+                    >
+                      Back
+                    </button>
+                    <button
+                      v-if="sectionIndex != form.fields.length - 1"
+                      type="button"
+                      class="w-fit rounded-lg flex justify-center items-center h-fit text-sm px-8 py-2.5 text-primary bg-transparent hover:bg-primary/10 border border-primary"
+                      @click="changePageSection('next', sectionIndex)"
+                    >
+                      Next
+                    </button>
+                    <button
+                      v-if="sectionIndex == form.fields.length - 1"
+                      type="submit"
+                      class="w-fit rounded-lg flex justify-center items-center h-fit text-sm px-8 py-2.5 text-white bg-primary hover:bg-primary/90"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </FormKit>
           </div>
         </div>
       </div>
