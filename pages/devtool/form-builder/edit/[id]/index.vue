@@ -460,7 +460,7 @@ const assignValidationRuleModel = (
 const validateDateValue = (value) => {
   if (DateTime.fromISO(value).isValid)
     return DateTime.fromISO(value).toFormat("dd/MM/yyyy");
-  else value;
+  return value;
 };
 
 const changeValidationMessage = (
@@ -475,8 +475,6 @@ const changeValidationMessage = (
       form.value.fields[sectionIndex].child[fieldIndex].validation.rules[
         fieldValidationIndex
       ];
-
-    console.log("fieldValidation", fieldValidation);
 
     // Set model value to regex 2nd field
     let newMessage = fieldValidation.defaultMessage.replace(
@@ -515,14 +513,15 @@ const changeValidationMessage = (
 
 watchDebounced(
   form.value,
-  async () => {
-    await useFetch("/api/devtool/form-builder/save", {
+  () => {
+    useFetch("/api/devtool/form-builder/save", {
       method: "POST",
       body: {
         id: id,
         form: form.value,
       },
     });
+    // console.log("debounce data")
   },
   { debounce: 1000, maxWait: 5000 }
 );

@@ -459,7 +459,7 @@ const assignValidationRuleModel = (
 const validateDateValue = (value) => {
   if (DateTime.fromISO(value).isValid)
     return DateTime.fromISO(value).toFormat("dd/MM/yyyy");
-  else value;
+  return value;
 };
 
 const changeValidationMessage = (
@@ -512,9 +512,9 @@ const changeValidationMessage = (
 
 watchDebounced(
   form.value,
-  async () => {
+  () => {
     if (mode == "view") return;
-    await useFetch("/api/devtool/form-builder/save", {
+    useFetch("/api/devtool/form-builder/save", {
       method: "POST",
       body: {
         id: formId.value,
