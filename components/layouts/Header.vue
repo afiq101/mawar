@@ -5,24 +5,34 @@ const isDesktop = ref(true);
 const emit = defineEmits(["toggleMenu"]);
 
 // const { locale } = useI18n();
-const colorMode = useColorMode();
+// const colorMode = useColorMode();
 const langList = languageList();
 
 const locale = ref("en");
 
-// Change color mode
-function setColorMode() {
-  if (colorMode.preference == "light") {
-    colorMode.preference = "dark";
+const themes = themeList();
 
-    document.documentElement.classList.remove("light");
-    document.documentElement.classList.add("dark");
-  } else {
-    colorMode.preference = "light";
+function setTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  localStorage.setItem("theme", theme);
+}
 
-    document.documentElement.classList.remove("dark");
-    document.documentElement.classList.add("light");
-  }
+function rgbToHex(rgbString) {
+  // Split the input string into an array of components
+  const rgbArray = rgbString.split(",");
+
+  // Convert each component to its numeric value
+  const r = parseInt(rgbArray[0].trim(), 10);
+  const g = parseInt(rgbArray[1].trim(), 10);
+  const b = parseInt(rgbArray[2].trim(), 10);
+
+  // Convert the numeric RGB values to hexadecimal
+  const rHex = r.toString(16).padStart(2, "0");
+  const gHex = g.toString(16).padStart(2, "0");
+  const bHex = b.toString(16).padStart(2, "0");
+
+  // Concatenate the components and return the final hexadecimal color code
+  return `#${rHex}${gHex}${bHex}`;
 }
 
 // Toggle Open/Close menu
@@ -54,9 +64,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="w-header z-20 bg-white dark:bg-slate-800 fixed top-0 right-0 px-5 py-3 duration-300 shadow-md shadow-slate-200 dark:shadow-slate-900"
-  >
+  <div class="w-header">
     <div class="flex items-stretch justify-between">
       <div v-if="isVertical" class="flex">
         <span class="flex items-center justify-center">
@@ -92,7 +100,7 @@ onMounted(() => {
             <country-flag :country="languageNow.flagCode" />
           </button>
           <template #popper>
-            <ul class="header-dropdown w-full md:w-32">
+            <ul class="header-dropdown w-full md:w-32 text-[#4B5563]">
               <li
                 v-for="lang in langList"
                 class="flex items-center justify-center hover:bg-slate-200 hover:dark:bg-slate-700"
@@ -110,9 +118,33 @@ onMounted(() => {
             </ul>
           </template>
         </VDropdown>
-        <button class="icon-btn h-10 w-10 rounded-full" @click="setColorMode">
-          <Icon size="22px" name="mdi:theme-light-dark" />
-        </button>
+        <VDropdown placement="bottom-end" distance="13" name="theme">
+          <button class="icon-btn h-10 w-10 rounded-full">
+            <Icon size="22px" name="material-symbols:format-paint-rounded" />
+          </button>
+          <template #popper>
+            <ul class="header-dropdown w-full md:w-52 text-[#4B5563]">
+              <li v-for="(val, index) in themes">
+                <a
+                  @click="setTheme(val.theme)"
+                  class="flex justify-between items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
+                >
+                  <span class="capitalize"> {{ val.theme }} </span>
+                  <div class="flex items-center gap-x-1">
+                    <div
+                      v-for="(color, index) in val.colors"
+                      class="h-[25px] w-[10px] rounded-lg"
+                      :style="{
+                        backgroundColor: rgbToHex(color.value),
+                      }"
+                    ></div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </template>
+        </VDropdown>
+
         <button class="icon-btn h-10 w-10 rounded-full">
           <Icon @click="toggleSearch" name="ic:round-search" class="" />
         </button>
@@ -125,7 +157,7 @@ onMounted(() => {
             <Icon name="ic:round-notifications-none" class="" />
           </button>
           <template #popper>
-            <ul class="header-dropdown w-full md:w-80">
+            <ul class="header-dropdown w-full md:w-80 text-[#4B5563]">
               <li class="d-head flex items-center justify-between py-2 px-4">
                 <span class="font-semibold">Notification</span>
                 <div
@@ -183,9 +215,7 @@ onMounted(() => {
         </VDropdown>
 
         <VDropdown placement="bottom-end" distance="13" name="profile">
-          <button
-            class="icon-btn px-2 rounded-lg border border-white md:border-gray-200 dark:border-gray-700"
-          >
+          <button class="icon-btn profile px-2">
             <img
               class="w-8 h-8 object-cover rounded-full"
               src="@/assets/img/user/default.svg"
@@ -202,31 +232,7 @@ onMounted(() => {
             <Icon name="ic:outline-keyboard-arrow-down" class="ml-3" />
           </button>
           <template #popper>
-            <ul class="header-dropdown w-full md:w-52">
-              <!-- <li>
-                <a
-                  class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
-                >
-                  <Icon name="ic:outline-view-sidebar" class="mr-2" />
-                  {{ isVertical ? "Horizontal Layout" : "Vertical Layout" }}
-                </a>
-              </li> -->
-              <!-- <li>
-                <a
-                  class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
-                >
-                  <Icon name="ic:outline-account-circle" class="mr-2" />
-                  Account
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
-                >
-                  <Icon name="ic:outline-settings" class="mr-2" />
-                  Setting
-                </a>
-              </li> -->
+            <ul class="header-dropdown w-full md:w-52 text-[#4B5563]">
               <li>
                 <NuxtLink
                   to="/logout"
@@ -235,11 +241,6 @@ onMounted(() => {
                   <Icon name="ic:outline-logout" class="mr-2" />
                   Logout
                 </NuxtLink>
-                <!-- <a
-                  class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
-                >
-                 
-                </a> -->
               </li>
             </ul>
           </template>
@@ -249,10 +250,7 @@ onMounted(() => {
   </div>
 
   <!-- Search Nav for Layout Vertical -->
-  <div
-    tabindex="0"
-    class="w-header-search bg-white dark:bg-slate-800 px-4 z-40 duration-300 shadow-md shadow-slate-200 dark:shadow-slate-900 -top-20 focus-within:top-0 right-0"
-  >
+  <div tabindex="0" class="w-header-search">
     <Icon name="ic:outline-search" class="" />
     <input
       id="header-search"
@@ -263,3 +261,23 @@ onMounted(() => {
     />
   </div>
 </template>
+
+<style scoped>
+:deep(.popper) {
+  background: #e92791;
+  padding: 20px;
+  border-radius: 20px;
+  color: #fff;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+:deep(.popper #arrow::before) {
+  background: #e92791;
+}
+
+:deep(.popper:hover),
+:deep(.popper:hover > #arrow::before) {
+  background: #e92791;
+}
+</style>

@@ -36,7 +36,7 @@ const redirectClearError = () => {
 
             <button
               @click="redirectClearError"
-              class="mt-5 w-fit rounded-lg flex justify-center items-center h-fit text-sm px-8 py-2.5 text-white bg-[#F3586A] hover:bg-[#F3586A]/90 disabled:bg-[#F3586A]/30 disabled:text-[#F3586A]/50 disabled:border-primary/5 disabled:cursor-default dark:disabled:bg-slate-700 dark:disabled:text-slate-800 dark:disabled:border-slate-700"
+              class="mt-5 w-fit rounded-lg flex justify-center items-center h-fit text-sm px-8 py-2.5 text-white bg-[#F3586A] hover:bg-[#F3586A]/90 disabled:bg-[#F3586A]/30 disabled:text-[#F3586A]/50 disabled:border-primary/5 disabled:cursor-default"
             >
               Back to Home
             </button>

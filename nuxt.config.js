@@ -46,16 +46,6 @@ export default defineNuxtConfig({
     injectPosition: 0,
     viewer: false,
   },
-  colorMode: {
-    preference: "light", // default value of $colorMode.preference
-    fallback: "light", // fallback value if not system preference found
-    hid: "nuxt-color-mode-script",
-    globalName: "__NUXT_COLOR_MODE__",
-    componentName: "ColorScheme",
-    classPrefix: "",
-    classSuffix: "",
-    storageKey: "nuxt-color-mode",
-  },
   formkit: {
     defaultConfig: true,
   },
@@ -530,7 +520,7 @@ export default defineNuxtConfig({
       tokensPerInterval: 200,
       interval: "minute",
       fireImmediately: false,
-      throwError: false, // optional
+      throwError: true, // optional
     },
     headers: false,
   },
