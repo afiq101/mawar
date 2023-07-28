@@ -37,7 +37,7 @@ const login = async () => {
       // console.log(data.data.accessToken);
       // Save token to pinia store
       userStore.setUsername(data.data.username);
-      userStore.setRoles(["student"]);
+      userStore.setRoles(data.data.roles);
       userStore.setAccessToken(data.data.accessToken);
       userStore.setRefreshToken(data.data.refreshToken);
       userStore.setIsAuthenticated(true);
