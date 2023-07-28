@@ -19,9 +19,9 @@ const props = defineProps({
   <button
     class="button"
     :class="{
-      'text-xs px-4 py-1': size === 'sm',
-      'text-sm px-8 py-2.5': size === 'md',
-      'text-base px-10 py-4': size === 'lg',
+      'button-sm': size === 'sm',
+      'button-md': size === 'md',
+      'button-lg': size === 'lg',
 
       // Filled Button
       'button-primary': variant === 'primary',

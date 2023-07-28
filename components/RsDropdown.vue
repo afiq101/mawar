@@ -29,6 +29,10 @@ const props = defineProps({
 });
 
 const isOpen = ref(false);
+const dropdownRef = ref(null);
+
+let originalPosition = null; // Store the original position of the dropdown
+let lastKnownPosition = null; // Store the last known position of the dropdown
 
 const toggle = (event) => {
   isOpen.value = !isOpen.value;
@@ -37,58 +41,148 @@ const toggle = (event) => {
 const closeMenu = (event) => {
   isOpen.value = false;
 };
+
+// Add a watcher for isOpen to reposition the dropdown when it's open
+watch(isOpen, (newValue) => {
+  if (newValue) {
+    positionDropdown();
+  }
+});
+
+// Helper function to position the dropdown relative to the viewport
+const positionDropdown = () => {
+  const dropdownElement = dropdownRef.value;
+  const dropdownSection = dropdownElement.querySelector(".dropdown-section");
+
+  if (!dropdownElement || !dropdownSection) return;
+
+  // Get the bounding rect of the dropdown and its section
+  const dropdownRect = dropdownElement.getBoundingClientRect();
+  const dropdownSectionRect = dropdownSection.getBoundingClientRect();
+
+  // Get the viewport dimensions
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+
+  // Check if the dropdown overflows the right or left side of the viewport
+  const rightOverflow =
+    dropdownRect.right + dropdownSectionRect.width - viewportWidth;
+  const leftOverflow = dropdownRect.left - dropdownSectionRect.width;
+
+  if (rightOverflow > 0) {
+    dropdownSection.style.right = "0";
+    dropdownSection.style.left = "unset";
+  } else if (leftOverflow < 0) {
+    dropdownSection.style.left = "0";
+    dropdownSection.style.right = "unset";
+  }
+
+  // Check if the dropdown overflows the bottom or top of the viewport
+  const bottomOverflow =
+    dropdownRect.bottom + dropdownSectionRect.height - viewportHeight;
+  const topOverflow = dropdownRect.top - dropdownSectionRect.height;
+
+  if (bottomOverflow > 0) {
+    dropdownSection.style.bottom = "100%";
+    dropdownSection.style.top = "unset";
+  } else if (topOverflow < 0) {
+    dropdownSection.style.top = "100%";
+    dropdownSection.style.bottom = "unset";
+  }
+
+  // Check if the position changed and update the lastKnownPosition
+  const newPosition = dropdownSection.getBoundingClientRect();
+  if (
+    !lastKnownPosition ||
+    JSON.stringify(lastKnownPosition) !== JSON.stringify(newPosition)
+  ) {
+    lastKnownPosition = newPosition;
+  }
+
+  // Check if the dropdown is out of the viewport and reset its position to original
+  if (
+    isOpen.value &&
+    originalPosition &&
+    isOutOfViewport(dropdownSection, originalPosition)
+  ) {
+    dropdownSection.style.top = originalPosition.top + "px";
+    dropdownSection.style.left = originalPosition.left + "px";
+    lastKnownPosition = originalPosition;
+  }
+};
+
+// Check if the element is out of the viewport
+const isOutOfViewport = (element, position) => {
+  const viewportWidth = window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  return (
+    position.left < 0 ||
+    position.right > viewportWidth ||
+    position.top < 0 ||
+    position.bottom > viewportHeight
+  );
+};
+
+// Watch for viewport size changes (e.g., window resize) to reposition the dropdown
+const handleResize = () => {
+  if (isOpen.value) {
+    positionDropdown();
+  }
+};
+
+// Watch for scrolling to reposition the dropdown
+const handleScroll = () => {
+  if (isOpen.value) {
+    positionDropdown();
+  }
+};
+
+onMounted(() => {
+  // Add a listener for window resize to reposition the dropdown
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("scroll", handleScroll);
+});
+
+onUnmounted(() => {
+  // Remove the window resize listener when the component is unmounted
+  window.removeEventListener("resize", handleResize);
+  window.removeEventListener("scroll", handleScroll);
+});
 </script>
 
 <template>
-  <div class="relative inline-flex" v-click-away="closeMenu">
+  <div class="dropdown" ref="dropdownRef" v-click-away="closeMenu">
     <button
       @click="toggle"
-      class="flex items-center gap-x-2 rounded-lg focus:outline-none focus:ring-0 whitespace-nowrap"
+      class="button"
       :class="{
-        'text-sm px-3 py-1.5': size === 'sm',
-        'text-sm px-6 py-2.5': size === 'md',
-        'text-base px-8 py-4': size === 'lg',
+        'button-sm': size === 'sm',
+        'button-md': size === 'md',
+        'button-lg': size === 'lg',
 
         // Filled Button
-        'text-white focus:text-white bg-primary hover:bg-primary/90 focus:bg-primary/90':
-          variant === 'primary',
-        'text-white focus:text-white bg-secondary hover:bg-secondary/90 focus:bg-secondary/90':
-          variant === 'secondary',
-        'text-white focus:text-white bg-info hover:bg-info/90 focus:bg-info/90':
-          variant === 'info',
-        'text-white focus:text-white bg-success hover:bg-success/90 focus:bg-success/90':
-          variant === 'success',
-        'text-white focus:text-white bg-warning hover:bg-warning/90 focus:bg-warning/90':
-          variant === 'warning',
-        'text-white focus:text-white bg-danger hover:bg-danger/90 focus:bg-danger/90':
-          variant === 'danger',
+        'button-primary': variant === 'primary',
+        'button-secondary': variant === 'secondary',
+        'button-info': variant === 'info',
+        'button-success': variant === 'success',
+        'button-warning': variant === 'warning',
+        'button-danger': variant === 'danger',
 
         // Outline Button
-        'text-primary border border-primary hover:bg-primary/5 focus:bg-primary/5':
-          variant === 'primary-outline',
-        'text-secondary border border-secondary hover:bg-secondary/5 focus:bg-secondary/5':
-          variant === 'secondary-outline',
-        'text-info border border-blue-500 hover:bg-info/5 focus:bg-info/5':
-          variant === 'info-outline',
-        'text-success border border-success hover:bg-success/5 focus:bg-success/5':
-          variant === 'success-outline',
-        'text-warning border border-warning hover:bg-warning/5 focus:bg-warning/5':
-          variant === 'warning-outline',
-        'text-danger border border-danger hover:bg-danger/5 focus:bg-danger/5':
-          variant === 'danger-outline',
+        'outline-primary': variant === 'primary-outline',
+        'outline-secondary': variant === 'secondary-outline',
+        'outline-info': variant === 'info-outline',
+        'outline-success': variant === 'success-outline',
+        'outline-warning': variant === 'warning-outline',
+        'outline-danger': variant === 'danger-outline',
 
-        // Text Button
-        'text-primary hover:bg-primary/5 focus:bg-primary/5 ':
-          variant === 'primary-text',
-        'text-secondary hover:bg-secondary/5 focus:bg-secondary/5 ':
-          variant === 'secondary-text',
-        'text-info hover:bg-info/5 focus:bg-info/5': variant === 'info-text',
-        'text-success hover:bg-success/5 focus:bg-success/5':
-          variant === 'success-text',
-        'text-warning hover:bg-warning/5 focus:bg-warning/5':
-          variant === 'warning-text',
-        'text-danger hover:bg-danger/5 focus:bg-danger/5':
-          variant === 'danger-text',
+        //Text Button
+        'texts-primary': variant === 'primary-text',
+        'texts-secondary': variant === 'secondary-text',
+        'texts-info': variant === 'info-text',
+        'texts-success': variant === 'success-text',
+        'texts-warning': variant === 'warning-text',
+        'texts-danger': variant === 'danger-text',
       }"
       type="button"
     >
@@ -106,17 +200,17 @@ const closeMenu = (event) => {
       <Icon v-else-if="position === 'right'" name="ic:outline-chevron-right" />
     </button>
     <section
-      class="absolute z-10 bg-white dark:bg-slate-800 border dark:border-slate-700 shadow-md rounded-lg py-1 whitespace-nowrap"
+      class="dropdown-section"
       :class="{
-        'top-10': position == 'bottom' && size == 'sm',
-        'top-12': position == 'bottom' && size == 'md',
-        'top-16': position == 'bottom' && size == 'lg',
-        'bottom-10': position == 'top' && size == 'sm',
-        'bottom-12': position == 'top' && size == 'md',
-        'bottom-16': position == 'top' && size == 'lg',
-        'top-0 -left-42': position == 'left',
-        'top-0 -right-42': position == 'right',
-        'right-0':
+        'list-bottom-sm': position == 'bottom' && size == 'sm',
+        'list-bottom-md': position == 'bottom' && size == 'md',
+        'list-bottom-lg': position == 'bottom' && size == 'lg',
+        'list-top-sm': position == 'top' && size == 'sm',
+        'list-top-md': position == 'top' && size == 'md',
+        'list-top-lg': position == 'top' && size == 'lg',
+        'list-left': position == 'left',
+        'list-right': position == 'right',
+        'list-align-right':
           (position == 'bottom' || position == 'top') && textAlign == 'right',
       }"
       :style="`min-width: ${itemSize}`"

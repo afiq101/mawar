@@ -30,27 +30,27 @@ const onClick = () => {
 
   const scrollHeight = parentElement.scrollHeight;
   const targetOpenCollapse = parentElement.classList.contains(
-    "rs-collapse-group--open"
+    "collapse-group--open"
   );
   const openCollapse = document.querySelector(
-    `#${parentID.value} .rs-collapse-group--open`
+    `#${parentID.value} .collapse-group--open`
   );
 
   if (isAccordion) {
     if (openCollapse) {
       const openCollapseHeader = document.querySelector(
-        `#${parentID.value} .rs-collapse-group--open .rs-collapse-header`
+        `#${parentID.value} .collapse-group--open .collapse-header`
       );
       openCollapse.style.maxHeight = `${openCollapseHeader.scrollHeight}px`;
-      openCollapse.classList.remove("rs-collapse-group--open");
+      openCollapse.classList.remove("collapse-group--open");
     }
   }
   if (targetOpenCollapse) {
     parentElement.style.maxHeight = maxHeight.value + "px";
-    parentElement.classList.remove("rs-collapse-group--open");
+    parentElement.classList.remove("collapse-group--open");
   } else {
     parentElement.style.maxHeight = scrollHeight + "px";
-    parentElement.classList.add("rs-collapse-group--open");
+    parentElement.classList.add("collapse-group--open");
   }
 };
 
@@ -58,9 +58,9 @@ const onClick = () => {
 onMounted(() => {
   try {
     const parentElement = document.querySelector(
-      `#${collapseGroup.value.id} .rs-collapse-header`
+      `#${collapseGroup.value.id} .collapse-header`
     );
-
+    
     const scrollHeight = parentElement.scrollHeight;
     maxHeight.value = scrollHeight;
     height.value = scrollHeight;
@@ -75,19 +75,19 @@ onMounted(() => {
   <div
     v-uid
     ref="collapseGroup"
-    class="rs-collapse-group"
+    class="collapse-group"
     :class="{
-      'border-b': type === 'default',
-      'border-b last:rounded-b-lg': type === 'border',
-      'shadow-md dark:shadow-slate-900 my-4': type === 'card',
+      'collapse-default': type === 'default',
+      'collapse-border': type === 'border',
+      'collapse-card': type === 'card',
     }"
     :style="`max-height: ${maxHeight}px; transition-property: max-height`"
   >
-    <div class="rs-collapse-header" @click="onClick">
+    <div class="collapse-header" @click="onClick">
       <slot v-if="!!$slots.title" name="title"></slot>
       <span v-else> {{ title }}</span>
     </div>
-    <div class="rs-collapse-body">
+    <div class="collapse-body">
       <slot />
     </div>
   </div>

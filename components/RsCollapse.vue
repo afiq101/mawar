@@ -13,9 +13,9 @@ const props = defineProps({
 
 <template>
   <div
-    class="rs-collapse w-full mb-4"
+    class="collapse"
     :class="{
-      'border-t border-x rounded-lg': type === 'border',
+      'collapse-border': type === 'border',
     }"
     v-uid
   >

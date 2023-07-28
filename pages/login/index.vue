@@ -31,11 +31,13 @@ const login = async () => {
 
     const data = res.data.value;
 
+    console.log(data);
+
     if (data.statusCode === 200) {
       // console.log(data.data.accessToken);
       // Save token to pinia store
       userStore.setUsername(data.data.username);
-      userStore.setRoles(data.data.roles);
+      userStore.setRoles(["student"]);
       userStore.setAccessToken(data.data.accessToken);
       userStore.setRefreshToken(data.data.refreshToken);
       userStore.setIsAuthenticated(true);

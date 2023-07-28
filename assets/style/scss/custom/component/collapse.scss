@@ -1,5 +1,5 @@
-.rs-collapse-group {
-  .rs-collapse-header {
+.collapse-group {
+  .collapse-header {
     position: relative;
     &::after {
       content: "";
@@ -18,8 +18,8 @@
   }
 }
 
-.dark .rs-collapse-group {
-  .rs-collapse-header {
+.dark .collapse-group {
+  .collapse-header {
     &::after {
       content: "";
       position: absolute;
@@ -37,16 +37,16 @@
   }
 }
 
-.rs-collapse-group--open {
-  .rs-collapse-header {
+.collapse-group--open {
+  .collapse-header {
     &::after {
       transform: translate(-100%, -50%) rotate(90deg);
     }
   }
 }
 
-.dark .rs-collapse-group--open {
-  .rs-collapse-header {
+.dark .collapse-group--open {
+  .collapse-header {
     &::after {
       transform: translate(-100%, -50%) rotate(90deg);
     }
