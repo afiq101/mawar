@@ -17,26 +17,6 @@ export default [
     description: "Component for the ui",
     child: [
       {
-        title: "Typography",
-        path: "/ui/typography",
-        icon: "ic:outline-alternate-email",
-      },
-      {
-        title: "Colors",
-        path: "/ui/colors",
-        icon: "ic:outline-water-drop",
-      },
-      {
-        title: "Icon",
-        icon: "ic:outline-flag-circle",
-        child: [
-          {
-            title: "Nuxt Icons",
-            path: "/ui/icon/nuxt-icon",
-          },
-        ],
-      },
-      {
         title: "Component",
         icon: "ic:outline-settings-input-component",
         child: [
@@ -83,19 +63,94 @@ export default [
         ],
       },
       {
-        title: "Chart",
-        icon: "ic:outline-pie-chart",
+        title: "Form",
+        icon: "ic:outline-menu-book",
         child: [
           {
-            title: "Apex Chart",
-            path: "/ui/chart/apex-chart",
+            title: "Element",
+            child: [
+              {
+                title: "Input",
+                path: "/form/element/input",
+              },
+              {
+                title: "Input Group",
+                path: "/form/element/input-group",
+              },
+              {
+                title: "Input Mask",
+                path: "/form/element/input-mask",
+              },
+              {
+                title: "Textarea",
+                path: "/form/element/textarea",
+              },
+              {
+                title: "Number",
+                path: "/form/element/number",
+              },
+              {
+                title: "Password",
+                path: "/form/element/password",
+              },
+              {
+                title: "Date & Time",
+                path: "/form/element/date-time",
+              },
+              {
+                title: "Radio",
+                path: "/form/element/radio",
+              },
+              {
+                title: "Checkbox",
+                path: "/form/element/checkbox",
+              },
+              {
+                title: "Select",
+                path: "/form/element/select",
+              },
+              {
+                title: "File",
+                path: "/form/element/file",
+              },
+              {
+                title: "Custom",
+                path: "/form/element/custom",
+              },
+              {
+                title: "VCalendar",
+                path: "/form/element/vcalendar",
+              },
+              {
+                title: "Vue Select",
+                path: "/form/element/vue-select",
+              },
+              {
+                title: "Vue Quill",
+                path: "/form/element/vue-quill",
+              },
+            ],
           },
           {
-            title: "Chartjs",
-            path: "/ui/chart/chartjs",
+            title: "Wizard",
+            path: "/form/wizard",
           },
         ],
       },
+      {
+        title: "Table",
+        icon: "ic:outline-grid-on",
+        child: [
+          {
+            title: "Basic",
+            path: "/table/basic",
+          },
+          {
+            title: "Advanced",
+            path: "/table/advanced",
+          },
+        ],
+      },  
     ],
   },
   {

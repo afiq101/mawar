@@ -30,27 +30,27 @@ const onClick = () => {
 
   const scrollHeight = parentElement.scrollHeight;
   const targetOpenCollapse = parentElement.classList.contains(
-    "collapse-group--open"
+    "accordion-group--open"
   );
   const openCollapse = document.querySelector(
-    `#${parentID.value} .collapse-group--open`
+    `#${parentID.value} .accordion-group--open`
   );
 
   if (isAccordion) {
     if (openCollapse) {
       const openCollapseHeader = document.querySelector(
-        `#${parentID.value} .collapse-group--open .collapse-header`
+        `#${parentID.value} .accordion-group--open .accordion-header`
       );
       openCollapse.style.maxHeight = `${openCollapseHeader.scrollHeight}px`;
-      openCollapse.classList.remove("collapse-group--open");
+      openCollapse.classList.remove("accordion-group--open");
     }
   }
   if (targetOpenCollapse) {
     parentElement.style.maxHeight = maxHeight.value + "px";
-    parentElement.classList.remove("collapse-group--open");
+    parentElement.classList.remove("accordion-group--open");
   } else {
     parentElement.style.maxHeight = scrollHeight + "px";
-    parentElement.classList.add("collapse-group--open");
+    parentElement.classList.add("accordion-group--open");
   }
 };
 
@@ -58,7 +58,7 @@ const onClick = () => {
 onMounted(() => {
   try {
     const parentElement = document.querySelector(
-      `#${collapseGroup.value.id} .collapse-header`
+      `#${collapseGroup.value.id} .accordion-header`
     );
     
     const scrollHeight = parentElement.scrollHeight;
@@ -75,19 +75,19 @@ onMounted(() => {
   <div
     v-uid
     ref="collapseGroup"
-    class="collapse-group"
+    class="accordion-group"
     :class="{
-      'collapse-default': type === 'default',
-      'collapse-border': type === 'border',
-      'collapse-card': type === 'card',
+      'accordion-default': type === 'default',
+      'accordion-border': type === 'border',
+      'accordion-card': type === 'card',
     }"
     :style="`max-height: ${maxHeight}px; transition-property: max-height`"
   >
-    <div class="collapse-header" @click="onClick">
+    <div class="accordion-header" @click="onClick">
       <slot v-if="!!$slots.title" name="title"></slot>
       <span v-else> {{ title }}</span>
     </div>
-    <div class="collapse-body">
+    <div class="accordion-body">
       <slot />
     </div>
   </div>

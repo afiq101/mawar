@@ -13,9 +13,9 @@ const props = defineProps({
 
 <template>
   <div
-    class="collapse"
+    class="accordion"
     :class="{
-      'collapse-border': type === 'border',
+      'accordion-border': type === 'border',
     }"
     v-uid
   >
