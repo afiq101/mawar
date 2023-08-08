@@ -12,11 +12,9 @@ const loading = ref(true);
 
 onMounted(() => {
   // Hide loading indicator if not hydrating
-  if (!nuxtApp.isHydrating) {
-    setTimeout(() => {
-      loading.value = false;
-    }, 1000);
-  }
+  setTimeout(() => {
+    loading.value = false;
+  }, 1000);
 
   // Get theme from localStorage
   let theme = localStorage.getItem("theme") || "rose";

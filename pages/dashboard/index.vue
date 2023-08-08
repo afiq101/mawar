@@ -1,12 +1,9 @@
 <script setup>
-import { useUserStore } from "~/stores/user";
-
 definePageMeta({
   title: "Dashboard",
   middleware: ["auth"],
   requiresAuth: true,
 });
-console.log(useUserStore().roles);
 
 const data1 = ref([]);
 const data2 = ref([]);

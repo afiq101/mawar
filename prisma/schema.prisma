@@ -1,6 +1,5 @@
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["extendedWhereUnique"]
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -63,26 +62,4 @@ model userrole {
 
   @@index([userRoleRoleID], map: "FK_userrole_role")
   @@index([userRoleUserID], map: "FK_userrole_user")
-}
-
-model page {
-  pageID           Int           @id @default(autoincrement())
-  pageKey          String?       @db.VarChar(255)
-  pageTitle        String?       @db.VarChar(255)
-  pageName         String?       @db.VarChar(255)
-  pageURL          String?       @unique(map: "pageURL") @db.VarChar(255)
-  pageCreatedDate  String?       @db.VarChar(255)
-  pageModifiedDate String?       @db.VarChar(255)
-  pagecontent      pagecontent[]
-}
-
-model pagecontent {
-  pageContentID           Int       @id @default(autoincrement())
-  pageContentCode         String?   @db.LongText
-  pageContentCreatedDate  DateTime? @db.DateTime(0)
-  pageContentModifiedDate DateTime? @db.DateTime(0)
-  pageContentPageID       Int?
-  page                    page?     @relation(fields: [pageContentPageID], references: [pageID], onDelete: NoAction, onUpdate: NoAction, map: "FK__page")
-
-  @@index([pageContentPageID], map: "FK__page")
 }

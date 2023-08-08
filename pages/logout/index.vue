@@ -25,7 +25,7 @@ $swal.fire({
   showConfirmButton: false,
 });
 
-await navigateTo("/login");
+navigateTo("/login");
 </script>
 
 <template>

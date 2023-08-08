@@ -31,8 +31,6 @@ const login = async () => {
 
     const data = res.data.value;
 
-    console.log(data);
-
     if (data.statusCode === 200) {
       // console.log(data.data.accessToken);
       // Save token to pinia store
@@ -56,7 +54,7 @@ const login = async () => {
       // console.log(userStore.refreshToken);
       // console.log(userStore.isAuth);
 
-      await navigateTo("/dashboard");
+      navigateTo("/dashboard");
     } else {
       $swal.fire({
         title: "Error!",
@@ -74,8 +72,16 @@ const login = async () => {
   <div
     class="flex-none md:flex justify-center text-center items-center h-screen"
   >
-    <div class="w-full md:w-3/4 lg:w-1/2 xl:w-2/6">
+    <div class="w-full md:w-3/4 lg:w-1/2 xl:w-2/6 relative">
       <rs-card class="h-screen md:h-auto px-10 md:px-16 py-12 md:py-20 mb-0">
+        <div
+          class="absolute -bottom-6 -left-0 img-container flex justify-start items-center mb-5"
+        >
+          <img
+            src="@/assets/img/logo/logo-full-transparent.png"
+            class="max-w-[110px]"
+          />
+        </div>
         <h3 class="mb-4">Login</h3>
         <p class="text-slate-500 mb-6">
           Welcome to Mawar. Please login to continue.
