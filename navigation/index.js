@@ -88,13 +88,13 @@ export default [
     description: "Help and documentation",
     child: [
       {
-        title: "Mawar Docs",
+        title: "Documentation",
         icon: "solar:book-bookmark-minimalistic-bold",
         path: "https://mawar-cms-docs.vercel.app",
         child: [],
       },
       {
-        title: "RoseUI Components",
+        title: "UI Components",
         icon: "material-symbols:settings-input-component-outline-rounded",
         path: "https://roseui-nuxt.vercel.app",
       },
