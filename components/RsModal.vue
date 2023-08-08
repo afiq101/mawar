@@ -49,6 +49,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  overlayClose: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const closeModal = () => {
@@ -66,29 +70,25 @@ const validateCancelCallback = () => {
     <transition-group name="fade">
       <div
         v-if="modelValue"
-        @click.self="closeModal"
-        class="modal fixed top-0 left-0 w-full h-full overflow-hidden"
+        @click.self="overlayClose ? closeModal() : ''"
+        class="modal"
         style="z-index: 1000"
         :class="{
-          'flex items-start': position == 'top',
-          'flex items-center': position == 'center',
-          'flex items-end': position == 'bottom',
-          '!bg-transparent': hideOverlay,
+          'modal-top': position == 'top',
+          'modal-center': position == 'center',
+          'modal-end': position == 'bottom',
+          'modal-hide-overlay': hideOverlay,
         }"
       >
         <div
           v-show="modelValue"
-          class="modal-dialog w-full md:w-auto"
+          class="modal-dialog"
           :style="{
             width: size == 'sm' ? '300px' : size == 'md' ? '500px' : '800px',
           }"
         >
-          <div
-            class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white dark:bg-slate-800 bg-clip-padding rounded-md outline-none text-current"
-          >
-            <div
-              class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 dark:border-slate-700 rounded-t-md"
-            >
+          <div class="modal-content">
+            <div class="modal-header">
               <h4 v-if="!$slots.header">
                 {{ title }}
               </h4>
@@ -99,16 +99,13 @@ const validateCancelCallback = () => {
                 name="ic:round-close"
               ></Icon>
             </div>
-            <div class="modal-body relative p-4">
+            <div class="modal-body">
               <perfect-scrollbar style="max-height: 70vh">
                 <slot name="body"></slot>
                 <slot v-if="!$slots.body"></slot>
               </perfect-scrollbar>
             </div>
-            <div
-              v-if="!hideFooter"
-              class="modal-footer flex flex-shrink-0 flex-wrap items-center justify-end px-4 pb-4 rounded-b-md gap-x-3"
-            >
+            <div v-if="!hideFooter" class="modal-footer">
               <slot name="footer"></slot>
               <rs-button
                 v-if="!$slots.footer && !okOnly"

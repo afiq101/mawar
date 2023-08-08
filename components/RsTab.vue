@@ -40,71 +40,71 @@ provide("selectedTitle", selectedTitle);
 <template>
   <client-only>
     <div
-      class="tab rounded-md"
+      class="tab"
       :class="{
-        'flex flex-col md:flex-row': vertical,
-        'shadow-md pt-4': type === 'card' && !vertical,
-        'shadow-md': type === 'card' && vertical,
-        'bg-primary': type === 'card' && variant === 'primary',
-        'bg-secondary': type === 'card' && variant === 'secondary',
-        'bg-success': type === 'card' && variant === 'success',
-        'bg-danger': type === 'card' && variant === 'danger',
-        'bg-warning': type === 'card' && variant === 'warning',
-        'bg-info': type === 'card' && variant === 'info',
+        vertical: vertical,
+        'tab-card': type === 'card' && !vertical,
+        'card-vertical': type === 'card' && vertical,
+        'card-primary': type === 'card' && variant === 'primary',
+        'card-secondary': type === 'card' && variant === 'secondary',
+        'card-success': type === 'card' && variant === 'success',
+        'card-danger': type === 'card' && variant === 'danger',
+        'card-warning': type === 'card' && variant === 'warning',
+        'card-info': type === 'card' && variant === 'info',
       }"
     >
       <ul
-        class="flex flex-wrap list-none pl-0"
+        class="tab-nav"
         :class="{
-          'mx-4': type === 'card' && !vertical,
-          'mx-4 py-0 pt-4 md:py-4': type === 'card' && vertical,
-          'flex-row md:flex-col gap-2': vertical,
-          'flex-1': vertical && fill,
+          'tab-nav-card': type === 'card' && !vertical,
+          'tab-nav-card card-vertical': type === 'card' && vertical,
+          vertical: vertical,
+          'vertical-fill': vertical && fill,
         }"
       >
         <li
-          class="cursor-pointer"
+          class="tab-item"
           :class="{
-            'flex-1 w-full': fill,
-            'px-6': type === 'border',
-            'hover:border hover:border-b-0 rounded-t-md':
-              type === 'border' && !vertical,
-            'border rounded-t-md border-b-0':
+            fill: fill,
+            border: type === 'border',
+            'border-horizontal': type === 'border' && !vertical,
+            'border-horizontal-active':
               selectedTitle === val.title && type === 'border' && !vertical,
-            'hover:border hover:border-r-0 rounded-l-md':
-              type === 'border' && vertical,
-            'border rounded-t-md rounded-bl-none md:rounded-r-none md:rounded-l-md border-r border-b-0 md:border-b md:border-r-0':
+            'border-vertical': type === 'border' && vertical,
+            'border-vertical-active':
               selectedTitle === val.title && type === 'border' && vertical,
 
             // Variant Color for Border Type
-            'hover:border-primary ': type === 'border' && variant == 'primary',
-            'hover:border-secondary ':
+            'border-hover-primary': type === 'border' && variant == 'primary',
+            'border-hover-secondary':
               type === 'border' && variant == 'secondary',
-            'hover:border-info ': type === 'border' && variant == 'info',
-            'hover:border-success ': type === 'border' && variant == 'success',
-            'hover:border-warning ': type === 'border' && variant == 'warning',
-            'hover:border-danger ': type === 'border' && variant == 'danger',
-            'border-primary text-primary':
+            'border-hover-info': type === 'border' && variant == 'info',
+            'border-hover-success': type === 'border' && variant == 'success',
+            'border-hover-warning': type === 'border' && variant == 'warning',
+            'border-hover-danger': type === 'border' && variant == 'danger',
+
+            // Variant Color for Border Type Active
+            'border-active-primary':
               selectedTitle === val.title &&
               type === 'border' &&
               variant == 'primary',
-            'border-secondary text-secondary':
+            'border-active-secondary':
               selectedTitle === val.title &&
               type === 'border' &&
               variant == 'secondary',
-            'border-info text-info':
+            'border-active-info':
               selectedTitle === val.title &&
               type === 'border' &&
               variant == 'info',
-            'border-success text-success':
+            'border-active-success':
               selectedTitle === val.title &&
               type === 'border' &&
               variant == 'success',
-            'border-warning text-warning':
+            'border-active-warning':
               selectedTitle === val.title &&
               type === 'border' &&
               variant == 'warning',
-            'border-danger text-danger':
+            'border-active-danger':
               selectedTitle === val.title &&
               type === 'border' &&
               variant == 'danger',
@@ -115,109 +115,112 @@ provide("selectedTitle", selectedTitle);
           @click="selectedTitle = val.title"
         >
           <a
-            class="nav-link block font-medium text-base leading-tight capitalize border-x-0 border-t-0 py-3"
+            class="tab-item-link"
             :class="{
-              'hover:border-b-2 mx-2 px-4': type === 'default' && !vertical,
-              'hover:border-l-2 mx-2 px-4': type === 'default' && vertical,
-              'border-b-2':
+              default: type === 'default' && !vertical,
+              'default-vertical': type === 'default' && vertical,
+              'default-active':
                 selectedTitle === val.title && type === 'default' && !vertical,
-              'border-l-2':
+              'default-vertical-active':
                 selectedTitle === val.title && type === 'default' && vertical,
 
-              // Variant Color for default type
-              'hover:border-primary hover:text-primary':
+              // Variant hover for default type
+              'default-hover-primary':
                 type === 'default' && variant == 'primary',
-              'hover:border-secondary hover:text-secondary':
+              'default-hover-secondary':
                 type === 'default' && variant == 'secondary',
-              'hover:border-info hover:text-info':
-                type === 'default' && variant == 'info',
-              'hover:border-success hover:text-success':
+              'default-hover-info': type === 'default' && variant == 'info',
+              'default-hover-success':
                 type === 'default' && variant == 'success',
-              'hover:border-warning hover:text-warning':
+              'default-hover-warning':
                 type === 'default' && variant == 'warning',
-              'hover:border-danger hover:text-danger':
-                type === 'default' && variant == 'danger',
-              'text-primary border-primary':
+              'default-hover-danger': type === 'default' && variant == 'danger',
+
+              // Variant Color for default type Active
+              'default-primary':
                 selectedTitle === val.title &&
                 type === 'default' &&
                 variant == 'primary',
-              'text-secondary border-secondary':
+              'default-secondary':
                 selectedTitle === val.title &&
                 type === 'default' &&
                 variant == 'secondary',
-              'text-info border-info':
+              'default-info':
                 selectedTitle === val.title &&
                 type === 'default' &&
                 variant == 'info',
-              'text-success border-success':
+              'default-success':
                 selectedTitle === val.title &&
                 type === 'default' &&
                 variant == 'success',
-              'text-warning border-warning':
+              'default-warning':
                 selectedTitle === val.title &&
                 type === 'default' &&
                 variant == 'warning',
-              'text-danger border-danger':
+              'default-danger':
                 selectedTitle === val.title &&
                 type === 'default' &&
                 variant == 'danger',
 
-              'px-5 mx-1 text-white rounded-t-md': type === 'card' && !vertical,
-              'px-5 my-0 mb:my-1 mb:px-0 text-white rounded-bl-none rounded-t-md md:rounded-tr-none md:rounded-l-md':
-                type === 'card' && vertical,
-              'bg-primary/90': type === 'card' && variant == 'primary',
-              'bg-secondary/90': type === 'card' && variant == 'secondary',
-              'bg-info/90': type === 'card' && variant == 'info',
-              'bg-success/90': type === 'card' && variant == 'success',
-              'bg-warning/90': type === 'card' && variant == 'warning',
-              'bg-danger/90': type === 'card' && variant == 'danger',
-              '!bg-white text-primary/90':
+              'link-card': type === 'card' && !vertical,
+              'link-card-vertical': type === 'card' && vertical,
+
+              // Variant Color for card type
+              'link-card-primary': type === 'card' && variant == 'primary',
+              'link-card-secondary': type === 'card' && variant == 'secondary',
+              'link-card-info': type === 'card' && variant == 'info',
+              'link-card-success': type === 'card' && variant == 'success',
+              'link-card-warning': type === 'card' && variant == 'warning',
+              'link-card-danger': type === 'card' && variant == 'danger',
+
+              // Variant Color for card type Active
+              'link-card-primary-active':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'primary',
-              '!bg-white text-secondary/90':
+              'link-card-secondary-active':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'secondary',
-              '!bg-white text-info/90':
+              'link-card-info-active':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'info',
-              '!bg-white text-success/90':
+              'link-card-success-active':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'success',
-              '!bg-white text-warning/90':
+              'link-card-warning-active':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'warning',
-              '!bg-white text-danger/90':
+              'link-card-danger-active':
                 selectedTitle === val.title &&
                 type === 'card' &&
                 variant == 'danger',
 
-              'w-23/24': fill,
-              'flex flex-wrap justify-start': justify == 'left',
-              'flex flex-wrap justify-center': justify == 'center',
-              'flex flex-wrap justify-end': justify == 'right',
+              'link-justify-left': justify == 'left',
+              'link-justify-center': justify == 'center',
+              'link-justify-right': justify == 'right',
             }"
             >{{ val.title }}</a
           >
         </li>
       </ul>
       <div
-        class="tab-content bg-white dark:bg-slate-800 rounded-lg"
+        class="tab-content"
         :class="{
-          'flex-grow': vertical && !fill,
-          'flex-1': vertical && fill,
-          'border rounded-b-md': type === 'border' && !vertical,
-          'border rounded-md rounded-l-none': type === 'border' && vertical,
-          'border-primary': type === 'border' && variant === 'primary',
-          'border-secondary': type === 'border' && variant === 'secondary',
-          'border-info': type === 'border' && variant === 'info',
-          'border-success': type === 'border' && variant === 'success',
-          'border-warning': type === 'border' && variant === 'warning',
-          'border-danger': type === 'border' && variant === 'danger',
+          'content-vertical': vertical && !fill,
+          'content-vertical-fill': vertical && fill,
+          'content-border': type === 'border' && !vertical,
+          'content-border-vertical': type === 'border' && vertical,
+          'content-border-primary': type === 'border' && variant === 'primary',
+          'content-border-secondary':
+            type === 'border' && variant === 'secondary',
+          'content-border-info': type === 'border' && variant === 'info',
+          'content-border-success': type === 'border' && variant === 'success',
+          'content-border-warning': type === 'border' && variant === 'warning',
+          'content-border-danger': type === 'border' && variant === 'danger',
         }"
       >
         <slot></slot>

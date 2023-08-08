@@ -1,5 +1,4 @@
 <script setup>
-import { useThemeStore } from "~/stores/theme";
 import RSChildItem from "~/components/layouts/sidemenu/ItemChild.vue";
 import { useUserStore } from "~/stores/user";
 
@@ -12,13 +11,10 @@ const props = defineProps({
   },
   indent: {
     type: Number,
-    default: 0.1,
+    default: 0.2,
   },
 });
 const emit = defineEmits(["openMenu"]);
-
-const themeStore = useThemeStore();
-const theme = themeStore.theme;
 
 const indent = ref(props.indent);
 
@@ -71,9 +67,7 @@ function activeMenu(routePath) {
 }
 
 const indentStyle = computed(() => {
-  if (theme == "dark")
-    return { "background-color": `rgba(18, 24, 37, ${indent.value})` };
-  else return { "background-color": `rgba(226, 232, 240, ${indent.value})` };
+  return { "background-color": `rgba(var(--bg-1), ${indent.value})` };
 });
 </script>
 

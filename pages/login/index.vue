@@ -31,6 +31,8 @@ const login = async () => {
 
     const data = res.data.value;
 
+    console.log(data);
+
     if (data.statusCode === 200) {
       // console.log(data.data.accessToken);
       // Save token to pinia store

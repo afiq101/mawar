@@ -14,10 +14,7 @@ const selectedTitle = inject("selectedTitle");
 </script>
 
 <template>
-  <div
-    class="tab-pane py-4 px-4"
-    v-show="selectedTitle === title"
-  >
+  <div class="tab-pane" v-if="selectedTitle === title">
     <slot></slot>
   </div>
 </template>
