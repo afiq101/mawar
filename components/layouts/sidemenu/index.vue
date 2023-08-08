@@ -30,9 +30,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div
-    class="vertical-menu bg-white dark:bg-slate-800 text-base h-screen fixed w-64 top-0 z-50 duration-300 border-l-0 shadow-md shadow-slate-200 dark:shadow-slate-900"
-  >
+  <div class="vertical-menu">
     <div class="py-2 px-4">
       <nuxt-link to="/">
         <div class="flex flex-auto gap-3 justify-center items-center h-[48px]">

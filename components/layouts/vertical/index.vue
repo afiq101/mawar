@@ -3,7 +3,7 @@ import { useLayoutStore } from "~/stores/layout";
 
 import RSHeader from "~/components/layouts/Header.vue";
 import RSSideMenu from "~~/components/layouts/sidemenu/index.vue";
-import RSConfigMenu from "~~/components/layouts/configmenu/index.vue";
+// import RSConfigMenu from "~~/components/layouts/configmenu/index.vue";
 // import RSFooter from "~/components/layouts/Footer.vue";
 import { useWindowSize } from "vue-window-size";
 
@@ -34,7 +34,7 @@ function toggleMenu(event) {
   <div class="content-page duration-300">
     <slot />
   </div>
-  <RSConfigMenu />
+  <!-- <RSConfigMenu /> -->
   <div @click="toggleMenu" class="menu-overlay"></div>
 
   <!-- <RSFooter /> -->

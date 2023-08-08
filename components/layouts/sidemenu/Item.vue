@@ -103,8 +103,7 @@ function activeMenu(routePath) {
             v-if="
               !item2.meta ||
               !item2.meta?.auth ||
-              userExist(item2) ||
-              roleExist(item2)
+              (userExist(item2) && roleExist(item2))
             "
             class="navigation-item-wrapper"
           >

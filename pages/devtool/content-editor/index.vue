@@ -180,13 +180,13 @@ const confirmModal = async () => {
               class="button-list flex justify-between border-t pt-4 border-gray-300"
             >
               <div class="flex gap-x-2">
-                <!-- <nuxt-link
+                <nuxt-link
                   :to="`/devtool/content-editor/canvas?page=${page.name}`"
                 >
                   <rs-button variant="primary" class="!py-2 !px-3">
                     <Icon name="ph:paint-brush-broad"></Icon>
                   </rs-button>
-                </nuxt-link> -->
+                </nuxt-link>
                 <nuxt-link
                   :to="`/devtool/content-editor/code?page=${page.name}`"
                 >

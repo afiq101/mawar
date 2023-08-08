@@ -23,7 +23,7 @@ const textClassification = {
   input: `
     w-full 
     h-10 
-    px-3 
+    !px-3 
     border-none 
     text-sm 
     text-gray-700 

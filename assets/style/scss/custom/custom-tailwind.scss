@@ -8,8 +8,8 @@
 }
 
 .form-check-input:checked {
-  background-color: #f17a84;
-  border-color: #f17a84;
+  background-color: rgba((var(--color-primary)), 1);
+  border-color: rgba((var(--color-primary)), 1);
 }
 
 .formkit-input[type="color"] {

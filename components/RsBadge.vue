@@ -17,21 +17,17 @@ const props = defineProps({
 
 <template>
   <div
-    class="inline whitespace-nowrap text-center rounded-lg w-auto text-white px-3 py-1"
+    class="badge"
     :class="{
-      'bg-info': variant === 'info',
-      'bg-primary': variant === 'primary',
-      'bg-success': variant === 'success',
-      'bg-warning': variant === 'warning',
-      'bg-danger': variant === 'danger',
+      'badge-primary': variant === 'primary',
+      'badge-secondary': variant === 'secondary',
+      'badge-info': variant === 'info',
+      'badge-success': variant === 'success',
+      'badge-warning': variant === 'warning',
+      'badge-danger': variant === 'danger',
     }"
   >
-    <Icon
-      class="align-middle"
-      v-if="icon"
-      :name="icon"
-      :size="iconSize"
-    ></Icon>
+    <Icon v-if="icon" :name="icon" :size="iconSize"></Icon>
     <slot />
   </div>
 </template>

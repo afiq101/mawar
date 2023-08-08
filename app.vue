@@ -1,66 +1,33 @@
 <script setup>
-import { useThemeStore } from "~/stores/theme";
-
 useHead({
   title: "Mawar | Innovative solutions for captivating content",
   description: "Home page",
-  bodyAttrs: {
-    class: "bg-gray-100 dark:bg-slate-900 text-gray-600 dark:text-gray-300",
+  htmlAttrs: {
+    lang: "en",
   },
 });
 
 const nuxtApp = useNuxtApp();
-const themeStore = useThemeStore();
 const loading = ref(true);
 
-const hexToRgb = (hex) => {
-  const r = parseInt(hex.slice(1, 3), 16);
-  const g = parseInt(hex.slice(3, 5), 16);
-  const b = parseInt(hex.slice(5, 7), 16);
-  return `${r}, ${g}, ${b}`;
-};
-
-const setThemeGlobal = () => {
-  document.documentElement.style.setProperty(
-    "--color-primary",
-    hexToRgb(themeStore.primaryColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-secondary",
-    hexToRgb(themeStore.secondaryColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-info",
-    hexToRgb(themeStore.infoColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-success",
-    hexToRgb(themeStore.successColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-warning",
-    hexToRgb(themeStore.warningColor)
-  );
-  document.documentElement.style.setProperty(
-    "--color-danger",
-    hexToRgb(themeStore.dangerColor)
-  );
-};
-
 onMounted(() => {
-  setThemeGlobal();
-
   // Hide loading indicator if not hydrating
-  if (!nuxtApp.isHydrating) {
+  setTimeout(() => {
     loading.value = false;
-  }
+  }, 1000);
+
+  // Get theme from localStorage
+  let theme = localStorage.getItem("theme") || "rose";
+  document.documentElement.setAttribute("data-theme", theme);
 });
 </script>
 
 <template>
-  <NuxtLayout>
+  <div>
     <NuxtLoadingIndicator />
-    <Loading v-if="loading" />
-    <NuxtPage :key="$route.fullPath" v-else />
-  </NuxtLayout>
+    <NuxtLayout>
+      <Loading v-if="loading" />
+      <NuxtPage :key="$route.fullPath" v-else />
+    </NuxtLayout>
+  </div>
 </template>

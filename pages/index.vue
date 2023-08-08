@@ -8,5 +8,5 @@ definePageMeta({
 </script>
 
 <template>
-  <div class="text-orange-400">Redirect Dashboard</div>
+  <div>Redirect Dashboard</div>
 </template>
