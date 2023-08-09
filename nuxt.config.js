@@ -59,7 +59,7 @@ export default defineNuxtConfig({
       ],
     },
     devOptions: {
-      enabled: true,
+      enabled: false,
       type: "module",
     },
     manifest: {
