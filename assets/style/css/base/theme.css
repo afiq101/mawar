@@ -1,0 +1,125 @@
+html[data-theme="rose"] {
+  --color-primary: 243, 88, 106;
+  --color-secondary: 240, 122, 37;
+  --color-accent: 243, 244, 246;
+  --color-success: 79, 192, 103;
+  --color-info: 65, 133, 242;
+  --color-warning: 246, 141, 32;
+  --color-danger: 229, 83, 69;
+  --text-color: 75, 85, 99;
+  --border-color: 255, 255, 255;
+  --bg-1: 243, 244, 246;
+  --bg-2: 255, 255, 255;
+  --scroll-color: 170, 170, 170;
+  --scroll-hover-color: 155, 155, 155;
+  --fk-border-color: 226, 232, 240;
+  --fk-placeholder-color: 148, 163, 184;
+  --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --cp-bg: 255, 255, 255;
+  --rounded-box: 0.5rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 1.9rem;
+  --animation-btn: 0.25s;
+  --animation-input: 0.2s;
+  --btn-text-case: uppercase;
+  --btn-focus-scale: 0.95;
+  --padding-btn: 0.625rem 1.5rem;
+  --border-btn: 1px;
+  --tab-border: 1px;
+  --tab-radius: 0.5rem;
+  --tw-shadow: #e5eaf2;
+}
+
+html[data-theme="dark"] {
+  --color-primary: 243, 88, 106;
+  --color-secondary: 240, 122, 37;
+  --color-accent: 15, 23, 42;
+  --color-success: 79, 192, 103;
+  --color-info: 65, 133, 242;
+  --color-warning: 246, 141, 32;
+  --color-danger: 229, 83, 69;
+  --text-color: 209, 213, 219;
+  --border-color: 30, 41, 59;
+  --bg-1: 15, 23, 42;
+  --bg-2: 30, 41, 59;
+  --scroll-color: 170, 170, 170;
+  --scroll-hover-color: 155, 155, 155;
+  --fk-border-color: 71, 85, 105;
+  --fk-placeholder-color: 71, 85, 105;
+  --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --cp-bg: 255, 255, 255;
+  --rounded-box: 0.5rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 1.9rem;
+  --animation-btn: 0.25s;
+  --animation-input: 0.2s;
+  --btn-text-case: uppercase;
+  --btn-focus-scale: 0.95;
+  --padding-btn: 0.625rem 1.5rem;
+  --border-btn: 1px;
+  --tab-border: 1px;
+  --tab-radius: 0.5rem;
+  --tw-shadow: #e5eaf2;
+}
+
+html[data-theme="nier"] {
+  --color-primary: 99, 95, 84;
+  --color-secondary: 207, 107, 83;
+  --color-accent: 243, 88, 106;
+  --color-success: 79, 192, 103;
+  --color-info: 65, 133, 242;
+  --color-warning: 246, 141, 32;
+  --color-danger: 229, 83, 69;
+  --text-color: 78, 75, 66;
+  --border-color: 153, 152, 131;
+  --bg-1: 205, 200, 176;
+  --bg-2: 218, 212, 187;
+  --scroll-color: 99, 95, 84;
+  --scroll-hover-color: 99, 95, 84;
+  --fk-border-color: 99, 95, 84;
+  --fk-placeholder-color: 188, 175, 145;
+  --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --cp-bg: 255, 255, 255;
+  --rounded-box: 0.5rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 1.9rem;
+  --animation-btn: 0.25s;
+  --animation-input: 0.2s;
+  --btn-text-case: uppercase;
+  --btn-focus-scale: 0.95;
+  --padding-btn: 0.625rem 0.875rem;
+  --border-btn: 1px;
+  --tab-border: 1px;
+  --tab-radius: 0.5rem;
+  --tw-shadow: #e5eaf2;
+}
+
+html[data-theme="custom1"] {
+  --color-primary: 9, 76, 90;
+  --color-secondary: 62, 72, 83;
+  --color-accent: 0, 103, 236;
+  --color-success: 11, 152, 76;
+  --color-info: 208, 89, 41;
+  --color-warning: 229, 197, 13;
+  --color-danger: 238, 5, 34;
+  --text-color: 15, 15, 14;
+  --border-color: 153, 152, 131;
+  --bg-1: 214, 215, 206;
+  --bg-2: 235, 232, 217;
+  --scroll-color: 9, 76, 90;
+  --scroll-hover-color: 9, 76, 90;
+  --box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --cp-bg: 255, 255, 255;
+  --rounded-box: 0.5rem;
+  --rounded-btn: 0.5rem;
+  --rounded-badge: 1.9rem;
+  --animation-btn: 0.25s;
+  --animation-input: 0.2s;
+  --btn-text-case: uppercase;
+  --btn-focus-scale: 0.95;
+  --padding-btn: 0.625rem 1.5rem;
+  --border-btn: 1px;
+  --tab-border: 1px;
+  --tab-radius: 0.5rem;
+  --tw-shadow: #e5eaf2;
+}

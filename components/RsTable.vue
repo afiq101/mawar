@@ -466,7 +466,7 @@ watch(
           <!-- <rs-button class="mt-2">asdaasd</rs-button> -->
         </div>
         <div class="flex justify-center items-center gap-x-2">
-          <span class="text-gray-500">Result per page:</span>
+          <span class="text-[rgb(var(--text-color))]">Result per page:</span>
           <FormKit
             type="select"
             v-model="pageSize"
@@ -528,18 +528,18 @@ watch(
           v-if="!hideTable"
           class="table-content"
           :class="{
-            '!border-y !border-0': advanced,
+            '!border-y !border-0 border-[rgb(var(--bg-1))]': advanced,
             'table-fixed': options.fixed,
             'table-auto': !options.fixed,
           }"
         >
           <thead
-            class="text-left border-gray-200 dark:border-slate-700"
+            class="text-left border-[rgb(var(--border-color))]"
             :class="{
               'border-y': !options.borderless,
-              'border-gray-200 bg-gray-100 dark:bg-gray-800':
+              'border-[rgb(var(--border-color))] bg-[rgb(var(--bg-2))]':
                 options.variant === 'default',
-              'border-primary/50 bg-primary text-white ':
+              'border-primary/50 bg-primary text-white':
                 options.variant === 'primary',
               'border-secondary/50 bg-secondary text-white':
                 options.variant === 'secondary',
@@ -558,7 +558,8 @@ watch(
                 :class="{
                   'border-r last:border-l last:border-r-0':
                     options.bordered && !options.borderless,
-                  'border-gray-300': options.variant === 'default',
+                  'border-[rgb(var(--border-color))]':
+                    options.variant === 'default',
                   'border-primary/80': options.variant === 'primary',
                   'border-secondary/80': options.variant === 'secondary',
                   'border-info/80': options.variant === 'info',
@@ -604,11 +605,11 @@ watch(
           <tbody>
             <tr
               :class="{
-                'border-y border-gray-200 dark:border-slate-700':
+                'border-y border-[rgb(var(--border-color))]':
                   !options.bordered && !options.borderless,
                 'border-b': options.bordered && !options.borderless,
                 'border-b-0': options.borderless,
-                'border-gray-200 odd:bg-white even:bg-slate-50 dark:even:bg-slate-700 dark:odd:bg-slate-800':
+                'border-[rgb(var(--border-color))] odd:bg-[rgb(var(--bg-1))] even:bg-[rgb(var(--bg-2))]':
                   options.variant === 'default' && options.striped,
                 'border-primary/20 odd:bg-white even:bg-primary/5':
                   options.variant === 'primary' && options.striped,
@@ -622,7 +623,7 @@ watch(
                   options.variant === 'warning' && options.striped,
                 'border-danger/20 odd:bg-white even:bg-danger/5':
                   options.variant === 'danger' && options.striped,
-                'cursor-pointer hover:bg-gray-50':
+                'cursor-pointer hover:bg-[rgb(var(--text-color))]':
                   options.hover && options.variant === 'default',
                 'cursor-pointer hover:bg-primary/5':
                   options.hover && options.variant === 'primary',
@@ -645,7 +646,8 @@ watch(
                 :class="{
                   'border-r last:border-l last:border-r-0':
                     options.bordered && !options.borderless,
-                  'border-gray-100': options.variant === 'default',
+                  'border-[rgb(var(--border-color))]':
+                    options.variant === 'default',
                   'border-primary/20': options.variant === 'primary',
                   'border-secondary/20': options.variant === 'secondary',
                   'border-info/20': options.variant === 'info',
@@ -687,7 +689,7 @@ watch(
               </template>
               <template #default>
                 <div
-                  class="flex justify-between items-center even:bg-inherit odd:bg-gray-200 rounded-lg p-3"
+                  class="flex justify-between items-center even:bg-inherit odd:bg-[rgb(var(--bg-1))] rounded-lg p-3"
                   v-for="(val1, index1) in Object.entries(val).slice(
                     2,
                     Object.entries(val).length
@@ -709,7 +711,7 @@ watch(
     </div>
     <div v-if="advanced" class="table-footer">
       <div class="flex justify-center items-center gap-x-2">
-        <span class="text-sm text-gray-500 hidden md:block"
+        <span class="text-sm text-[rgb(var(--text-color))] hidden md:block"
           >Showing {{ pageSize * currentPage - pageSize + 1 }} to
           {{ pageSize * currentPage }} of {{ totalEntries }} entries</span
         >

@@ -1,0 +1,158 @@
+/* RS Button  */
+.button {
+  @apply w-fit rounded-lg flex justify-center items-center h-fit;
+}
+
+.button[class*="button-"]:hover {
+  background-image: linear-gradient(rgb(0 0 0/10%) 0 0);
+}
+
+.button[class*="button-"]:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.button.button-primary {
+  @apply bg-primary text-white;
+}
+
+.button.button-secondary {
+  @apply bg-secondary text-white;
+}
+
+.button.button-success {
+  @apply bg-success text-white;
+}
+
+.button.button-info {
+  @apply bg-info text-white;
+}
+
+.button.button-warning {
+  @apply bg-warning text-white;
+}
+
+.button.button-danger {
+  @apply bg-danger text-white;
+}
+
+.button[class*="outline-"]:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.button.outline-primary {
+  @apply border border-primary text-primary;
+}
+
+.button.outline-primary:hover {
+  @apply bg-primary/5;
+}
+
+.button.outline-secondary {
+  @apply border border-secondary text-secondary;
+}
+
+.button.outline-secondary:hover {
+  @apply bg-secondary/5;
+}
+
+.button.outline-success {
+  @apply border border-success text-success;
+}
+
+.button.outline-success:hover {
+  @apply bg-success/5;
+}
+
+.button.outline-info {
+  @apply border border-info text-info;
+}
+
+.button.outline-info:hover {
+  @apply bg-info/5;
+}
+
+.button.outline-warning {
+  @apply border border-warning text-warning;
+}
+
+.button.outline-warning:hover {
+  @apply bg-warning/5;
+}
+
+.button.outline-danger {
+  @apply border border-danger text-danger;
+}
+
+.button.outline-danger:hover {
+  @apply bg-danger/5;
+}
+
+.button[class*="text-"]:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.button.texts-primary {
+  @apply text-primary;
+}
+
+.button.texts-primary:hover {
+  @apply bg-primary/10;
+}
+
+.button.texts-secondary {
+  @apply text-secondary;
+}
+
+.button.texts-secondary:hover {
+  @apply bg-secondary/10;
+}
+
+.button.texts-success {
+  @apply text-success;
+}
+
+.button.texts-success:hover {
+  @apply bg-success/10;
+}
+
+.button.texts-info {
+  @apply text-info;
+}
+
+.button.texts-info:hover {
+  @apply bg-info/10;
+}
+
+.button.texts-warning {
+  @apply text-warning;
+}
+
+.button.texts-warning:hover {
+  @apply bg-warning/10;
+}
+
+.button.texts-danger {
+  @apply text-danger;
+}
+
+.button.texts-danger:hover {
+  @apply bg-danger/10;
+}
+
+.button-sm {
+  @apply text-xs;
+  padding: var(--padding-btn);
+}
+
+.button-md {
+  @apply text-sm;
+  padding: var(--padding-btn);
+}
+
+.button-lg {
+  @apply text-base;
+  padding: var(--padding-btn);
+}

@@ -463,7 +463,7 @@ const addMenuFromList = () => {
                   />
                   <Icon
                     name="mdi:eye-off-outline"
-                    class="text-gray-300"
+                    class="text-primary/20"
                     size="22"
                     v-else
                   />
@@ -516,7 +516,7 @@ const addMenuFromList = () => {
                 />
                 <perfect-scrollbar
                   style="height: 735px"
-                  class="px-5 pt-5 border !bg-slate-200/60 rounded-md"
+                  class="px-5 pt-5 border border-[rgb(var(--border-color))] bg-[rgb(var(--bg-1))] rounded-md"
                 >
                   <draggable
                     item-key="id"
@@ -526,7 +526,7 @@ const addMenuFromList = () => {
                     :sort="false"
                   >
                     <template #item="{ element }">
-                      <rs-card class="p-4 mb-4 border-2 !shadow-none">
+                      <rs-card class="p-4 mb-4 border-2 border-[rgb(var(--border-color))] !shadow-none">
                         <div class="flex justify-between items-center">
                           <p>
                             {{ kebabtoTitle(element.name) }} (
@@ -553,12 +553,15 @@ const addMenuFromList = () => {
               </div>
               <perfect-scrollbar v-if="!showCode" style="height: 825px">
                 <rs-card
-                  class="p-4 bg-gray-50 border !bg-slate-200/60 rounded-md"
+                  class="p-4 border border-[rgb(var(--border-color))] bg-[rgb(var(--bg-1))] rounded-md"
                 >
                   <div class="flex justify-end items-center">
-                    <rs-button class="!p-2 mt-3 justify-center items-center" @click="addNewHeader">
+                    <rs-button
+                      class="!p-2 mt-3 justify-center items-center"
+                      @click="addNewHeader"
+                    >
                       <Icon
-                      class="mr-1"
+                        class="mr-1"
                         name="material-symbols:docs-add-on"
                         size="18"
                       ></Icon>
@@ -616,9 +619,7 @@ const addMenuFromList = () => {
         v-model="showModalEditForm.path"
       >
         <template #prefix>
-          <div class="bg-slate-100 dark:bg-slate-700 h-full rounded-l-md p-3">
-            /
-          </div>
+          <div class="bg-slate-100 h-full rounded-l-md p-3">/</div>
         </template>
       </FormKit>
     </rs-modal>

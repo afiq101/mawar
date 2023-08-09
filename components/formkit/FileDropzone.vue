@@ -72,7 +72,11 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
       <input v-bind="getInputProps()" />
       <div class="flex items-center justify-center h-36">
         <div>
-          <Icon class="!block m-auto mb-3" size="30px" name="ic:outline-upload-file" />
+          <Icon
+            class="!block m-auto mb-3"
+            size="30px"
+            name="ic:outline-upload-file"
+          />
           <p class="text-center" v-if="isDragActive">Drop the files here ...</p>
           <p v-else>Drop files or click here to upload files</p>
         </div>
@@ -85,7 +89,7 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
     >
       <div
         v-for="(file, index) in fileBase64"
-        class="relative overflow-hidden w-full h-20 md:h-36 rounded-lg border-2 border-gray-300 dark:border-gray-600"
+        class="relative overflow-hidden w-full h-20 md:h-36 rounded-lg border-2 border-[rgb(var(--border-color))]"
         v-auto-animate
       >
         <img
@@ -106,13 +110,13 @@ const { getRootProps, getInputProps, isDragActive } = useDropzone({
         <Icon
           name="ic:round-close"
           @click="removeFiles(index)"
-          class="cursor-pointer absolute top-1 right-1 text-slate-600 hover:bg-slate-200 bg-white dark:bg-slate-800 dark:text-gray-300 dark:hover:dark:bg-slate-600 p-1 rounded-full"
+          class="cursor-pointer absolute top-1 right-1 text-[rgb(var(--text-color))] bg-[rgb(var(--bg-2))] p-1 rounded-full"
           size="18"
         />
         <div
-          class="absolute bottom-1 right-1 bg-white dark:bg-slate-800 px-2 rounded-lg"
+          class="absolute bottom-1 right-1 bg-[rgb(var(--bg-2))] px-2 rounded-lg"
         >
-          <span class="font-semibold text-xs text-slate-600 dark:text-gray-300">
+          <span class="font-semibold text-xs text-[rgb(var(--text-color))]">
             {{ file.data.path }}
           </span>
         </div>

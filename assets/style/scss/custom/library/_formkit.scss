@@ -37,7 +37,7 @@ $xlarge: 1280px;
           width: 0%;
           height: 8px;
           border-radius: 10px;
-          background-color: #fb7185;
+          background-color: rgb(var(--color-primary));
           transition: width 0.25s ease-in;
         }
 
@@ -64,11 +64,11 @@ $xlarge: 1280px;
           width: 100%;
           height: 8px;
           border-radius: 10px;
-          background-color: #9ca3af;
+          background-color: rgb(var(--bg-1));
         }
 
         &[data-step-active="true"] {
-          color: #fb7185;
+          color: rgb(var(--color-primary));
           font-weight: 600;
 
           .progress {
@@ -77,14 +77,14 @@ $xlarge: 1280px;
         }
 
         &[data-step-active="false"] {
-          color: #9ca3af;
+          color: rgb(var(--bg-1));
           .progress {
             width: 0%;
           }
         }
 
         &[data-step-completed="true"] {
-          color: #fb7185;
+          color: rgb(var(--color-primary));
           font-weight: 600;
           .progress {
             width: 100%;
@@ -126,7 +126,7 @@ $xlarge: 1280px;
           width: 0%;
           height: 8px;
           border-radius: 10px;
-          background-color: #fb7185;
+          background-color: rgb(var(--color-primary));
           transition: width 0.25s ease-in;
         }
 
@@ -153,11 +153,11 @@ $xlarge: 1280px;
           width: 100%;
           height: 8px;
           border-radius: 10px;
-          background-color: #9ca3af;
+          background-color: rgb(var(--bg-1));
         }
 
         &[data-step-active="true"] {
-          color: #fb7185;
+          color: rgb(var(--color-primary));
           font-weight: 600;
 
           .progress {
@@ -166,14 +166,14 @@ $xlarge: 1280px;
         }
 
         &[data-step-active="false"] {
-          color: #9ca3af;
+          color: rgb(var(--bg-1));
           .progress {
             width: 0%;
           }
         }
 
         &[data-step-completed="true"] {
-          color: #fb7185;
+          color: rgb(var(--color-primary));
           font-weight: 600;
           .progress {
             width: 100%;
@@ -188,18 +188,27 @@ $xlarge: 1280px;
 .formkit-vselect {
   margin-bottom: 1rem;
 
+  .vs__dropdown-menu {
+    background: rgb(var(--bg-2));
+  }
+
+  .vs__dropdown-menu li {
+    background: rgb(var(--bg-1));
+    color: rgb(var(--text-color));
+  }
+
   .vs__dropdown-toggle {
     min-height: 2.5rem;
     padding-left: 0.75rem;
     padding-right: 0.75rem;
     font-size: 0.875rem;
     line-height: 1.25rem;
-    color: #4c5562;
+    color: rgb(var(--color-primary));
 
     border-width: 1px;
     border-radius: 0.5rem;
     margin-bottom: 0px;
-    border-color: #d7e4f0;
+    border-color: rgb(var(--fk-border-color));
 
     .vs__selected {
       padding-left: 1rem;
@@ -207,7 +216,7 @@ $xlarge: 1280px;
       padding-top: 0.25rem;
       padding-bottom: 0.25rem;
 
-      background-color: #f17b84;
+      background-color: rgb(var(--color-primary));
       color: white;
 
       border: 0;

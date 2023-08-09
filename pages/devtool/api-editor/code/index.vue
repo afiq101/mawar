@@ -191,7 +191,7 @@ const saveCode = async () => {
             </rs-button>
           </div>
           <Transition>
-            <rs-alert class="mb-4" v-if="linterError">
+            <rs-alert v-if="linterError">
               <div class="flex gap-2">
                 <Icon
                   name="material-symbols:error-outline-rounded"
