@@ -76,20 +76,10 @@ onMounted(() => {
         <nuxt-link to="/">
           <div class="flex flex-auto gap-3 justify-center items-center">
             <img
-              class="h-24 block dark:hidden"
+              class="h-24 block"
               src="@/assets/img/logo/logo-full-transparent.webp"
               alt=""
             />
-            <img
-              class="h-24 hidden dark:block"
-              src="@/assets/img/logo/logo-full-transparent-white.webp"
-              alt=""
-            />
-            <!-- <span
-            v-if="isDesktop"
-            class="text-xl font-semibold text-primary dark:text-white"
-            >Mawar</span
-          > -->
           </div>
         </nuxt-link>
       </div>
@@ -100,10 +90,10 @@ onMounted(() => {
             <country-flag :country="languageNow.flagCode" />
           </button>
           <template #popper>
-            <ul class="header-dropdown w-full md:w-32 text-[#4B5563]">
+            <ul class="header-dropdown w-full md:w-32">
               <li
                 v-for="lang in langList"
-                class="flex items-center justify-center hover:bg-slate-200 hover:dark:bg-slate-700"
+                class="flex items-center justify-center hover:bg-[rgb(var(--bg-1))]"
               >
                 <button
                   @click="changeLanguage(lang.value)"
@@ -123,11 +113,11 @@ onMounted(() => {
             <Icon size="22px" name="material-symbols:format-paint-rounded" />
           </button>
           <template #popper>
-            <ul class="header-dropdown w-full md:w-52 text-[#4B5563]">
+            <ul class="header-dropdown w-full md:w-52">
               <li v-for="(val, index) in themes">
                 <a
                   @click="setTheme(val.theme)"
-                  class="flex justify-between items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
+                  class="flex justify-between items-center cursor-pointer py-2 px-4 hover:bg-[rgb(var(--bg-1))]"
                 >
                   <span class="capitalize"> {{ val.theme }} </span>
                   <div class="flex items-center gap-x-1">
@@ -145,8 +135,8 @@ onMounted(() => {
           </template>
         </VDropdown>
 
-        <button class="icon-btn h-10 w-10 rounded-full">
-          <Icon @click="toggleSearch" name="ic:round-search" class="" />
+        <button @click="toggleSearch" class="icon-btn h-10 w-10 rounded-full">
+          <Icon name="ic:round-search" class="" />
         </button>
 
         <VDropdown placement="bottom-end" distance="13" name="notification">
@@ -168,9 +158,7 @@ onMounted(() => {
               </li>
               <perfect-scrollbar>
                 <li>
-                  <div class="bg-slate-100 dark:bg-slate-700 py-2 px-4">
-                    Today
-                  </div>
+                  <div class="bg-[rgb(var(--bg-1))] py-2 px-4">Today</div>
                   <a class="py-2 px-4 block">
                     <div class="flex items-center">
                       <Icon
@@ -232,11 +220,11 @@ onMounted(() => {
             <Icon name="ic:outline-keyboard-arrow-down" class="ml-3" />
           </button>
           <template #popper>
-            <ul class="header-dropdown w-full md:w-52 text-[#4B5563]">
+            <ul class="header-dropdown w-full md:w-52">
               <li>
                 <NuxtLink
                   to="/logout"
-                  class="flex items-center cursor-pointer py-2 px-4 hover:bg-slate-200 hover:dark:bg-slate-700"
+                  class="flex items-center cursor-pointer py-2 px-4 hover:bg-[rgb(var(--bg-1))]"
                 >
                   <Icon name="ic:outline-logout" class="mr-2" />
                   Logout
@@ -251,12 +239,13 @@ onMounted(() => {
 
   <!-- Search Nav for Layout Vertical -->
   <div tabindex="0" class="w-header-search">
-    <Icon name="ic:outline-search" class="" />
-    <input
+    <Icon name="ic:outline-search" class="mr-3" />
+    <FormKit
       id="header-search"
-      type="text"
-      class="w-full ml-2 px-2 py-3 appearance-none text-md rounded-lg focus:outline-none dark:bg-slate-800"
-      name="Search"
+      :classes="{
+        outer: 'mb-0 flex-1',
+      }"
+      type="search"
       placeholder="Search..."
     />
   </div>

@@ -332,7 +332,7 @@ const removeChild = (type, data) => {
     >
       <template #item="{ element }">
         <rs-card
-          class="p-4 !my-4 mx-0 mb-0 relative border-2"
+          class="p-4 !my-4 mx-0 mb-0 relative border-2 border-[rgb(var(--border-color))]"
           :class="{
             'py-6': count > 0,
           }"

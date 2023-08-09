@@ -29,12 +29,6 @@ code {
   background-color: rgba(146, 146, 146, 0.1);
 }
 
-// Custom Form SCSS
-@import "./custom/form";
-
-// Custom App SCSS
-@import "./custom/apps/products";
-
 // Custom Layout SCSS
 @import "./custom/layout/vertical";
 @import "./custom/layout/horizontal";
@@ -50,15 +44,12 @@ code {
 @import "./custom/scrollbar/scrollbar";
 
 // Custom SCSS library
-@import "./custom/library/apexchart";
 @import "./custom/library/dropdown";
 @import "./custom/library/nprogress";
-@import "./custom/library/vueselect";
 @import "./custom/library/formkit";
 @import "./custom/library/vuetoastification";
 @import "./custom/library/swiper";
 @import "./custom/library/fullcalendar";
 @import "./custom/library/floatingvue";
-@import "./custom/custom-tailwind.scss";
 @import "./custom/library/vuecountryflag";
 @import "./custom/library/grapejs";

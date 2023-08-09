@@ -11,12 +11,13 @@ export default defineNuxtConfig({
   //   },
   // },
   modules: [
-    "@formkit/nuxt",
-    "@nuxtjs/color-mode",
     "@nuxtjs/tailwindcss",
-    "@pinia/nuxt",
+    "@formkit/nuxt",
     "@vite-pwa/nuxt",
     "@vueuse/nuxt",
+    "floating-vue/nuxt",
+    "@pinia/nuxt",
+    "@pinia-plugin-persistedstate/nuxt",
     "nuxt-security",
     "nuxt-typed-router",
     "nuxt-icon",
@@ -51,11 +52,21 @@ export default defineNuxtConfig({
   },
   pwa: {
     registerType: "autoUpdate",
+    workbox: {
+      navigateFallback: "/",
+      globPatterns: [
+        "**/*.{js,json,css,html,txt,svg,png,ico,webp,woff,woff2,ttf,eot,otf,wasm}",
+      ],
+    },
+    devOptions: {
+      enabled: true,
+      type: "module",
+    },
     manifest: {
       name: "Mawar",
       short_name: "Mawar",
-      theme_color: "#FB7185",
-      background_color: "#fafafa",
+      theme_color: "#FF3E65",
+      background_color: "#FAFAFA",
       display: "standalone",
       scope: "./",
       start_url: "./",

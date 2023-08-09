@@ -203,7 +203,7 @@ const deleteAPI = async (apiURL) => {
                     kebabCasetoTitleCase(api.name)
                   }}</span>
                   <br />
-                  <span class="text-gray-400"> {{ api.url }}</span>
+                  <span class=""> {{ api.url }}</span>
                 </div>
                 <div class="flex gap-4">
                   <rs-button

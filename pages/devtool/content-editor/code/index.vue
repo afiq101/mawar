@@ -172,7 +172,7 @@ const saveCode = async () => {
     }}</rs-alert>
     <rs-card class="mb-0">
       <div class="p-4">
-        <div class="flex justify-end gap-2">
+        <div class="flex justify-end gap-2 mb-4">
           <rs-button class="!p-2" @click="formatCode">
             <Icon name="simple-icons:prettier" size="20px" class="mr-1" />
             Format Code</rs-button
@@ -187,7 +187,7 @@ const saveCode = async () => {
           </rs-button>
         </div>
         <Transition>
-          <rs-alert class="mb-4" v-if="linterError">
+          <rs-alert v-if="linterError">
             <div class="flex gap-2">
               <Icon name="material-symbols:error-outline-rounded" size="20px" />
               <div>
