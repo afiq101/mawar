@@ -6,6 +6,7 @@
 
 .accordion.accordion-border {
   @apply border-t border-x rounded-lg;
+  border-color: rgb(var(--border));
 }
 
 .accordion .accordion-group {
@@ -15,10 +16,12 @@
 
 .accordion .accordion-group.accordion-default {
   @apply border-b;
+  border-color: rgb(var(--border));
 }
 
 .accordion .accordion-group.accordion-border {
   @apply border-b last:rounded-b-lg;
+  border-color: rgb(var(--border));
 }
 
 .accordion .accordion-group.accordion-card {
@@ -46,7 +49,7 @@
   top: 50%;
   right: 0%;
   transform: translate(-100%, -50%) rotate(0deg);
-  background: url("@@/assets/img/icon/chevron-right.svg");
+  background: url("/assets/img/icon/chevron-right.svg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
