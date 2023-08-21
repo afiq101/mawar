@@ -4,6 +4,10 @@ $large: 1024px;
 $xlarge: 1280px;
 
 @media screen and (max-width: $medium) {
+  body:has(.menu-overlay:not(.hide)) {
+    overflow: hidden;
+  }
+
   .menu-overlay {
     position: fixed;
     top: 0;
