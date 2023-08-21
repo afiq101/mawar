@@ -100,10 +100,10 @@ const validateCancelCallback = () => {
               ></Icon>
             </div>
             <div class="modal-body">
-              <perfect-scrollbar style="max-height: 70vh">
+              <NuxtScrollbar style="max-height: 70vh">
                 <slot name="body"></slot>
                 <slot v-if="!$slots.body"></slot>
-              </perfect-scrollbar>
+              </NuxtScrollbar>
             </div>
             <div v-if="!hideFooter" class="modal-footer">
               <slot name="footer"></slot>

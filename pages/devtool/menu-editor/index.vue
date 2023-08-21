@@ -514,7 +514,7 @@ const addMenuFromList = () => {
                   outer-class="mb-5"
                   v-model="searchInput"
                 />
-                <perfect-scrollbar
+                <NuxtScrollbar
                   style="height: 735px"
                   class="px-5 pt-5 border border-[rgb(var(--border-color))] bg-[rgb(var(--bg-1))] rounded-md"
                 >
@@ -549,9 +549,9 @@ const addMenuFromList = () => {
                       </rs-card>
                     </template>
                   </draggable>
-                </perfect-scrollbar>
+                </NuxtScrollbar>
               </div>
-              <perfect-scrollbar v-if="!showCode" style="height: 825px">
+              <NuxtScrollbar v-if="!showCode" style="height: 825px">
                 <rs-card
                   class="p-4 border border-[rgb(var(--border-color))] bg-[rgb(var(--bg-1))] rounded-md"
                 >
@@ -573,7 +573,7 @@ const addMenuFromList = () => {
                     @changeSideMenu="changeSideMenuList"
                   />
                 </rs-card>
-              </perfect-scrollbar>
+              </NuxtScrollbar>
               <pre v-else v-html="JSON.stringify(sideMenuList, null, 2)"></pre>
             </div>
           </rs-tab-item>

@@ -50,27 +50,11 @@ onMounted(() => {
         </div>
       </nuxt-link>
     </div>
-    <div class="flex flex-col justify-between my-6 max-h-[85vh]">
-      <perfect-scrollbar style="max-height: 100vh">
-        <RSItem :items="menuItem"></RSItem>
-      </perfect-scrollbar>
-    </div>
-    <!-- <div class="m-6 text-sm">
-      To see documentation visit
-      <a
-        class="text-primary hover:underline"
-        href="https://mawar-cms-docs.vercel.app/"
-        target="_blank"
-        >mawar-cms-docs.vercel.app
-      </a>
-      To see ui components visit
-      <a
-        class="text-primary hover:underline"
-        href="https://roseui-nuxt.vercel.app/"
-        target="_blank"
-      >
-        roseui-nuxt.vercel.app
-      </a>
-    </div> -->
+    <NuxtScrollbar
+      class="flex flex-col justify-between my-6"
+      style="max-height: 82dvh"
+    >
+      <RSItem :items="menuItem"></RSItem>
+    </NuxtScrollbar>
   </div>
 </template>

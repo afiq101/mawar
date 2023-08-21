@@ -25,6 +25,7 @@
     "@codemirror/lang-javascript": "^6.1.6",
     "@codemirror/lang-vue": "^0.1.1",
     "@codemirror/theme-one-dark": "^6.1.2",
+    "@davestewart/nuxt-scrollbar": "^1.0.0",
     "@formkit/addons": "^0.17.5",
     "@formkit/auto-animate": "^0.7.0",
     "@formkit/nuxt": "^0.17.5",
@@ -75,7 +76,6 @@
     "vue3-apexcharts": "^1.4.1",
     "vue3-click-away": "^1.2.4",
     "vue3-dropzone": "^2.0.1",
-    "vue3-perfect-scrollbar": "^1.6.1",
     "vuedraggable": "^4.1.0"
   }
 }
