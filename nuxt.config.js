@@ -21,6 +21,7 @@ export default defineNuxtConfig({
     "nuxt-security",
     "nuxt-typed-router",
     "nuxt-icon",
+    "@davestewart/nuxt-scrollbar",
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },

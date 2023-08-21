@@ -1160,6 +1160,14 @@
   resolved "https://registry.yarnpkg.com/@csstools/selector-specificity/-/selector-specificity-2.2.0.tgz#2cbcf822bf3764c9658c4d2e568bd0c0cb748016"
   integrity sha512-+OJ9konv95ClSTOJCmMZqpd5+YGsB2S+x6w3E1oaM8UuR5j8nTNHYSz8c9BEPGDOCMQYIEEGlVPj/VY64iTbGw==
 
+"@davestewart/nuxt-scrollbar@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@davestewart/nuxt-scrollbar/-/nuxt-scrollbar-1.0.0.tgz#4e44de920d63c0a060e0d770e75089035bb3f87e"
+  integrity sha512-aX70k6ndjh3iYMMOijM9AAdB5pDVCAnkaakAj3S8xsoz3soGXtaA5AYpS7NUtN3tAuqLfetiGnWQxzSWWmXYew==
+  dependencies:
+    "@nuxt/kit" "^3.3.3"
+    vue3-perfect-scrollbar "^1.6.1"
+
 "@esbuild/android-arm64@0.17.19":
   version "0.17.19"
   resolved "https://registry.yarnpkg.com/@esbuild/android-arm64/-/android-arm64-0.17.19.tgz#bafb75234a5d3d1b690e7c2956a599345e84a2fd"
@@ -1841,7 +1849,7 @@
   resolved "https://registry.yarnpkg.com/@nuxt/devalue/-/devalue-2.0.2.tgz#5749f04df13bda4c863338d8dabaf370f45ef7c7"
   integrity sha512-GBzP8zOc7CGWyFQS6dv1lQz8VVpz5C2yRszbXufwG/9zhStTIH50EtD87NmWbTMwXDvZLNg8GIpb1UFdH93JCA==
 
-"@nuxt/kit@3.6.5", "@nuxt/kit@^3.0.0", "@nuxt/kit@^3.1.0", "@nuxt/kit@^3.2.0", "@nuxt/kit@^3.2.2", "@nuxt/kit@^3.2.3", "@nuxt/kit@^3.3.1", "@nuxt/kit@^3.5.0", "@nuxt/kit@^3.5.3", "@nuxt/kit@^3.6.1", "@nuxt/kit@^3.6.5":
+"@nuxt/kit@3.6.5", "@nuxt/kit@^3.0.0", "@nuxt/kit@^3.1.0", "@nuxt/kit@^3.2.0", "@nuxt/kit@^3.2.2", "@nuxt/kit@^3.2.3", "@nuxt/kit@^3.3.1", "@nuxt/kit@^3.3.3", "@nuxt/kit@^3.5.0", "@nuxt/kit@^3.5.3", "@nuxt/kit@^3.6.1", "@nuxt/kit@^3.6.5":
   version "3.6.5"
   resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-3.6.5.tgz#208777acdc2a09109fbe4209aad736874eb9a3f5"
   integrity sha512-uBI5I2Zx6sk+vRHU+nBmifwxg/nyXCGZ1g5hUKrUfgv1ZfiKB8JkN5T9iRoduDOaqbwM6XSnEl1ja73iloDcrw==
