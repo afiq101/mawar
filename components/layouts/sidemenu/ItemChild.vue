@@ -1,6 +1,12 @@
 <script setup>
+import { useLayoutStore } from "~/stores/layout";
+import { useWindowSize } from "vue-window-size";
 import RSChildItem from "~/components/layouts/sidemenu/ItemChild.vue";
 import { useUserStore } from "~/stores/user";
+
+const layoutStore = useLayoutStore();
+const mobileWidth = layoutStore.mobileWidth;
+const { width } = useWindowSize();
 
 const user = useUserStore();
 const route = useRoute();
@@ -66,6 +72,18 @@ function activeMenu(routePath) {
     : `transition-all	duration-300 hover:ml-4`;
 }
 
+function toggleMenu() {
+  document.querySelector(".v-layout").classList.toggle("menu-hide");
+  document.getElementsByClassName("menu-overlay")[0].classList.toggle("hide");
+}
+
+function navigationPage(path, external) {
+  if (width.value <= mobileWidth) toggleMenu();
+  navigateTo(path, {
+    external: external,
+  });
+}
+
 const indentStyle = computed(() => {
   return { "background-color": `rgba(var(--bg-1), ${indent.value})` };
 });
@@ -87,7 +105,7 @@ const indentStyle = computed(() => {
     >
       <div
         v-if="
-          !item.meta || !item.meta?.auth || userExist(item) || roleExist(item)
+          !item.meta || !item.meta?.auth || (userExist(item) && roleExist(item))
         "
         class="navigation-item-wrapper"
       >
@@ -96,7 +114,7 @@ const indentStyle = computed(() => {
             item.child === undefined || (item.child && item.child.length === 0)
           "
           class="flex items-center px-4 py-3 mx-3 rounded-lg cursor-pointer"
-          :to="item.path"
+          @click="navigationPage(item.path, item.external)"
           :class="activeMenu(item.path)"
         >
           <Icon v-if="item.icon" :name="item.icon" size="18"></Icon>

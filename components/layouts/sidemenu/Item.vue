@@ -1,6 +1,12 @@
 <script setup>
+import { useLayoutStore } from "~/stores/layout";
+import { useWindowSize } from "vue-window-size";
 import RSChildItem from "~/components/layouts/sidemenu/ItemChild.vue";
 import { useUserStore } from "~/stores/user";
+
+const layoutStore = useLayoutStore();
+const mobileWidth = layoutStore.mobileWidth;
+const { width } = useWindowSize();
 
 const user = useUserStore();
 const route = useRoute();
@@ -66,6 +72,18 @@ function activeMenu(routePath) {
             active-menu`
     : `transition-all	duration-300 hover:ml-4`;
 }
+
+function toggleMenu() {
+  document.querySelector(".v-layout").classList.toggle("menu-hide");
+  document.getElementsByClassName("menu-overlay")[0].classList.toggle("hide");
+}
+
+function navigationPage(path, external) {
+  if (width.value <= mobileWidth) toggleMenu();
+  navigateTo(path, {
+    external: external,
+  });
+}
 </script>
 
 <template>
@@ -113,7 +131,7 @@ function activeMenu(routePath) {
                 (item2.child && item2.child.length === 0)
               "
               class="flex items-center px-4 py-3 mx-3 rounded-lg cursor-pointer"
-              :to="item2.path"
+              @click="navigationPage(item2.path, item2.external)"
               :class="activeMenu(item2.path)"
             >
               <Icon v-if="item2.icon" :name="item2.icon" size="18"></Icon>
