@@ -21,14 +21,8 @@ import { createAutoHeightTextareaPlugin } from "@formkit/addons";
 // https://formkit.com/plugins/local-storage
 import { createLocalStoragePlugin } from "@formkit/addons";
 
-// Pro Version
-import { createProPlugin, inputs } from "@formkit/pro";
-
-const pro = createProPlugin("fk-7a0c8037675", inputs);
-
 export default {
   plugins: [
-    pro,
     createFloatingLabelsPlugin({
       useAsDefault: false, // defaults to false
     }),
