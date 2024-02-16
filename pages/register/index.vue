@@ -2,7 +2,7 @@
 definePageMeta({
   title: "Register",
   layout: "empty",
-  middleware: ["redirect-dashboard"],
+  middleware: ["dashboard"],
 });
 
 const togglePasswordVisibility = ref(false);

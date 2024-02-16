@@ -2,7 +2,7 @@
 definePageMeta({
   title: "Forgot Password",
   layout: "empty",
-  middleware: ["redirect-dashboard"],
+  middleware: ["dashboard"],
 });
 </script>
 

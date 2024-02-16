@@ -4,7 +4,7 @@ import { useUserStore } from "~/stores/user";
 definePageMeta({
   title: "Login",
   layout: "empty",
-  middleware: ["redirect-dashboard"],
+  middleware: ["dashboard"],
 });
 
 const { $swal } = useNuxtApp();
@@ -16,10 +16,6 @@ const togglePasswordVisibility = ref(false);
 
 const login = async () => {
   try {
-    // console.log("login");
-    // console.log("username", username.value);
-    // console.log("password", password.value);
-
     const res = await useFetch("/api/auth/login", {
       method: "POST",
       initialCache: false,
@@ -32,12 +28,9 @@ const login = async () => {
     const data = res.data.value;
 
     if (data.statusCode === 200) {
-      // console.log(data.data.accessToken);
       // Save token to pinia store
       userStore.setUsername(data.data.username);
       userStore.setRoles(data.data.roles);
-      userStore.setAccessToken(data.data.accessToken);
-      userStore.setRefreshToken(data.data.refreshToken);
       userStore.setIsAuthenticated(true);
 
       $swal.fire({
@@ -49,12 +42,7 @@ const login = async () => {
         showConfirmButton: false,
       });
 
-      // console.log(userStore.username);
-      // console.log(userStore.accessToken);
-      // console.log(userStore.refreshToken);
-      // console.log(userStore.isAuth);
-
-      navigateTo("/dashboard");
+      window.location.href = "/dashboard";
     } else {
       $swal.fire({
         title: "Error!",

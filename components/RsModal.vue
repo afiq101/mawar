@@ -9,6 +9,10 @@ const props = defineProps({
     type: String,
     default: "md",
   },
+  dialogClass: {
+    type: String,
+    default: "",
+  },
   modelValue: {
     type: Boolean,
     default: false,
@@ -53,6 +57,10 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  height: {
+    type: String,
+    default: "70vh",
+  },
 });
 
 const closeModal = () => {
@@ -63,6 +71,14 @@ const validateCancelCallback = () => {
   if (props.cancelCallback == "() => {}") closeModal();
   else props.cancelCallback();
 };
+
+watch(
+  () => props.modelValue,
+  (val) => {
+    if (val) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+  }
+);
 </script>
 
 <template>
@@ -83,6 +99,7 @@ const validateCancelCallback = () => {
         <div
           v-show="modelValue"
           class="modal-dialog"
+          :class="dialogClass"
           :style="{
             width: size == 'sm' ? '300px' : size == 'md' ? '500px' : '800px',
           }"
@@ -100,7 +117,11 @@ const validateCancelCallback = () => {
               ></Icon>
             </div>
             <div class="modal-body">
-              <NuxtScrollbar style="max-height: 70vh">
+              <NuxtScrollbar
+                :style="{
+                  'max-height': height,
+                }"
+              >
                 <slot name="body"></slot>
                 <slot v-if="!$slots.body"></slot>
               </NuxtScrollbar>
