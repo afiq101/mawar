@@ -5,8 +5,6 @@ export const useUserStore = defineStore({
   state: () => ({
     username: null,
     roles: null,
-    accessToken: null,
-    refreshToken: null,
     isAuth: false,
   }),
   persist: true,
@@ -19,12 +17,6 @@ export const useUserStore = defineStore({
     },
     setIsAuthenticated(isAuth) {
       this.isAuth = isAuth;
-    },
-    setAccessToken(accessToken) {
-      this.accessToken = accessToken;
-    },
-    setRefreshToken(refreshToken) {
-      this.refreshToken = refreshToken;
     },
   },
 });

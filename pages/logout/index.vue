@@ -6,26 +6,19 @@ definePageMeta({
   layout: "empty",
 });
 
-const { $swal } = useNuxtApp();
-
 const userStore = useUserStore();
 
-// remove token from pinia store
-userStore.setUsername("");
-userStore.setAccessToken("");
-userStore.setRefreshToken("");
-userStore.setIsAuthenticated(false);
-
-$swal.fire({
-  position: "center",
-  title: "Success",
-  text: "Logout Success",
-  icon: "success",
-  timer: 2000,
-  showConfirmButton: false,
+await useFetch("/api/auth/logout", {
+  method: "GET",
 });
 
-navigateTo("/login");
+if (process.client) {
+  userStore.setUsername("");
+  userStore.setRoles([]);
+  userStore.setIsAuthenticated(false);
+
+  navigateTo("/login");
+}
 </script>
 
 <template>

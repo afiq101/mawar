@@ -1,9 +1,7 @@
 <script setup>
 definePageMeta({
-  title: "Home",
-  description: "Home page",
-  keywords: "home, page",
-  middleware: ["dashboard"],
+  title: "Main",
+  middleware: ["main"],
 });
 </script>
 

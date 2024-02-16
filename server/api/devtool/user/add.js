@@ -1,7 +1,4 @@
-import { PrismaClient } from "@prisma/client";
 import sha256 from "crypto-js/sha256.js";
-
-const prisma = new PrismaClient();
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);

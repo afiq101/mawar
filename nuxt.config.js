@@ -1,15 +1,11 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
-  // Used in EC2 development for hmr. Please refer : https://github.com/nuxt/nuxt/issues/12003
-  // vite: {
-  //   server: {
-  //     hmr: {
-  //       protocol: "wss",
-  //       clientPort: 443,
-  //       path: "hmr/",
-  //     },
-  //   },
-  // },
+  runtimeConfig: {
+    auth: {
+      secretAccess: process.env.NUXT_ACCESS_TOKEN_SECRET,
+      secretRefresh: process.env.NUXT_REFRESH_TOKEN_SECRET,
+    },
+  },
   modules: [
     "@nuxtjs/tailwindcss",
     "@formkit/nuxt",
