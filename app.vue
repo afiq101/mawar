@@ -28,7 +28,7 @@ onMounted(() => {
     <NuxtLoadingIndicator />
     <NuxtLayout>
       <Loading v-if="loading" />
-      <NuxtPage :key="$route.fullPath" v-else />
+      <NuxtPage v-else />
     </NuxtLayout>
   </div>
 </template>

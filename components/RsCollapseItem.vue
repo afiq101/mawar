@@ -5,6 +5,7 @@ const props = defineProps({
     required: false,
   },
 });
+const compID = ref(null);
 const collapseGroup = ref(null);
 const parentID = ref(null);
 
@@ -54,13 +55,22 @@ const onClick = () => {
   }
 };
 
+const generateRandomID = () => {
+  // Generate random id with datetimestamp
+  return `accordion-${new Date().getTime()}-${Math.floor(
+    Math.random() * 1000
+  )}`;
+};
+
 // On mounted get height collapse header
 onMounted(() => {
   try {
+    compID.value = generateRandomID();
+
     const parentElement = document.querySelector(
       `#${collapseGroup.value.id} .accordion-header`
     );
-    
+
     const scrollHeight = parentElement.scrollHeight;
     maxHeight.value = scrollHeight;
     height.value = scrollHeight;
@@ -73,7 +83,7 @@ onMounted(() => {
 
 <template>
   <div
-    v-uid
+    :id="compID"
     ref="collapseGroup"
     class="accordion-group"
     :class="{

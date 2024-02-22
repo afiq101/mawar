@@ -1,5 +1,6 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  devtools: false,
   runtimeConfig: {
     auth: {
       secretAccess: process.env.NUXT_ACCESS_TOKEN_SECRET,
@@ -18,6 +19,7 @@ export default defineNuxtConfig({
     "nuxt-typed-router",
     "nuxt-icon",
     "@davestewart/nuxt-scrollbar",
+    "@nuxt/image",
   ],
   app: {
     pageTransition: { name: "page", mode: "out-in" },
@@ -41,9 +43,9 @@ export default defineNuxtConfig({
     configPath: "tailwind.config",
     exposeConfig: false,
     config: {},
-    injectPosition: 0,
     viewer: false,
   },
+  image: {},
   formkit: {
     defaultConfig: true,
   },
