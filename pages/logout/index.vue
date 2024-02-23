@@ -22,7 +22,5 @@ if (process.client) {
 </script>
 
 <template>
-  <div>
-    <h1>Logout</h1>
-  </div>
+  <div></div>
 </template>

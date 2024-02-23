@@ -230,13 +230,13 @@ onMounted(() => {
             <template #popper>
               <ul class="header-dropdown w-full md:w-52">
                 <li>
-                  <a
-                    href="/logout"
+                  <nuxt-link
+                    to="/logout"
                     class="flex items-center cursor-pointer py-2 px-4 hover:bg-[rgb(var(--bg-1))]"
                   >
                     <Icon name="ic:outline-logout" class="mr-2" />
                     Logout
-                  </a>
+                  </nuxt-link>
                 </li>
               </ul>
             </template>

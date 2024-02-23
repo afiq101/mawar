@@ -44,17 +44,54 @@ onMounted(() => {
             src="@/assets/img/logo/logo-full-transparent-white.webp"
             alt=""
           />
-          <!-- <span class="text-xl font-semibold text-primary dark:text-white"
-          >Mawar</span
-        > -->
         </div>
       </nuxt-link>
     </div>
-    <NuxtScrollbar
-      class="flex flex-col justify-between my-6"
-      style="max-height: 82dvh"
+    <div
+      :style="{
+        maxHeight: 'calc(100vh - 150px)',
+      }"
+      class="scroll-menu overflow-y-hidden hover:overflow-y-scroll my-6 mr-1 duration-300"
+      role="button"
+      tabIndex="0"
     >
-      <RSItem :items="menuItem"></RSItem>
-    </NuxtScrollbar>
+      <RSItem :items="menuItem" />
+    </div>
   </div>
 </template>
+
+<style lang="scss">
+@media screen and (min-width: 768px) {
+  .scroll-menu {
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+  }
+
+  /* Show the scrollbar when the div is focused */
+  .scroll-menu:hover,
+  .scroll-menu:focus,
+  .scroll-menu:active {
+    scrollbar-color: #d0cdcd transparent !important;
+  }
+
+  /* Style for Webkit browsers (Chrome, Safari, etc.) */
+  .scroll-menu::-webkit-scrollbar {
+    width: 12px;
+  }
+
+  .scroll-menu::-webkit-scrollbar-thumb {
+    background-color: transparent;
+  }
+
+  .scroll-menu:hover::-webkit-scrollbar-thumb,
+  .scroll-menu:focus::-webkit-scrollbar-thumb,
+  .scroll-menu:active::-webkit-scrollbar-thumb {
+    background-color: #d0cdcd;
+  }
+}
+
+.scroll-menu {
+  overflow-y: auto;
+}
+</style>

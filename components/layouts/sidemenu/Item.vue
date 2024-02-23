@@ -80,9 +80,13 @@ function toggleMenu() {
 
 function navigationPage(path, external) {
   if (width.value <= mobileWidth) toggleMenu();
-  navigateTo(path, {
-    external: external,
-  });
+  if (path.includes("http")) {
+    navigateTo(path, {
+      external: true,
+    });
+  }
+
+  navigateTo(path);
 }
 </script>
 

@@ -24,11 +24,9 @@ onMounted(() => {
 
 <template>
   <div>
-    <VitePwaManifest />
-    <NuxtLoadingIndicator />
+    <Loading v-if="loading" />
     <NuxtLayout>
-      <Loading v-if="loading" />
-      <NuxtPage v-else />
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
