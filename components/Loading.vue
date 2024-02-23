@@ -9,11 +9,16 @@ const refreshPage = () => {
   // hard refresh
   window.location.reload(true);
 };
+
+onMounted(() => {
+  // Disable scrolling
+  document.body.style.overflow = "hidden";
+});
 </script>
 
 <template>
   <div
-    class="rs-loading bg-white absolute z-[1000] top-0 left-0 w-[100dvw] h-[100dvh]"
+    class="rs-loading bg-white fixed z-[1000] top-0 left-0 w-[100dvw] h-[100dvh] overflow-hidden"
   >
     <div class="flex justify-center text-center items-center h-screen">
       <div>
