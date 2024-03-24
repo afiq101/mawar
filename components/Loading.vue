@@ -11,8 +11,14 @@ const refreshPage = () => {
 };
 
 onMounted(() => {
-  // Disable scrolling
-  document.body.style.overflow = "hidden";
+  // Check client already loaded
+  if (process.client) {
+    // Enable scrolling
+    document.body.style.overflow = "auto";
+  } else {
+    // Disable scrolling
+    document.body.style.overflow = "hidden";
+  }
 });
 </script>
 
