@@ -45,52 +45,39 @@ const checkAllRole = ref(false);
 
 const userListbyRole = ref([]);
 
-// Call API
-// onMounted(async () => {
-//   await getUserList();
-//   await getRoleList();
-// });
+const { data: userFetch } = await useFetch("/api/devtool/user/list", {
+  method: "GET",
+});
 
-await getUserList();
-await getRoleList();
+// Rename the key
+if (userFetch.value?.statusCode === 200) {
+  userList.value = userFetch.value.data.map((user) => ({
+    username: user.userUsername,
+    fullname: user.userFullName,
+    email: user.userEmail,
+    phone: user.userPhone,
+    role: user.roles.map((r) => {
+      return {
+        label: r.role.roleName,
+        value: r.role.roleID,
+      };
+    }),
+    status: user.userStatus,
+    action: null,
+  }));
 
-async function getUserList() {
-  const { data } = await useFetch("/api/devtool/user/list", {
-    initialCache: false,
-  });
-
-  // Rename the key
-  if (data.value?.statusCode === 200) {
-    userList.value = data.value.data.map((user) => ({
-      username: user.userUsername,
-      fullname: user.userFullName,
-      email: user.userEmail,
-      phone: user.userPhone,
-      role: user.roles.map((r) => {
-        return {
-          label: r.role.roleName,
-          value: r.role.roleID,
-        };
-      }),
-      status: user.userStatus,
-      action: null,
-    }));
-
-    groupUserByRole();
-  }
+  groupUserByRole();
 }
 
-async function getRoleList() {
-  const { data } = await useFetch("/api/devtool/role/list", {
-    initialCache: false,
-  });
+const { roleFetch } = await useFetch("/api/devtool/role/list", {
+  method: "GET",
+});
 
-  if (data.value.statusCode === 200) {
-    userRoleList.value = data.value.data.map((role) => ({
-      label: role.roleName,
-      value: role.roleID,
-    }));
-  }
+if (roleFetch?.value.statusCode === 200) {
+  userRoleList.value = roleFetch.value.data.map((role) => ({
+    label: role.roleName,
+    value: role.roleID,
+  }));
 }
 
 function roleWithComma(role) {
@@ -191,7 +178,6 @@ const saveUser = async () => {
     });
 
     if (data.value.statusCode === 200) {
-      // console.log("data.value", data.value);
       $swal.fire({
         position: "center",
         icon: "success",
@@ -200,8 +186,6 @@ const saveUser = async () => {
         timer: 1000,
         showConfirmButton: false,
       });
-      // await getUserList();
-      // showModal.value = false;
 
       setTimeout(() => {
         $router.go();

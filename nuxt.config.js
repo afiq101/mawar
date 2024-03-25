@@ -1,5 +1,12 @@
 // https://v3.nuxtjs.org/api/configuration/nuxt.config
 export default defineNuxtConfig({
+  vite: {
+    server: {
+      hmr: {
+        overlay: false,
+      },
+    },
+  },
   devtools: false,
   runtimeConfig: {
     auth: {
@@ -21,9 +28,6 @@ export default defineNuxtConfig({
     "@davestewart/nuxt-scrollbar",
     "@nuxt/image",
   ],
-  app: {
-    pageTransition: { name: "page", mode: "out-in" },
-  },
   head: {
     title: "Mawar",
     meta: [

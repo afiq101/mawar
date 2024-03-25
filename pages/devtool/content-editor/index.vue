@@ -172,7 +172,7 @@ const confirmModal = async () => {
                     name="ic:outline-link"
                     style="font-size: 1.2rem"
                   ></Icon>
-                  <p class="text-sm">{{ page.path }}</p>
+                  <p class="text-sm line-clamp-1">{{ page.path }}</p>
                 </div>
               </nuxt-link>
             </div>

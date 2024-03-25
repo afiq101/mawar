@@ -46,52 +46,39 @@ const roleListbyUser = ref([]);
 
 const checkAllUser = ref(false);
 
-// Call API
-// onMounted(async () => {
-//   await getUserList();
-//   await getRoleList();
-// });
+const { data: roleFetch } = await useFetch("/api/devtool/role/list", {
+  method: "GET",
+});
 
-getRoleList();
-getUserList();
+// Rename the key
+if (roleFetch.value?.statusCode === 200) {
+  roleList.value = roleFetch.value.data.map((role) => ({
+    id: role.roleID,
+    name: role.roleName,
+    description: role.roleDescription,
+    users: role.users.map((u) => {
+      return {
+        label: u.user.userUsername,
+        value: u.user.userUsername,
+      };
+    }),
+    status: role.roleStatus,
+    createdDate: role.roleCreatedDate,
+    action: null,
+  }));
 
-async function getRoleList() {
-  const { data } = await useFetch("/api/devtool/role/list", {
-    initialCache: false,
-  });
-
-  // Rename the key
-  if (data.value?.statusCode === 200) {
-    roleList.value = data.value.data.map((role) => ({
-      id: role.roleID,
-      name: role.roleName,
-      description: role.roleDescription,
-      users: role.users.map((u) => {
-        return {
-          label: u.user.userUsername,
-          value: u.user.userUsername,
-        };
-      }),
-      status: role.roleStatus,
-      createdDate: role.roleCreatedDate,
-      action: null,
-    }));
-
-    groupRoleByUser();
-  }
+  groupRoleByUser();
 }
 
-async function getUserList() {
-  const { data } = await useFetch("/api/devtool/user/list", {
-    initialCache: false,
-  });
+const { data: userFetch } = await useFetch("/api/devtool/user/list", {
+  method: "GET",
+});
 
-  if (data.value.statusCode === 200) {
-    roleUserList.value = data.value.data.map((user) => ({
-      label: user.userUsername,
-      value: user.userUsername,
-    }));
-  }
+if (userFetch.value.statusCode === 200) {
+  roleUserList.value = userFetch.value.data.map((user) => ({
+    label: user.userUsername,
+    value: user.userUsername,
+  }));
 }
 
 function usersWithCommans(users) {

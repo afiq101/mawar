@@ -9,12 +9,11 @@ definePageMeta({
 const nuxtApp = useNuxtApp();
 
 const sideMenuList = ref(Menu);
-
-const router = useRouter();
-const getRoutes = router.getRoutes();
 const getNavigation = Menu ? ref(Menu) : ref([]);
 
-const allMenus = [];
+const allMenus = ref([]);
+const router = ref(null);
+const getRoutes = ref([]);
 
 const showCode = ref(false);
 let i = 1;
@@ -51,53 +50,73 @@ const kebabtoTitle = (str) => {
     .join(" ");
 };
 
-// Sort the routes into menus
-getRoutes.sort((a, b) => {
-  return a.path.localeCompare(b.path);
+const menuInit = () => {
+  try {
+    allMenus.value = [];
+
+    // Get the router
+    router.value = useRouter();
+    if (!router.value) return;
+
+    // Get all routes
+    getRoutes.value = router.value.getRoutes();
+    if (!getRoutes.value) return;
+
+    // Sort the routes into menus
+    getRoutes.value.sort((a, b) => {
+      return a.path.localeCompare(b.path);
+    });
+
+    // Loop through the routes and add them to the menus
+    getRoutes.value.map((menu) => {
+      let visibleMenu = false;
+
+      // Check if the menu is visible
+      for (let i = 0; i < getNavigation.value.length; i++) {
+        if (getNavigation.value[i].child) {
+          for (let j = 0; j < getNavigation.value[i].child.length; j++) {
+            if (getNavigation.value[i].child[j].path === menu.path)
+              visibleMenu = true;
+            else if (getNavigation.value[i].child[j].child) {
+              for (
+                let k = 0;
+                k < getNavigation.value[i].child[j].child.length;
+                k++
+              ) {
+                if (getNavigation.value[i].child[j].child[k].path === menu.path)
+                  visibleMenu = true;
+              }
+            }
+          }
+        }
+      }
+
+      if (menu.name)
+        allMenus.value.push({
+          id: i++,
+          title:
+            menu.meta && menu.meta.title
+              ? menu.meta.title
+              : kebabtoTitle(menu.name),
+          parentMenu: menu.path.split("/")[1],
+          name: menu.name,
+          path: menu.path,
+          visible: visibleMenu,
+          action: "",
+        });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+onMounted(() => {
+  menuInit();
 });
 
 //----------------------------------------------------------------------------
 //-------------------------FIRST CHILD TAB ITEM (END)-------------------------
 //----------------------------------------------------------------------------
-
-// Loop through the routes and add them to the menus
-getRoutes.map((menu) => {
-  let visibleMenu = false;
-
-  // Check if the menu is visible
-  for (let i = 0; i < getNavigation.value.length; i++) {
-    if (getNavigation.value[i].child) {
-      for (let j = 0; j < getNavigation.value[i].child.length; j++) {
-        if (getNavigation.value[i].child[j].path === menu.path)
-          visibleMenu = true;
-        else if (getNavigation.value[i].child[j].child) {
-          for (
-            let k = 0;
-            k < getNavigation.value[i].child[j].child.length;
-            k++
-          ) {
-            if (getNavigation.value[i].child[j].child[k].path === menu.path)
-              visibleMenu = true;
-          }
-        }
-      }
-    }
-  }
-
-  if (menu.name)
-    allMenus.push({
-      id: i++,
-      title:
-        menu.meta && menu.meta.title
-          ? menu.meta.title
-          : kebabtoTitle(menu.name),
-      parentMenu: menu.path.split("/")[1],
-      name: menu.name,
-      path: menu.path,
-      visible: visibleMenu,
-      action: "",
-    });
-});
 
 const openModalEdit = (menu) => {
   showModalEditForm.value.title = menu.title;
@@ -116,7 +135,7 @@ const openModalEdit = (menu) => {
 };
 
 const saveEditMenu = async () => {
-  const res = await useFetch("/api/devtool/menu/edit", {
+  const { data } = await useFetch("/api/devtool/menu/edit", {
     method: "POST",
     initialCache: false,
     body: JSON.stringify({
@@ -130,9 +149,7 @@ const saveEditMenu = async () => {
     }),
   });
 
-  const data = res.data.value;
-
-  if (data.statusCode === 200) {
+  if (data.value.statusCode === 200) {
     nuxtApp.$swal.fire({
       title: "Success",
       text: data.message,
@@ -140,8 +157,9 @@ const saveEditMenu = async () => {
       timer: 2000,
       showConfirmButton: false,
     });
-    // refresh the page
-    nuxtApp.$router.go();
+
+    menuInit();
+    showModalEdit.value = false;
   }
 };
 
@@ -154,7 +172,7 @@ const openModalAdd = () => {
 };
 
 const saveAddMenu = async () => {
-  const res = await useFetch("/api/devtool/menu/add", {
+  const { data } = await useFetch("/api/devtool/menu/add", {
     method: "POST",
     initialCache: false,
     body: JSON.stringify({
@@ -167,9 +185,7 @@ const saveAddMenu = async () => {
     }),
   });
 
-  const data = res.data.value;
-
-  if (data.statusCode === 200) {
+  if (data.value.statusCode === 200) {
     nuxtApp.$swal.fire({
       title: "Success",
       text: data.message,
@@ -177,8 +193,9 @@ const saveAddMenu = async () => {
       timer: 2000,
       showConfirmButton: false,
     });
-    // refresh the page
-    nuxtApp.$router.go();
+
+    menuInit();
+    showModalAdd.value = false;
   } else {
     nuxtApp.$swal.fire({
       title: "Error",
@@ -203,7 +220,7 @@ const deleteMenu = async (menu) => {
     })
     .then(async (result) => {
       if (result.isConfirmed) {
-        const res = await useFetch("/api/devtool/menu/delete", {
+        const { data } = await useFetch("/api/devtool/menu/delete", {
           method: "POST",
           initialCache: false,
           body: JSON.stringify({
@@ -211,9 +228,7 @@ const deleteMenu = async (menu) => {
           }),
         });
 
-        const data = res.data.value;
-
-        if (data.statusCode === 200) {
+        if (data.value.statusCode === 200) {
           nuxtApp.$swal.fire({
             title: "Deleted!",
             text: data.message,
@@ -222,8 +237,8 @@ const deleteMenu = async (menu) => {
             showConfirmButton: false,
           });
 
-          // refresh the page
-          nuxtApp.$router.go();
+          menuInit();
+          showModalEdit.value = false;
         }
       }
     });
@@ -263,10 +278,10 @@ const checkExistSideMenuList = (path) => {
 const menuList = computed(() => {
   // If the search input is empty, return all menus
   if (searchInput.value === "") {
-    return allMenus;
+    return allMenus.value;
   } else {
     // If the search input is not empty, filter the menus
-    return allMenus.filter((menu) => {
+    return allMenus.value.filter((menu) => {
       return menu.name.toLowerCase().includes(searchInput.value.toLowerCase());
     });
   }
@@ -301,7 +316,7 @@ const changeSideMenuList = (menus) => {
 
 // Save the menu
 const overwriteJsonFileLocal = async (menus) => {
-  const res = await useFetch("/api/devtool/menu/overwrite-navigation", {
+  const { data } = await useFetch("/api/devtool/menu/overwrite-navigation", {
     method: "POST",
     initialCache: false,
     body: JSON.stringify({
@@ -309,9 +324,7 @@ const overwriteJsonFileLocal = async (menus) => {
     }),
   });
 
-  const data = res.data.value;
-
-  if (data.statusCode === 200) {
+  if (data.value.statusCode === 200) {
     nuxtApp.$swal.fire({
       title: "Success",
       text: data.message,
@@ -319,9 +332,6 @@ const overwriteJsonFileLocal = async (menus) => {
       timer: 2000,
       showConfirmButton: false,
     });
-
-    // refresh the page
-    nuxtApp.$router.go();
   }
 };
 
@@ -432,7 +442,9 @@ const addMenuFromList = () => {
             </div>
             <!-- Table All Menu -->
             <rs-table
+              v-if="allMenus && allMenus.length > 0"
               :data="allMenus"
+              :key="allMenus"
               :options="{
                 variant: 'default',
                 striped: true,
@@ -526,7 +538,9 @@ const addMenuFromList = () => {
                     :sort="false"
                   >
                     <template #item="{ element }">
-                      <rs-card class="p-4 mb-4 border-2 border-[rgb(var(--border-color))] !shadow-none">
+                      <rs-card
+                        class="p-4 mb-4 border-2 border-[rgb(var(--border-color))] !shadow-none"
+                      >
                         <div class="flex justify-between items-center">
                           <p>
                             {{ kebabtoTitle(element.name) }} (
@@ -574,7 +588,11 @@ const addMenuFromList = () => {
                   />
                 </rs-card>
               </NuxtScrollbar>
-              <pre v-else v-html="JSON.stringify(sideMenuList, null, 2)"></pre>
+              <pre
+                class="bg-[#282C34] text-white p-4 h-[800px] overflow-auto rounded-md"
+                v-else
+                v-html="JSON.stringify(sideMenuList, null, 2)"
+              ></pre>
             </div>
           </rs-tab-item>
         </rs-tab>
