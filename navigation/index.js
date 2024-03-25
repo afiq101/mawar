@@ -27,6 +27,12 @@ export default [
         ],
       },
       {
+        title: "Database (ORM)",
+        icon: "ph:database",
+        path: "/devtool/orm",
+        child: [],
+      },
+      {
         title: "Menu Editor",
         icon: "ci:menu-alt-03",
         path: "/devtool/menu-editor",

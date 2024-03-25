@@ -18,7 +18,8 @@
     "nuxt-icon": "^0.1.7",
     "nuxt-security": "^0.13.0",
     "nuxt-typed-router": "^3.2.5",
-    "postcss-import": "^15.1.0"
+    "postcss-import": "^15.1.0",
+    "prisma-json-schema-generator": "^5.1.1"
   },
   "dependencies": {
     "@babel/eslint-parser": "^7.19.1",

@@ -39,7 +39,7 @@ const props = defineProps({
     type: Object,
     default: () => ({
       sortable: true,
-      filterable: true,
+      filterable: false,
       responsive: false,
       outsideBorder: false,
     }),
