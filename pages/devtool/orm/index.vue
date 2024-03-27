@@ -4,8 +4,8 @@ definePageMeta({
   middleware: ["auth"],
   requiresAuth: true,
 });
-const searchText = ref("");
 
+const searchText = ref("");
 const tableList = ref([]);
 
 const { data } = await useFetch("/api/devtool/orm/schema", {
@@ -43,10 +43,12 @@ if (data.value.statusCode === 200) {
     <rs-card>
       <div class="p-4">
         <div class="flex justify-end items-center mb-4">
-          <rs-button>
-            <Icon name="material-symbols:add" class="mr-1"></Icon>
-            Add Table
-          </rs-button>
+          <nuxt-link to="/devtool/orm/table/create">
+            <rs-button>
+              <Icon name="material-symbols:add" class="mr-1"></Icon>
+              Add Table
+            </rs-button>
+          </nuxt-link>
         </div>
 
         <!-- Search Button -->

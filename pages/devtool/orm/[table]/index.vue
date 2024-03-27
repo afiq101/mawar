@@ -5,6 +5,8 @@ definePageMeta({
   requiresAuth: true,
 });
 
+const { $swal } = useNuxtApp();
+
 const { table } = useRoute().params;
 
 const { data: tableData } = await useFetch("/api/devtool/orm/data/get", {
@@ -21,6 +23,20 @@ const openPrismaStudio = async () => {
       tableName: table,
     },
   });
+
+  if (data.value.statusCode === 200) {
+    $swal.fire({
+      title: "Prisma Studio",
+      text: data.value.message,
+      icon: "success",
+    });
+  } else {
+    $swal.fire({
+      title: "Prisma Studio",
+      text: data.value.message,
+      icon: "error",
+    });
+  }
 };
 </script>
 
