@@ -59,6 +59,10 @@ const props = defineProps({
       direction: "asc",
     }),
   },
+  disableSort: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 // Default varaiable
@@ -206,6 +210,8 @@ const computedData = computed(() => {
   result = dataTable.value
     .slice()
     .sort((a, b) => {
+      if (props.disableSort) return 0;
+
       let modifier = 1;
 
       columnTitle.value.forEach((title, index) => {
@@ -662,6 +668,7 @@ watch(
                   :name="val2"
                   :text="filteredDatabyTitle(val1, val2)"
                   :value="val1"
+                  :index="index1"
                 >
                   {{ filteredDatabyTitle(val1, val2) }}
                 </slot>

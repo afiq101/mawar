@@ -1,8 +1,6 @@
 import fs from "fs";
 import path from "path";
 
-const tableDisabled = ["user", "role", "userrole"];
-
 export default defineEventHandler(async (event) => {
   try {
     const { type } = getQuery(event);

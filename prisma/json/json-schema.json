@@ -102,6 +102,12 @@
           ],
           "format": "date-time"
         },
+        "product": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/product"
+          }
+        },
         "userrole": {
           "type": "array",
           "items": {
@@ -231,6 +237,23 @@
           "$ref": "#/definitions/user"
         }
       }
+    },
+    "product": {
+      "type": "object",
+      "properties": {
+        "productID": {
+          "type": "integer"
+        },
+        "productName": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "user": {
+          "$ref": "#/definitions/user"
+        }
+      }
     }
   },
   "type": "object",
@@ -249,6 +272,9 @@
     },
     "userrole": {
       "$ref": "#/definitions/userrole"
+    },
+    "product": {
+      "$ref": "#/definitions/product"
     }
   }
 }

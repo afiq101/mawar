@@ -32,6 +32,7 @@ model user {
   userStatus       String?    @db.VarChar(255)
   userCreatedDate  DateTime?  @db.DateTime(0)
   userModifiedDate DateTime?  @db.DateTime(0)
+  product          product[]
   userrole         userrole[]
 }
 
@@ -67,4 +68,13 @@ model userrole {
 
   @@index([userRoleRoleID], map: "FK_userrole_role")
   @@index([userRoleUserID], map: "FK_userrole_user")
+}
+
+model product {
+  productID   Int     @id @default(autoincrement())
+  productName String? @db.VarChar(255)
+  userID      Int
+  user        user    @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "product_ibfk_1")
+
+  @@index([userID], map: "userID")
 }

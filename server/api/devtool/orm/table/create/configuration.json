@@ -1,5 +1,66 @@
 {
+  "columnTypes": [
+    {
+      "group": "Numbers",
+      "options": [
+        "TINYINT",
+        "SMALLINT",
+        "MEDIUMINT",
+        "INT",
+        "BIGINT",
+        "DECIMAL",
+        "FLOAT",
+        "DOUBLE"
+      ]
+    },
+    {
+      "group": "Date and Time",
+      "options": ["DATE", "TIME", "DATETIME", "TIMESTAMP", "YEAR"]
+    },
+    {
+      "group": "Strings",
+      "options": [
+        "CHAR",
+        "VARCHAR",
+        "TINYTEXT",
+        "TEXT",
+        "MEDIUMTEXT",
+        "LONGTEXT",
+        "JSON"
+      ]
+    },
+    {
+      "group": "Lists",
+      "options": ["ENUM", "SET"]
+    },
+    {
+      "group": "Binary",
+      "options": [
+        "BIT",
+        "BINARY",
+        "VARBINARY",
+        "TINYBLOB",
+        "BLOB",
+        "MEDIUMBLOB",
+        "LONGBLOB"
+      ]
+    },
+    {
+      "group": "Geometry",
+      "options": [
+        "GEOMETRY",
+        "POINT",
+        "LINESTRING",
+        "POLYGON",
+        "MULTIPOINT",
+        "MULTILINESTRING",
+        "MULTIPOLYGON",
+        "GEOMETRYCOLLECTION"
+      ]
+    }
+  ],
   "dataTypes": [
+    "",
     "INT",
     "TINYINT",
     "SMALLINT",
@@ -34,12 +95,12 @@
     "POLYGON"
   ],
   "tableField": [
-    "columnName",
+    "name",
     "type",
     "length",
-    "default",
+    "defaultValue",
     "nullable",
-    "autoIncrement",
+    "primaryKey",
     "actions"
   ]
 }

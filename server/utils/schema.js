@@ -22,10 +22,11 @@ function getPrismaSchema() {
 }
 
 function getPrismaSchemaTable(table = null) {
+  const tableDisabled = ["user", "role", "userrole"];
+
   const JSONSchema = getPrismaSchema();
 
   if (!JSONSchema) return false;
-
   if (table) return JSONSchema.definitions[table];
 
   const keys = Object.keys(JSONSchema.definitions);
@@ -37,8 +38,18 @@ function getPrismaSchemaTable(table = null) {
     schema.push({
       name: keys[i],
       fields: Object.keys(tbl.properties),
+      disabled: tableDisabled.includes(keys[i]),
     });
   }
+
+  // Sort schema by name asc and disabled last
+  schema.sort((a, b) => {
+    if (a.disabled && !b.disabled) return 1;
+    if (!a.disabled && b.disabled) return -1;
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
 
   return schema;
 }
