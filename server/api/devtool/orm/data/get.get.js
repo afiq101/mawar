@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
       };
     }
 
-    const JSONSchemaTable = getPrismaSchemaTable(tableName);
+    // const JSONSchemaTable = getPrismaSchemaTable(tableName);
     // console.log(JSONSchemaTable);
 
     const getData = await prisma.$queryRawUnsafe(`SELECT * FROM ${tableName}`);

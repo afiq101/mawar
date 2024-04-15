@@ -79,7 +79,7 @@ if (data.value.statusCode === 200) {
 
             <div class="flex justify-between mt-5">
               <NuxtLink
-                :to="`/devtool/orm/${tbl.name}`"
+                :to="`/devtool/orm/view/${tbl.name}`"
                 class="flex justify-center items-center"
               >
                 <rs-button
@@ -91,13 +91,18 @@ if (data.value.statusCode === 200) {
               </NuxtLink>
 
               <div v-if="!tbl.disabled" class="flex justify-between gap-3">
-                <rs-button
-                  variant="secondary"
+                <NuxtLink
+                  :to="`/devtool/orm/table/modify/${tbl.name}`"
                   class="flex justify-center items-center"
                 >
-                  <Icon name="ph:note-pencil-bold" class="w-4 h-4 mr-1" />
-                  Edit
-                </rs-button>
+                  <rs-button
+                    variant="secondary"
+                    class="flex justify-center items-center"
+                  >
+                    <Icon name="ph:note-pencil-bold" class="w-4 h-4 mr-1" />
+                    Modify
+                  </rs-button>
+                </NuxtLink>
                 <rs-button
                   variant="danger-outline"
                   class="flex justify-center items-center"

@@ -1,45 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "audit": {
-      "type": "object",
-      "properties": {
-        "auditID": {
-          "type": "integer"
-        },
-        "auditIP": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "auditURL": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "auditURLMethod": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "auditURLPayload": {
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "auditCreatedDate": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "format": "date-time"
-        }
-      }
-    },
     "user": {
       "type": "object",
       "properties": {
@@ -238,6 +199,45 @@
         }
       }
     },
+    "audit": {
+      "type": "object",
+      "properties": {
+        "auditID": {
+          "type": "integer"
+        },
+        "auditIP": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "auditURL": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "auditURLMethod": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "auditURLPayload": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "auditCreatedDate": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
     "product": {
       "type": "object",
       "properties": {
@@ -258,9 +258,6 @@
   },
   "type": "object",
   "properties": {
-    "audit": {
-      "$ref": "#/definitions/audit"
-    },
     "user": {
       "$ref": "#/definitions/user"
     },
@@ -272,6 +269,9 @@
     },
     "userrole": {
       "$ref": "#/definitions/userrole"
+    },
+    "audit": {
+      "$ref": "#/definitions/audit"
     },
     "product": {
       "$ref": "#/definitions/product"

@@ -13,7 +13,7 @@ const columnTypes = ref([]);
 const { $swal } = useNuxtApp();
 
 const { data: dbConfiguration } = await useFetch(
-  "/api/devtool/orm/table/create/config"
+  "/api/devtool/orm/table/config"
 );
 
 if (dbConfiguration.value.statusCode === 200) {
@@ -121,6 +121,12 @@ const resetData = () => {
 
 const submitCreateTable = async () => {
   try {
+    console.log(tableName.value);
+    console.log("====================");
+    console.log(tableData.value);
+    console.log("====================");
+    console.log(autoIcrementColumn.value);
+    return;
     const { data } = await useFetch("/api/devtool/orm/table/create", {
       method: "POST",
       body: {
