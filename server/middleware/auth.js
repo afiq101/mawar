@@ -34,7 +34,7 @@ export default defineEventHandler(async (event) => {
       ]);
     }
 
-    const getUser = await getUserInfo(payloadUser.email);
+    const getUser = await getUserInfo(payloadUser.username);
     if (!getUser) throw new Error("User not found");
 
     event.context.user = {
@@ -92,11 +92,11 @@ function generateAccessToken(user) {
   }
 }
 
-async function getUserInfo(email) {
+async function getUserInfo(username) {
   try {
     const user = await prisma.user.findFirst({
       where: {
-        userEmail: email,
+        userUsername: username,
       },
     });
 
