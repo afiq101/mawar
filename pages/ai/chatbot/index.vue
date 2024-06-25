@@ -1,137 +1,5 @@
-<script setup>
-definePageMeta({
-  title: "Ai Chatbot",
-  requiresAuth: true,
-  middleware: ["auth"],
-  layout: "empty",
-});
-
-import Prism from "prismjs";
-import "prismjs/themes/prism.min.css";
-
-// Using require
-
-const code = ref(false);
-const history = ref(false);
-
-const historyWidth = ref("0px");
-
-watch(history, (newValue) => {
-  historyWidth.value = newValue ? "20vw" : "0px";
-});
-
-const historyList = ref([
-  {
-    title: "ToyyibPay Category Creation",
-    value: 0,
-  },
-  {
-    title: "Diagram API Documentation",
-    value: 0,
-  },
-  {
-    title: "Sequence Diagram Creation",
-    value: 0,
-  },
-  {
-    title: "Convert User Story URS",
-    value: 0,
-  },
-]);
-
-const newText = ref(true);
-const currentChat = ref("");
-const onGoingChat = ref([]);
-const aiResponse = ref("");
-const waitingResponse = ref(false);
-
-async function handleChat(type, contentType, resp) {
-  if (type === "user") {
-    onGoingChat.value.push({
-      type: "user",
-      contentType: contentType,
-      chat: resp,
-    });
-    await getResponseAI();
-  } else {
-    waitingResponse.value = true;
-
-    setTimeout(() => {
-      waitingResponse.value = false;
-      animateText(contentType, resp);
-    }, 2000);
-  }
-  newText.value = false;
-}
-
-async function getResponseAI() {
-  await handleChat(
-    "ai",
-    "text",
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-  );
-}
-// function animateText(contentType, text) {
-//   let currentIndex = 0;
-//   const textLength = text.length;
-//   aiResponse.value = "";
-
-//   const aiChatIndex = onGoingChat.value.length;
-//   onGoingChat.value.push({
-//     type: "ai",
-//     contentType: contentType,
-//     chat: "",
-//   });
-
-//   const interval = setInterval(() => {
-//     if (currentIndex < textLength) {
-//       onGoingChat.value[aiChatIndex].chat += text[currentIndex];
-//       currentIndex++;
-//     } else {
-//       clearInterval(interval);
-//     }
-//   }, 5);
-// }
-
-function animateText(contentType, text) {
-  const words = text.split(" ");
-  let currentIndex = 0;
-  const wordsLength = words.length;
-
-  const aiChatIndex = onGoingChat.value.length;
-  onGoingChat.value.push({
-    type: "ai",
-    contentType: contentType,
-    chat: "",
-  });
-
-  const interval = setInterval(() => {
-    if (currentIndex < wordsLength) {
-      if (currentIndex > 0) {
-        onGoingChat.value[aiChatIndex].chat += " "; // Add space before new word
-      }
-      onGoingChat.value[aiChatIndex].chat += words[currentIndex];
-      currentIndex++;
-    } else {
-      clearInterval(interval);
-    }
-  }, 5); // Increased interval for better readability
-}
-
-function handleNewChat() {
-  onGoingChat.value = [];
-  newText.value = true;
-  currentChat.value = "";
-}
-
-onMounted(() => {
-  Prism.highlightAll();
-});
-</script>
-
 <template>
   <div class="bg-[#2b2a28] h-screen tracking-tight">
-    <!-- <div class="bg-[#ebebeb] h-screen"> -->
     <div class="flex gap-2 h-screen p-3">
       <div
         class="history-panel bg-[#171717] rounded-md overflow-hidden transition-all duration-100 ease-in-out flex flex-col h-full justify-between"
@@ -144,25 +12,12 @@ onMounted(() => {
               src="@/assets/img/logo/logo-transparent.png"
               alt=""
             />
-
-            <!-- 
-            <span
-              class="flex-grow border-x-[1px] border-white flex justify-center"
-            >
-              <img
-                class="max-h-[30px] rounded-full"
-                src="https://www.goomlandscapes.co.nz/wp-content/uploads/2018/08/logo-placeholder.png"
-                alt=""
-              />
-            </span> -->
           </div>
-
           <div class="p-3 text-white mt-3 flex flex-col">
             <div
               v-if="historyList.length > 0"
               v-for="(data, index) in historyList"
               :key="index"
-              class=""
             >
               <div
                 class="flex-grow rounded-md gap-2 hover:bg-[#3d3d3d] cursor-pointer px-3 p-1.5 text-[#F6F3EB] flex justify-between"
@@ -170,28 +25,25 @@ onMounted(() => {
                 <p class="text-[12px] truncate">
                   {{ data.title }}
                 </p>
-                <span
-                  ><Icon name="material-symbols:arrow-right" size="15"></Icon
-                ></span>
+                <span>
+                  <Icon name="material-symbols:arrow-right" size="15"></Icon>
+                </span>
               </div>
             </div>
             <div v-else class="flex">No History</div>
           </div>
         </div>
-
         <div class="text-white p-3 m-2 flex justify-around">
           <img
             class="max-w-[50px] rounded-full"
             src="@/assets/img/logo/zah.png"
             alt=""
           />
-
           <img
             class="max-w-[50px] rounded-full"
             src="@/assets/img/logo/afi.png"
             alt=""
           />
-
           <img
             class="max-w-[50px] rounded-full"
             src="@/assets/img/logo/jul.png"
@@ -199,31 +51,32 @@ onMounted(() => {
           />
         </div>
       </div>
-
       <div class="flex-grow p-2 text-white">
         <div class="flex justify-between">
           <span
             v-if="!history"
-            @click="(history = true), (code = false)"
+            @click="toggleHistory"
             class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d]"
-            ><Icon
+          >
+            <Icon
               name="material-symbols:keyboard-double-arrow-right-rounded"
               size="15"
-            ></Icon
-          ></span>
+            ></Icon>
+          </span>
           <span
             v-else
-            @click="(history = false), (code = false)"
+            @click="toggleHistory"
             class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d]"
-            ><Icon
+          >
+            <Icon
               name="material-symbols:keyboard-double-arrow-left-rounded"
               size="15"
-            ></Icon
-          ></span>
+            ></Icon>
+          </span>
           <span>
             <div
               class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d]"
-              @click="handleNewChat()"
+              @click="handleNewChat"
             >
               <Icon
                 name="material-symbols:add"
@@ -234,31 +87,23 @@ onMounted(() => {
             </div>
           </span>
         </div>
-
         <div
           class="flex flex-col h-full justify-between mt-5"
           style="height: 87vh"
         >
-          <NuxtScrollbar
-            :style="{
-              'max-height': '80vh',
-            }"
-          >
+          <NuxtScrollbar :style="{ 'max-height': '80vh' }">
             <div v-if="newText" class="top">
               <div class="gap-3 py-20 text-center leading-[50px]">
-                <!-- <img
-                  class="h-10 animate-spin"
-                  src="@/assets/img/logo/logo-transparent.png"
-                  alt=""
-                /> -->
-
-                <p class="welcome-text text-[60px] drop-shadow-md">Welcome to Eh AI</p>
-                <p class="my-auto text-[16px]">
-                  What can i help you with today?
+                <p class="welcome-text text-[60px] drop-shadow-md">
+                  Welcome to Eh AI
                 </p>
+                <span class="my-auto text-[16px] leading-6">
+                  <p>Need help or just getting started?</p>
+                  <p>Type your question in the textbox—I'm here to assist!</p>
+                </span>
               </div>
             </div>
-            <div v-else class="flex justify-center" style="">
+            <div v-else class="flex justify-center">
               <div
                 style="width: 60vw"
                 class="flex flex-col gap-5 !text-[#f5f4ee] tracking-tight"
@@ -281,20 +126,17 @@ onMounted(() => {
                     >
                       {{ data.chat }}
                     </p>
-
                     <span
                       v-if="data.type == 'ai' && data.contentType == 'text'"
                       class="leading-6 w-full text-[13px]"
                     >
                       {{ data.chat }}
-
                       <p class="mt-2 flex gap-1">
                         <Icon
                           name="material-symbols:content-copy-outline-sharp"
                           size="25"
                           class="p-1 cursor-pointer hover:bg-[#494848] rounded-md"
                         ></Icon>
-
                         <Icon
                           name="material-symbols-light:directory-sync-rounded"
                           size="25"
@@ -312,7 +154,6 @@ onMounted(() => {
               </div>
             </div>
           </NuxtScrollbar>
-
           <div class="flex justify-center">
             <div class="w-full" style="width: 60vw">
               <div class="flex justify-between">
@@ -320,18 +161,16 @@ onMounted(() => {
                   >Waiting response...</span
                 >
                 <span v-else></span>
-
                 <div
-                  class="rounded-md p-2 px-4 flex gap-1 cursor-pointer hover:bg-[#3d3d3d]"
-                  @click="(history = false), (code = true)"
+                  class="rounded-md p-2 px-4 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d]"
+                  @click="toggleCode"
                 >
                   <Icon name="ph:code-bold" size="15"></Icon>
                   <span class="text-xs">Code</span>
                 </div>
               </div>
-
               <div class="relative mt-2 rounded-md shadow-sm">
-                <form>
+                <form @submit.prevent="handleChat('user', 'text', currentChat)">
                   <div
                     class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
                   >
@@ -345,7 +184,6 @@ onMounted(() => {
                   <button
                     class="absolute inset-y-0 right-2 flex items-center"
                     :disabled="!currentChat || waitingResponse"
-                    @click="handleChat('user', 'text', currentChat)"
                   >
                     <span
                       class="rounded-full p-1"
@@ -360,15 +198,19 @@ onMounted(() => {
                     </span>
                   </button>
                 </form>
-
-                <span></span>
               </div>
+              <p class="text-[8px] text-center mt-2 ">
+                Made in MY within 1 day only.
+              </p>
             </div>
           </div>
         </div>
       </div>
-
-      <div v-if="code" class="flex-grow bg-[#282C34] rounded-md">
+      <div
+        v-if="code"
+        class="flex-grow bg-[#282C34] rounded-md"
+        style="width: 50vw"
+      >
         <div class="flex flex-col h-full justify-between">
           <div class="flex justify-between p-2 text-white">
             <div>...</div>
@@ -376,18 +218,9 @@ onMounted(() => {
               <Icon name="material-symbols:close-small-outline"></Icon>
             </div>
           </div>
-          <!-- <code class="flex-grow p-3"> { "text": "test" } </code> -->
-          {{ highlightedCode }}
-
-          <pre class="flex-grow">
-            <code class="lang-js">
-              <span>const x</span> = <span>'hello world'</span>;
-              <span>const x</span> = <span>'hello world'</span>;
-              <span class="text-xs">New</span>
-
-            </code>
-          </pre>
-
+          <!-- <pre ref="codeRef" :class="`language-${language}`">
+            <code v-html="highlightedCode"></code>
+          </pre> -->
           <div class="flex justify-between p-2 text-white">
             <div>...</div>
             <div class="flex gap-3">
@@ -409,12 +242,107 @@ onMounted(() => {
   </div>
 </template>
 
+<script setup>
+definePageMeta({
+  title: "Ai Chatbot",
+  requiresAuth: true,
+  middleware: ["auth"],
+  layout: "empty",
+});
+
+const code = ref(false);
+const history = ref(false);
+const historyWidth = ref("0px");
+
+watch(history, (newValue) => {
+  historyWidth.value = newValue ? "20vw" : "0px";
+});
+
+const historyList = ref([
+  { title: "ToyyibPay Category Creation", value: 0 },
+  { title: "Diagram API Documentation", value: 0 },
+  { title: "Sequence Diagram Creation", value: 0 },
+  { title: "Convert User Story URS", value: 0 },
+]);
+
+const newText = ref(true);
+const currentChat = ref("");
+const onGoingChat = ref([]);
+const aiResponse = ref("");
+const waitingResponse = ref(false);
+
+async function handleChat(type, contentType, resp) {
+  if (type === "user") {
+    onGoingChat.value.push({ type: "user", contentType, chat: resp });
+    await getResponseAI();
+  } else {
+    waitingResponse.value = true;
+    setTimeout(() => {
+      waitingResponse.value = false;
+      animateText(contentType, resp);
+    }, 2000);
+  }
+  newText.value = false;
+}
+
+async function getResponseAI() {
+  await handleChat(
+    "ai",
+    "text",
+    `Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
+    when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+    It has survived not only five centuries, but also the leap into electronic typesetting,
+    remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+    sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like
+    Aldus PageMaker including versions of Lorem Ipsum.`
+  );
+}
+
+function animateText(contentType, text) {
+  const words = text.split(" ");
+  let currentIndex = 0;
+  const wordsLength = words.length;
+
+  const aiChatIndex = onGoingChat.value.length;
+  onGoingChat.value.push({ type: "ai", contentType, chat: "" });
+
+  const interval = setInterval(() => {
+    if (currentIndex < wordsLength) {
+      if (currentIndex > 0) {
+        onGoingChat.value[aiChatIndex].chat += " "; // Add space before new word
+      }
+      onGoingChat.value[aiChatIndex].chat += words[currentIndex];
+      currentIndex++;
+    } else {
+      clearInterval(interval);
+    }
+  }, 5); // Increased interval for better readability
+}
+
+function handleNewChat() {
+  onGoingChat.value = [];
+  newText.value = true;
+  currentChat.value = "";
+}
+
+function toggleHistory() {
+  history.value = !history.value;
+  code.value = false;
+}
+
+function toggleCode() {
+  history.value = false;
+  code.value = true;
+}
+</script>
+
 <style scoped>
 @import url("https://fonts.cdnfonts.com/css/pp-neue-montreal");
 @import url("https://db.onlinewebfonts.com/c/926fcaaa8b66e0df67e176f329259711?family=PP+Editorial+New");
 
 .ai-chat {
-  text-align: left; /* Ensure text starts from the left */
+  text-align: left;
 }
 
 .history-panel {
