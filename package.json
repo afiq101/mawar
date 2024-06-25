@@ -57,6 +57,7 @@
     "jsonwebtoken": "^8.5.1",
     "luxon": "^3.1.0",
     "maska": "^1.5.0",
+    "openai": "^4.0.0",
     "pinia": "^2.1.6",
     "prettier": "^2.8.1",
     "prisma": "^5.1.1",
