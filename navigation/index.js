@@ -79,6 +79,18 @@ export default [
     },
   },
   {
+    header: "AI",
+    description: "Artificial Intelligence",
+    child: [
+      {
+        title: "Chatbot",
+        path: "/ai/chatbot",
+        icon: "mdi:robot",
+        child: [],
+      },
+    ],
+  },
+  {
     header: "Help",
     description: "Help and documentation",
     child: [
