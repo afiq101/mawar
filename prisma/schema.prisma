@@ -68,16 +68,18 @@ model userrole {
 model chat {
   chatID             Int       @id @default(autoincrement())
   userID             Int
-  chatOAIThreadID    String?   @db.VarChar(255)
+  threadID           Int?
   chatOAIAssistantID String?   @db.VarChar(255)
-  chatOAIMessageID   String?   @db.VarChar(255)
+  chatOAIMessageID   String?   @unique(map: "chatOAIMessageID") @db.VarChar(255)
   chatType           String?   @db.VarChar(255)
   chatMessage        String?   @db.Text
   chatCreatedDate    DateTime? @db.DateTime(0)
   chatModifiedDate   DateTime? @db.DateTime(0)
   user               user      @relation(fields: [userID], references: [userID], onDelete: NoAction, onUpdate: NoAction, map: "chat_ibfk_1")
+  thread             thread?   @relation(fields: [threadID], references: [threadID], onDelete: NoAction, onUpdate: NoAction, map: "chat_ibfk_2")
 
   @@index([userID], map: "userID")
+  @@index([threadID], map: "threadID")
 }
 
 model survey_list {
@@ -99,4 +101,12 @@ model survey_list {
   created_at            String? @db.VarChar(255)
   updated_by            String? @db.VarChar(255)
   updated_at            String? @db.VarChar(255)
+}
+
+model thread {
+  threadID           Int       @id @default(autoincrement())
+  threadOAIID        String?   @db.VarChar(255)
+  threadCreatedDate  DateTime? @db.DateTime(0)
+  threadModifiedDate DateTime? @db.DateTime(0)
+  chat               chat[]
 }
