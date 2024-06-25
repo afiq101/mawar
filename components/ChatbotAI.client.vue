@@ -1,4 +1,5 @@
 <script setup>
+import { navigateTo } from "nuxt/app";
 import Prism from "prismjs";
 import "prismjs/themes/prism.min.css";
 
@@ -132,7 +133,7 @@ onMounted(() => {
 
 <template>
   <div
-    class="fixed py-20 w-full"
+    class="fixed py-10 w-full z-10"
     style="
       background: rgb(124, 233, 255);
       background: linear-gradient(
@@ -146,30 +147,32 @@ onMounted(() => {
     <!-- <div class="bg-[#ebebeb] h-screen"> -->
     <div class="flex gap-2 h-screen p-3">
       <div
-        class="history-panel bg-[#171717] rounded-md overflow-hidden transition-all duration-100 ease-in-out flex flex-col h-full justify-between"
+        class="history-panel rounded-md overflow-hidden transition-all duration-100 ease-in-out flex flex-col h-full justify-between !bg-[#18181b]"
         :style="{ width: historyWidth }"
+        style="z-index: 50"
       >
         <div>
           <div class="flex justify-between text-white p-3 gap-3">
-            <img
+            <!-- <img
               class="h-10 animate-spin px-2"
               src="@/assets/img/logo/logo-transparent.png"
               alt=""
-            />
+            /> -->
 
-            <!-- 
-            <span
-              class="flex-grow border-x-[1px] border-white flex justify-center"
+            <div
+              class="flex gap-3 items-center ml-3 mt-3"
+              stlye="font-family: 'PP Editorial New'"
             >
-              <img
-                class="max-h-[30px] rounded-full"
-                src="https://www.goomlandscapes.co.nz/wp-content/uploads/2018/08/logo-placeholder.png"
-                alt=""
-              />
-            </span> -->
+              <Icon
+                name="mdi:atom-variant"
+                class="text-[#c9dbbb] animate-spin"
+              ></Icon>
+
+              <span class="my-auto">CorradAI</span>
+            </div>
           </div>
 
-          <div class="p-3 text-white mt-3 flex flex-col">
+          <div class="p-3 text-white flex flex-col">
             <div
               v-if="historyList.length > 0"
               v-for="(data, index) in historyList"
@@ -191,50 +194,60 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="text-white p-3 m-2 flex justify-around">
-          <img
-            class="max-w-[50px] rounded-full"
-            src="@/assets/img/logo/zah.png"
-            alt=""
-          />
+        <div>
+          <div class="p-5">
+            <rs-button class="w-full !bg-[#557841]" @click="navigateTo(`/`)"
+              >Back To Mawar</rs-button
+            >
+          </div>
 
-          <img
-            class="max-w-[50px] rounded-full"
-            src="@/assets/img/logo/afi.png"
-            alt=""
-          />
+          <div class="text-white p-3 m-2 flex justify-around">
+            <img
+              class="max-w-[50px] rounded-full"
+              src="@/assets/img/logo/zah.png"
+              alt=""
+            />
 
-          <img
-            class="max-w-[50px] rounded-full"
-            src="@/assets/img/logo/jul.png"
-            alt=""
-          />
+            <img
+              class="max-w-[50px] rounded-full"
+              src="@/assets/img/logo/afi.png"
+              alt=""
+            />
+
+            <img
+              class="max-w-[50px] rounded-full"
+              src="@/assets/img/logo/jul.png"
+              alt=""
+            />
+          </div>
         </div>
       </div>
 
       <div class="flex-grow p-2 text-white">
         <div class="flex justify-between">
-          <span
+          <div
             v-if="!history"
             @click="(history = true), (code = false)"
-            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d]"
-            ><Icon
+            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] z-50 border-[1px] border-[#2a2a27]"
+          >
+            <Icon
               name="material-symbols:keyboard-double-arrow-right-rounded"
               size="15"
-            ></Icon
-          ></span>
-          <span
+            ></Icon>
+          </div>
+          <div
             v-else
             @click="(history = false), (code = false)"
-            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d]"
-            ><Icon
+            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] z-50 border-[1px] border-[#2a2a27]"
+          >
+            <Icon
               name="material-symbols:keyboard-double-arrow-left-rounded"
               size="15"
-            ></Icon
-          ></span>
-          <span>
+            ></Icon>
+          </div>
+          <div class="z-50">
             <div
-              class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d]"
+              class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] border-[1px] border-[#2a2a27]"
               @click="handleNewChat()"
             >
               <Icon
@@ -244,13 +257,10 @@ onMounted(() => {
               ></Icon>
               <span class="text-[12px]">New</span>
             </div>
-          </span>
+          </div>
         </div>
 
-        <div
-          class="flex flex-col h-full justify-between"
-          style="height: 87vh"
-        >
+        <div class="flex flex-col h-full justify-between" style="height: 87vh">
           <NuxtScrollbar
             :style="{
               'max-height': '80vh',
@@ -335,13 +345,13 @@ onMounted(() => {
                 >
                 <span v-else></span>
 
-                <div
+                <!-- <div
                   class="rounded-md p-2 px-4 flex gap-1 cursor-pointer hover:bg-[#3d3d3d]"
                   @click="(history = false), (code = true)"
                 >
                   <Icon name="ph:code-bold" size="15"></Icon>
                   <span class="text-xs">Code</span>
-                </div>
+                </div> -->
               </div>
 
               <div class="relative mt-2 rounded-md shadow-sm">
@@ -353,7 +363,7 @@ onMounted(() => {
                   </div>
                   <input
                     type="text"
-                    class="block w-full rounded-full border-0 py-3 pl-10 pr-20 bg-[#393937] text-[#a6a39a] sm:text-sm sm:leading-6 focus:outline-none shadow-lg"
+                    class="block w-full rounded-full py-3 pl-10 pr-20 bg-[#393937] text-[#a6a39a] sm:text-sm sm:leading-6 focus:outline-none outline-[#2a2a27] shadow-lg"
                     v-model="currentChat"
                   />
                   <button
@@ -364,7 +374,7 @@ onMounted(() => {
                     <span
                       class="rounded-full p-1"
                       :class="
-                        !currentChat || waitingResponse ? 'bg-[#c86c3a]' : ''
+                        !currentChat || waitingResponse ? 'bg-[#6a9151]' : ''
                       "
                     >
                       <Icon
@@ -374,9 +384,11 @@ onMounted(() => {
                     </span>
                   </button>
                 </form>
-
-                <span></span>
               </div>
+
+              <span class="text-[8px] flex justify-center mt-2"
+                >Made in MY within 1 day only.</span
+              >
             </div>
           </div>
         </div>
