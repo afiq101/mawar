@@ -7,6 +7,11 @@ export default defineNuxtConfig({
       },
     },
   },
+  nitro:{
+    experimental:{
+      websocket: true
+    }
+  },
   devtools: false,
   runtimeConfig: {
     auth: {
