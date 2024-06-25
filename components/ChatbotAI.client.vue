@@ -17,6 +17,8 @@ const history = ref(false);
 
 const historyWidth = ref("0px");
 
+const showProfile = ref(false);
+
 watch(history, (newValue) => {
   historyWidth.value = newValue ? "20vw" : "0px";
 });
@@ -124,7 +126,35 @@ function handleNewChat() {
   onGoingChat.value = [];
   newText.value = true;
   currentChat.value = "";
+  showModal.value = true;
 }
+
+const showModal = ref(false);
+
+const newChatOptionList = ref([
+  {
+    title: "Create SRS",
+    value: "SRS",
+    description: "Create a Software Requirements Specification document",
+  },
+  {
+    title: "Create URS",
+    value: "URS",
+    description: "Create a User Requirements Specification document",
+  },
+  {
+    title: "Create DFD",
+    value: "DFD",
+    description: "Create a Data Flow Diagram",
+  },
+  {
+    title: "Create Use Case",
+    value: "USECASE",
+    description: "Create a Use Case diagram",
+  },
+]);
+
+const chatOption = ref(null);
 
 onMounted(() => {
   Prism.highlightAll();
@@ -159,16 +189,15 @@ onMounted(() => {
               alt=""
             /> -->
 
-            <div
-              class="flex gap-3 items-center ml-3 mt-3"
-              stlye="font-family: 'PP Editorial New'"
-            >
+            <div class="flex gap-3 items-center ml-3 mt-3">
               <Icon
                 name="mdi:atom-variant"
                 class="text-[#c9dbbb] animate-spin"
               ></Icon>
 
-              <span class="my-auto">CorradAI</span>
+              <span class="my-auto" style="font-family: 'PP Editorial New'"
+                >CorradAI</span
+              >
             </div>
           </div>
 
@@ -195,13 +224,11 @@ onMounted(() => {
         </div>
 
         <div>
-          <div class="p-5">
-            <rs-button class="w-full !bg-[#557841]" @click="navigateTo(`/`)"
-              >Back To Mawar</rs-button
-            >
-          </div>
-
-          <div class="text-white p-3 m-2 flex justify-around">
+          <div
+            class="text-white p-3 m-2 flex justify-around"
+            ref="profile"
+            :style="{ display: showProfile ? 'flex' : 'none' }"
+          >
             <img
               class="max-w-[50px] rounded-full"
               src="@/assets/img/logo/zah.png"
@@ -219,6 +246,32 @@ onMounted(() => {
               src="@/assets/img/logo/jul.png"
               alt=""
             />
+          </div>
+
+          <div
+            class="px-5 py-2"
+            ref="box1"
+            @mouseenter="showProfile = true"
+            @mouseleave="showProfile = false"
+          >
+            <div
+              class="bg-[#172113] border-[1px] border-[#36482c] rounded-md p-3 flex gap-2 text-[#f4f4f5]"
+            >
+              <span class="rounded-full bg-[#6a9151]">
+                <Icon
+                  name="material-symbols:arrow-upward-alt-rounded"
+                  class="text-white my-auto"
+                ></Icon>
+              </span>
+
+              <p class="my-auto">Placeholder</p>
+            </div>
+          </div>
+
+          <div class="px-5 py-2 pb-5">
+            <rs-button class="w-full !bg-[#557841]" @click="navigateTo(`/`)"
+              >Back To Mawar</rs-button
+            >
           </div>
         </div>
       </div>
@@ -260,14 +313,14 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="flex flex-col h-full justify-between" style="height: 87vh">
+        <div class="flex flex-col h-full justify-between" style="height: 90vh">
           <NuxtScrollbar
             :style="{
               'max-height': '80vh',
             }"
           >
             <div v-if="newText" class="top">
-              <div class="gap-3 py-20 text-center leading-[50px]">
+              <div class="gap-3 py-20 text-center leading-15">
                 <!-- <img
                   class="h-10 animate-spin"
                   src="@/assets/img/logo/logo-transparent.png"
@@ -275,12 +328,77 @@ onMounted(() => {
                 /> -->
 
                 <p class="welcome-text text-[60px] drop-shadow-md">
-                  Welcome to Eh AI
+                  Welcome to
+
+                  <span> Open<span class="text-[#c9dbbb]">Anjai </span> </span>
                 </p>
-                <p class="my-auto text-[16px]">
-                  What can i help you with today?
-                </p>
+                <span class="my-auto text-[16px] leading-6">
+                  <p>Need help or just getting started?</p>
+
+                  <i class="text-[14px]"
+                    >Type your question in the textbox—I'm here to assist!</i
+                  >
+                </span>
               </div>
+
+              <rs-modal
+                v-model="showModal"
+                position="center"
+                size="md"
+                class=""
+              >
+                <template #header>
+                  <div>Choose Option</div>
+                </template>
+
+                <p>Select your desired action:</p>
+
+                <div class="grid grid-cols-12 gap-2 mt-2">
+                  <div
+                    v-for="(data, index) in newChatOptionList"
+                    :key="index"
+                    class="col-span-12 md:col-span-6 p-5 bg-gray-200 rounded-md cursor-pointer hover:bg-[#2c4720]"
+                    :class="
+                      chatOption == data.value
+                        ? 'bg-[#2c4720] text-white border-2 border-[#2c4720]'
+                        : ''
+                    "
+                    @click="chatOption = data.value"
+                    style="height: 20vh"
+                  >
+                    <div class="flex justify-start">
+                      <div>
+                        <h6 class="font-semibold">
+                          {{ data.title }}
+                        </h6>
+                        <p
+                          class="text-[13px] text-gray-500"
+                          :class="
+                            chatOption == data.value ? 'text-[#f2faeb]' : ''
+                          "
+                        >
+                          {{ data.description }}
+                        </p>
+                      </div>
+                      <!-- <div class="my-auto">
+                        <Icon
+                          name="material-symbols:arrow-right-alt-rounded"
+                        ></Icon>
+                      </div> -->
+                    </div>
+                  </div>
+                </div>
+
+                <template #footer>
+                  <div class="w-full">
+                    <rs-button
+                      class="w-full !bg-[#557841]"
+                      :disabled="!chatOption"
+                      >Next Step
+                    </rs-button>
+                  </div>
+                </template>
+              </rs-modal>
             </div>
             <div v-else class="flex justify-center" style="">
               <div
@@ -386,8 +504,12 @@ onMounted(() => {
                 </form>
               </div>
 
-              <span class="text-[8px] flex justify-center mt-2"
-                >Made in MY within 1 day only.</span
+              <span
+                class="text-[10px] flex justify-center mt-5"
+                style="font-family: 'PP Editorial New'"
+                >
+                "While Rome wasn't built in a day, openAnjai arose in an instant."
+                </span
               >
             </div>
           </div>
