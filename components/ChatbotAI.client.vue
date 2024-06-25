@@ -131,6 +131,17 @@ onMounted(() => {
 </script>
 
 <template>
+  <div
+    class="fixed py-20 w-full"
+    style="
+      background: rgb(124, 233, 255);
+      background: linear-gradient(
+        0deg,
+        rgba(124, 233, 255, 0) 0%,
+        rgba(0, 0, 0, 0.6657256652661064) 100%
+      );
+    "
+  ></div>
   <div class="bg-[#2b2a28] h-screen tracking-tight">
     <!-- <div class="bg-[#ebebeb] h-screen"> -->
     <div class="flex gap-2 h-screen p-3">
@@ -237,7 +248,7 @@ onMounted(() => {
         </div>
 
         <div
-          class="flex flex-col h-full justify-between mt-5"
+          class="flex flex-col h-full justify-between"
           style="height: 87vh"
         >
           <NuxtScrollbar
