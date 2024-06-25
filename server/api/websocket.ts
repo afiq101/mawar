@@ -1,10 +1,18 @@
+import OpenAI from "openai";
+const openai = new OpenAI({ project: "proj_p1rPkahsfJHrHQd1LvOqvkoy" });
+
 export default defineWebSocketHandler({
-  open(peer) {
+  async open(peer) {
     console.log("[ws] open", peer);
+    await OAIAssistantList();
+
+    peer.subscribe("room:lobby");
+    peer.publish("room:lobby", "Another user has joined the room.");
   },
 
-  message(peer, message) {
+  async message(peer, message) {
     console.log("[ws] message", peer, message);
+    peer.publish("room:lobby", message.text());
     if (message.text().includes("ping")) {
       peer.send("pong");
     }
@@ -18,3 +26,19 @@ export default defineWebSocketHandler({
     console.log("[ws] error", peer, error);
   },
 });
+
+async function OAIAssistantList() {
+  try {
+    const listAssistant = await openai.beta.assistants.list();
+    console.log(listAssistant);
+
+    if (!listAssistant) {
+      return false;
+    }
+
+    return listAssistant;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
