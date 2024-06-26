@@ -6,6 +6,7 @@ definePageMeta({
   title: "Chatbot",
   description: "Chatbot page",
   layout: "emtpy",
+  requiresAuth: true,
 });
 
 const { $swal } = useNuxtApp();
