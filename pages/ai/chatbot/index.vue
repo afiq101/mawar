@@ -8,6 +8,7 @@ definePageMeta({
   layout: "emtpy",
 });
 
+const { $swal } = useNuxtApp();
 // Using require
 const code = ref(false);
 const history = ref(false);
@@ -46,66 +47,72 @@ const aiResponse = ref("");
 const waitingResponse = ref(false);
 
 async function handleChat(type, contentType, resp) {
-  if (type === "user") {
-    const { data } = await useFetch("/api/devtool/ai/chat/send/message", {
-      method: "POST",
-      body: {
-        message: resp,
-      },
-    });
+  console.log("new Chat:", type);
+  newText.value = false;
+  waitingResponse.value = true;
 
-    if (data.value.statusCode !== 200) {
-      console.log("Error", data.value.message);
-      return;
-    }
+  try {
+    if (type === "user") {
+      onGoingChat.value.push({
+        type: "user",
+        contentType: contentType,
+        chat: resp,
+      });
 
-    onGoingChat.value.push({
-      type: "user",
-      contentType: contentType,
-      chat: resp,
-    });
-
-    currentChat.value = "";
-    await getResponseAI();
-  } else {
-    waitingResponse.value = true;
-
-    setTimeout(() => {
+      currentChat.value = "";
+      await getResponseAI(resp);
+    } else {
       waitingResponse.value = false;
       animateText(contentType, resp);
-    }, 2000);
+    }
+    newText.value = false;
+  } catch (error) {
+    console.log("error:", error);
+    $swal.fire({
+      title: "Session Expired",
+      text: "Your session has expired. Please login again.",
+      icon: "warning",
+      confirmButtonText: "OK",
+    });
   }
-  newText.value = false;
 }
 
-async function getResponseAI() {
+async function getResponseAI(resp) {
+  const { data } = await useFetch("/api/devtool/ai/chat/send/message", {
+    method: "POST",
+    body: {
+      message: resp,
+    },
+  });
+
+  console.log("resp:", data);
+
+  if (data.value.statusCode !== 200) {
+    console.log("Error", data.value.message);
+    return;
+  }
+
   await handleChat(
     "ai",
     "text",
     "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
   );
 }
-// function animateText(contentType, text) {
-//   let currentIndex = 0;
-//   const textLength = text.length;
-//   aiResponse.value = "";
 
-//   const aiChatIndex = onGoingChat.value.length;
-//   onGoingChat.value.push({
-//     type: "ai",
-//     contentType: contentType,
-//     chat: "",
-//   });
-
-//   const interval = setInterval(() => {
-//     if (currentIndex < textLength) {
-//       onGoingChat.value[aiChatIndex].chat += text[currentIndex];
-//       currentIndex++;
-//     } else {
-//       clearInterval(interval);
-//     }
-//   }, 5);
-// }
+const copiedIndex = ref(false);
+function copyToClipboard(text, index) {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      this.copiedIndex = index;
+      setTimeout(() => {
+        this.copiedIndex = null;
+      }, 1500); // Hide message after 2 seconds
+    })
+    .catch((err) => {
+      console.error("Failed to copy text: ", err);
+    });
+}
 
 function animateText(contentType, text) {
   const words = text.split(" ");
@@ -333,19 +340,13 @@ onMounted(() => {
                 'max-height': '80vh',
               }"
             >
-              <div v-if="newText" class="top">
+              <div v-if="newText && !waitingResponse" class="top">
                 <div class="gap-3 py-20 text-center leading-15">
-                  <!-- <img
-                  class="h-10 animate-spin"
-                  src="@/assets/img/logo/logo-transparent.png"
-                  alt=""
-                /> -->
-
                   <p class="welcome-text text-[60px] drop-shadow-md">
                     Welcome to
 
                     <span>
-                      Open<span class="text-[#c9dbbb]">Anjai </span>
+                      Open<span class="text-[#c9dbbb]">AjaiB </span>
                     </span>
                   </p>
                   <span class="my-auto text-[16px] leading-6">
@@ -356,65 +357,6 @@ onMounted(() => {
                     >
                   </span>
                 </div>
-
-                <rs-modal
-                  v-model="showModal"
-                  position="center"
-                  size="md"
-                  class=""
-                >
-                  <template #header>
-                    <div>Choose Option</div>
-                  </template>
-
-                  <p>Select your desired action:</p>
-
-                  <div class="grid grid-cols-12 gap-2 mt-2">
-                    <div
-                      v-for="(data, index) in newChatOptionList"
-                      :key="index"
-                      class="col-span-12 md:col-span-6 p-5 bg-gray-200 rounded-md cursor-pointer hover:bg-[#2c4720]"
-                      :class="
-                        chatOption == data.value
-                          ? 'bg-[#2c4720] text-white border-2 border-[#2c4720]'
-                          : ''
-                      "
-                      @click="chatOption = data.value"
-                      style="height: 20vh"
-                    >
-                      <div class="flex justify-start">
-                        <div>
-                          <h6 class="font-semibold">
-                            {{ data.title }}
-                          </h6>
-                          <p
-                            class="text-[13px] text-gray-500"
-                            :class="
-                              chatOption == data.value ? 'text-[#f2faeb]' : ''
-                            "
-                          >
-                            {{ data.description }}
-                          </p>
-                        </div>
-                        <!-- <div class="my-auto">
-                        <Icon
-                          name="material-symbols:arrow-right-alt-rounded"
-                        ></Icon>
-                      </div> -->
-                      </div>
-                    </div>
-                  </div>
-
-                  <template #footer>
-                    <div class="w-full">
-                      <rs-button
-                        class="w-full !bg-[#557841]"
-                        :disabled="!chatOption"
-                        >Next Step
-                      </rs-button>
-                    </div>
-                  </template>
-                </rs-modal>
               </div>
               <div v-else class="flex justify-center" style="">
                 <div
@@ -451,6 +393,7 @@ onMounted(() => {
                             name="material-symbols:content-copy-outline-sharp"
                             size="25"
                             class="p-1 cursor-pointer hover:bg-[#494848] rounded-md"
+                            @click="copyToClipboard(data.chat, index)"
                           ></Icon>
 
                           <Icon
@@ -458,6 +401,15 @@ onMounted(() => {
                             size="25"
                             class="p-1 cursor-pointer hover:bg-[#494848] rounded-md"
                           ></Icon>
+
+                          <transition name="fade-slide">
+                            <span
+                              v-if="copiedIndex === index"
+                              class="copied-message"
+                            >
+                              Text copied!
+                            </span>
+                          </transition>
                         </p>
                       </span>
                       <code
@@ -489,7 +441,11 @@ onMounted(() => {
                 </div>
 
                 <div class="relative mt-2 rounded-md shadow-sm">
-                  <form>
+                  <FormKit
+                    type="form"
+                    :actions="false"
+                    @submit="handleChat('user', 'text', currentChat)"
+                  >
                     <div
                       class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
                     >
@@ -501,15 +457,13 @@ onMounted(() => {
                       v-model="currentChat"
                     />
                     <button
-                      type="button"
                       class="absolute inset-y-0 right-2 flex items-center"
                       :disabled="!currentChat || waitingResponse"
-                      @click="handleChat('user', 'text', currentChat)"
                     >
                       <span
                         class="rounded-full p-1"
                         :class="
-                          !currentChat || waitingResponse ? 'bg-[#6a9151]' : ''
+                          !currentChat || waitingResponse ? '' : 'bg-[#6a9151]'
                         "
                       >
                         <Icon
@@ -518,7 +472,7 @@ onMounted(() => {
                         ></Icon>
                       </span>
                     </button>
-                  </form>
+                  </FormKit>
                 </div>
 
                 <span
@@ -572,6 +526,62 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <div v-if="showModal" class="modal-overlay">
+      <div
+        class="bg-[#18181B] p-5 rounded-md text-white border-2 border-[#2b323f]"
+        style="width: 25rem; height: 40rem"
+      >
+        <div class="flex justify-between">
+          <div class="my-auto">
+            <p class="text-lg font-semibold">Choose position</p>
+          </div>
+          <div
+            class="my-auto p-1 hover:bg-[#4c596f] rounded-md hover:cursor-pointer"
+            @click="showModal = false"
+          >
+            <Icon
+              name="material-symbols:close-rounded"
+              class="text-gray-400"
+              size="20"
+            ></Icon>
+          </div>
+        </div>
+
+        <hr class="my-5 border-[#2b323f]" style="" />
+
+        <p class="text-gray-400">Select your desired position:</p>
+
+        <div class="grid grid-cols-12 gap-2 mt-5">
+          <div
+            v-for="(data, index) in newChatOptionList"
+            :key="index"
+            class="col-span-12 md:col-span-12 p-5 border-[1px] border-[#2b323f] bg-[#4B5563] hover:bg-[#656e7b] rounded-md hover:cursor-pointer"
+          >
+            <div class="flex justify-between">
+              <div class="max-w-[300px] max-h-[80px]">
+                <p class="text-[16px] font-semibold">
+                  {{ data.title }}
+                </p>
+
+                <p class="text-sm text-gray-400">{{ data.description }}</p>
+              </div>
+
+              <div class="my-auto">
+                <Icon
+                  name="material-symbols:arrow-right-alt-rounded"
+                  class="text-gray-400"
+                ></Icon>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full mt-6">
+          <rs-button class="w-full !bg-[#557841]">Next Step</rs-button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -584,7 +594,7 @@ onMounted(() => {
 }
 
 .history-panel {
-  max-width: 20vw;
+  max-width: 200px;
   min-width: 0;
 }
 
@@ -595,5 +605,39 @@ body {
 .welcome-text {
   font-size: "70";
   font-family: "PP Editorial New";
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.copied-message {
+  font-size: 10px;
+  color: white;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease-out;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
