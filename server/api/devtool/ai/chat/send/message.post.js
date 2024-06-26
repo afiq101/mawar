@@ -6,6 +6,8 @@ export default defineEventHandler(async (event) => {
   try {
     const { message } = await readBody(event);
 
+    const { userID } = event.context.user;
+
     if (!message) {
       return {
         statusCode: 400,
@@ -13,7 +15,7 @@ export default defineEventHandler(async (event) => {
       };
     }
 
-    const sendMessage = await OAISendMessage(message);
+    const sendMessage = await OAISendMessage(message, userID);
     if (!sendMessage) {
       return {
         statusCode: 500,
@@ -21,9 +23,29 @@ export default defineEventHandler(async (event) => {
       };
     }
 
+    const getLatestMsg = await prisma.chat.findFirst({
+      where: {
+        userID: userID,
+      },
+      select: {
+        chatMessage: true,
+      },
+      orderBy: {
+        chatID: "desc",
+      },
+    });
+
+    if (!getLatestMsg) {
+      return {
+        statusCode: 404,
+        message: "No chat messages found",
+      };
+    }
+
     return {
       statusCode: 200,
       message: "Successfully retrieve assistant",
+      data: getLatestMsg,
     };
   } catch (error) {
     console.log(error);
@@ -34,7 +56,7 @@ export default defineEventHandler(async (event) => {
   }
 });
 
-async function OAISendMessage(message) {
+async function OAISendMessage(message, userID) {
   try {
     const assistantID = process.env.OPENAI_ASSISTANT_ID;
 
@@ -107,6 +129,7 @@ async function OAISendMessage(message) {
           chatOAIMessageID: msg.id,
           chatCreatedDate: new Date(msg.created_at),
           threadID: insertThread.threadID,
+          userID: userID,
         },
         update: {
           chatRole: msg.role,
@@ -114,6 +137,7 @@ async function OAISendMessage(message) {
           chatOAIAssistantID: assistantID,
           chatOAIMessageID: msg.id,
           chatModifiedDate: new Date(msg.created_at),
+          userID: userID,
         },
         where: {
           chatOAIMessageID: msg.id,

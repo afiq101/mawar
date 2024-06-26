@@ -1,5 +1,26 @@
 export default defineEventHandler(async (event) => {
   try {
+    const { userID } = event.context.user;
+
+    const messagesList = await prisma.chat.findFirst({
+      where: {
+        userID: userID,
+      },
+      select: {
+        chatMessage: true,
+      },
+      orderBy: {
+        chatID: "desc",
+      },
+    });
+
+    if (!messagesList) {
+      return {
+        statusCode: 404,
+        message: "No chat messages found",
+      };
+    }
+
     return {
       statusCode: 200,
       message: "Successfully retrieve list of chat messages",
