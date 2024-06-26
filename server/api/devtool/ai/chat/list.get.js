@@ -2,7 +2,7 @@ export default defineEventHandler(async (event) => {
   try {
     const { userID } = event.context.user;
 
-    const messagesList = await prisma.chat.findFirst({
+    const messagesList = await prisma.chat.findMany({
       where: {
         userID: userID,
       },

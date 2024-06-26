@@ -26,6 +26,7 @@ export default defineEventHandler(async (event) => {
     const getLatestMsg = await prisma.chat.findFirst({
       where: {
         userID: userID,
+        chatRole: "assistant",
       },
       select: {
         chatMessage: true,
