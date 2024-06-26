@@ -56,6 +56,8 @@ async function handleChat(type, contentType, resp) {
       chat: resp,
     });
     send(currentChat.value);
+
+    currentChat.value = null;
     await getResponseAI();
   } else {
     waitingResponse.value = true;
@@ -156,8 +158,45 @@ const newChatOptionList = ref([
 
 const chatOption = ref(null);
 
+const textCopied = ref(false);
+const copiedIndex = ref(null);
+// function copyToClipboard(text) {
+//   navigator.clipboard
+//     .writeText(text)
+//     .then(() => {
+//       console.log("Text copied to clipboard");
+//       // You can add user feedback here, e.g., showing a toast notification
+
+//       textCopied.value = true;
+
+//       setTimeout(() => {
+//         textCopied.value = false;
+//       }, 1000);
+//     })
+//     .catch((err) => {
+//       console.error("Failed to copy text: ", err);
+//     });
+// }
+
+function copyToClipboard(text, index) {
+  navigator.clipboard
+    .writeText(text)
+    .then(() => {
+      copiedIndex.value = index;
+      textCopied.value = true;
+
+      setTimeout(() => {
+        copiedIndex.value = null;
+        textCopied.value = false;
+      }, 1500);
+    })
+    .catch((err) => {
+      console.error("Failed to copy text: ", err);
+    });
+}
+
 onMounted(() => {
-  Prism.highlightAll();
+  // Prism.highlightAll();
 });
 </script>
 
@@ -174,22 +213,27 @@ onMounted(() => {
     "
   ></div>
   <div class="bg-[#2b2a28] h-screen tracking-tight">
-    <!-- <div class="bg-[#ebebeb] h-screen"> -->
     <div class="flex gap-2 h-screen p-3">
       <div
+        v-show="history"
         class="history-panel rounded-md overflow-hidden transition-all duration-100 ease-in-out flex flex-col h-full justify-between !bg-[#18181b]"
-        :style="{ width: historyWidth }"
         style="z-index: 50"
       >
         <div>
           <div class="flex justify-between text-white p-3 gap-3">
-            <!-- <img
-              class="h-10 animate-spin px-2"
-              src="@/assets/img/logo/logo-transparent.png"
-              alt=""
-            /> -->
+            <div
+              v-if="history"
+              @click="(history = false), (code = false)"
+              class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] border-[1px] border-[#2a2a27]"
+              style="z-index: 50"
+            >
+              <Icon
+                name="material-symbols:keyboard-double-arrow-left-rounded"
+                size="15"
+              ></Icon>
+            </div>
 
-            <div class="flex gap-3 items-center ml-3 mt-3">
+            <div class="my-auto flex gap-3">
               <Icon
                 name="mdi:atom-variant"
                 class="text-[#c9dbbb] animate-spin"
@@ -281,24 +325,26 @@ onMounted(() => {
           <div
             v-if="!history"
             @click="(history = true), (code = false)"
-            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] z-50 border-[1px] border-[#2a2a27]"
+            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] border-[1px] border-[#2a2a27]"
+            style="z-index: 50"
           >
             <Icon
               name="material-symbols:keyboard-double-arrow-right-rounded"
               size="15"
             ></Icon>
           </div>
-          <div
+          <!-- <div
             v-else
             @click="(history = false), (code = false)"
-            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] z-50 border-[1px] border-[#2a2a27]"
+            class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] border-[1px] border-[#2a2a27]"
+            style="z-index: 50"
           >
             <Icon
               name="material-symbols:keyboard-double-arrow-left-rounded"
               size="15"
             ></Icon>
-          </div>
-          <div class="z-50">
+          </div> -->
+          <div v-if="!history" class="" style="z-index: 50">
             <div
               class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] border-[1px] border-[#2a2a27]"
               @click="handleNewChat()"
@@ -330,7 +376,7 @@ onMounted(() => {
                 <p class="welcome-text text-[60px] drop-shadow-md">
                   Welcome to
 
-                  <span> Open<span class="text-[#c9dbbb]">Anjai </span> </span>
+                  <span> Open<span class="text-[#c9dbbb]">AI </span> </span>
                 </p>
                 <span class="my-auto text-[16px] leading-6">
                   <p>Need help or just getting started?</p>
@@ -340,65 +386,6 @@ onMounted(() => {
                   >
                 </span>
               </div>
-
-              <rs-modal
-                v-model="showModal"
-                position="center"
-                size="md"
-                class=""
-              >
-                <template #header>
-                  <div>Choose Option</div>
-                </template>
-
-                <p>Select your desired action:</p>
-
-                <div class="grid grid-cols-12 gap-2 mt-2">
-                  <div
-                    v-for="(data, index) in newChatOptionList"
-                    :key="index"
-                    class="col-span-12 md:col-span-6 p-5 bg-gray-200 rounded-md cursor-pointer hover:bg-[#2c4720]"
-                    :class="
-                      chatOption == data.value
-                        ? 'bg-[#2c4720] text-white border-2 border-[#2c4720]'
-                        : ''
-                    "
-                    @click="chatOption = data.value"
-                    style="height: 20vh"
-                  >
-                    <div class="flex justify-start">
-                      <div>
-                        <h6 class="font-semibold">
-                          {{ data.title }}
-                        </h6>
-                        <p
-                          class="text-[13px] text-gray-500"
-                          :class="
-                            chatOption == data.value ? 'text-[#f2faeb]' : ''
-                          "
-                        >
-                          {{ data.description }}
-                        </p>
-                      </div>
-                      <!-- <div class="my-auto">
-                        <Icon
-                          name="material-symbols:arrow-right-alt-rounded"
-                        ></Icon>
-                      </div> -->
-                    </div>
-                  </div>
-                </div>
-
-                <template #footer>
-                  <div class="w-full">
-                    <rs-button
-                      class="w-full !bg-[#557841]"
-                      :disabled="!chatOption"
-                      >Next Step
-                    </rs-button>
-                  </div>
-                </template>
-              </rs-modal>
             </div>
             <div v-else class="flex justify-center" style="">
               <div
@@ -435,6 +422,7 @@ onMounted(() => {
                           name="material-symbols:content-copy-outline-sharp"
                           size="25"
                           class="p-1 cursor-pointer hover:bg-[#494848] rounded-md"
+                          @click="copyToClipboard(data.chat, index)"
                         ></Icon>
 
                         <Icon
@@ -442,6 +430,15 @@ onMounted(() => {
                           size="25"
                           class="p-1 cursor-pointer hover:bg-[#494848] rounded-md"
                         ></Icon>
+
+                        <transition name="fade-slide">
+                          <span
+                            v-if="copiedIndex === index"
+                            class="copied-message"
+                          >
+                            Text copied!
+                          </span>
+                        </transition>
                       </p>
                     </span>
                     <code
@@ -456,7 +453,7 @@ onMounted(() => {
           </NuxtScrollbar>
 
           <div class="flex justify-center">
-            <div class="w-full" style="width: 60vw">
+            <div class="w-full" style="min-width: 300px; max-width: 600px">
               <div class="flex justify-between">
                 <span v-if="waitingResponse" class="animate-pulse"
                   >Waiting response...</span
@@ -491,9 +488,7 @@ onMounted(() => {
                   >
                     <span
                       class="rounded-full p-1"
-                      :class="
-                        !currentChat || waitingResponse ? 'bg-[#6a9151]' : ''
-                      "
+                      :class="!currentChat ? '' : 'bg-[#6a9151]'"
                     >
                       <Icon
                         name="material-symbols:arrow-upward-alt-rounded"
@@ -507,10 +502,10 @@ onMounted(() => {
               <span
                 class="text-[10px] flex justify-center mt-5"
                 style="font-family: 'PP Editorial New'"
-                >
-                "While Rome wasn't built in a day, openAnjai arose in an instant."
-                </span
               >
+                "While Rome wasn't built in a day, openAnjai arose in an
+                instant."
+              </span>
             </div>
           </div>
         </div>
@@ -554,6 +549,62 @@ onMounted(() => {
         </div>
       </div>
     </div>
+
+    <div v-if="showModal" class="modal-overlay">
+      <div
+        class="bg-[#18181B] p-5 rounded-md text-white border-2 border-[#2b323f]"
+        style="width: 25rem; height: 40rem"
+      >
+        <div class="flex justify-between">
+          <div class="my-auto">
+            <p class="text-lg font-semibold">Choose position</p>
+          </div>
+          <div
+            class="my-auto p-1 hover:bg-[#4c596f] rounded-md hover:cursor-pointer"
+            @click="showModal = false"
+          >
+            <Icon
+              name="material-symbols:close-rounded"
+              class="text-gray-400"
+              size="20"
+            ></Icon>
+          </div>
+        </div>
+
+        <hr class="my-5 border-[#2b323f]" style="" />
+
+        <p class="text-gray-400">Select your desired position:</p>
+
+        <div class="grid grid-cols-12 gap-2 mt-5">
+          <div
+            v-for="(data, index) in newChatOptionList"
+            :key="index"
+            class="col-span-12 md:col-span-12 p-5 border-[1px] border-[#2b323f] bg-[#4B5563] hover:bg-[#656e7b] rounded-md hover:cursor-pointer"
+          >
+            <div class="flex justify-between">
+              <div class="max-w-[300px] max-h-[80px]">
+                <p class="text-[16px] font-semibold">
+                  {{ data.title }}
+                </p>
+
+                <p class="text-sm text-gray-400">{{ data.description }}</p>
+              </div>
+
+              <div class="my-auto">
+                <Icon
+                  name="material-symbols:arrow-right-alt-rounded"
+                  class="text-gray-400"
+                ></Icon>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="w-full mt-6">
+          <rs-button class="w-full !bg-[#557841]">Next Step</rs-button>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -565,17 +616,73 @@ onMounted(() => {
   text-align: left; /* Ensure text starts from the left */
 }
 
+body {
+  font-family: "PP Neue Montreal", sans-serif !important;
+}
+
 .history-panel {
-  max-width: 20vw;
+  max-width: 80%;
   min-width: 0;
 }
 
-body {
-  font-family: "PP Neue Montreal", sans-serif !important;
+@media screen and (max-width: 500px) {
+  .history-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
 }
 
 .welcome-text {
   font-size: "70";
   font-family: "PP Editorial New";
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 60;
+}
+
+.modal-enter-active,
+.modal-leave-active {
+  transition: opacity 0.3s;
+}
+
+.modal-enter,
+.modal-leave-to {
+  opacity: 0;
+}
+
+.copied-message {
+  margin-left: 10px;
+  font-size: 10px;
+  color: white;
+}
+
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+  transition: opacity 0.5s ease, transform 0.5s ease-out;
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+  opacity: 0;
+  transform: translateX(-20px);
+}
+
+.fade-slide-enter-to,
+.fade-slide-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
