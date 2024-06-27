@@ -337,14 +337,13 @@ onMounted(() => {
             <div class="z-50" v-if="!openedProject">
               <div
                 class="rounded-md p-2 px-3 flex gap-1 cursor-pointer bg-[#242323] hover:bg-[#3d3d3d] border-[1px] border-[#2a2a27]"
-                @click="handleNewChat()"
               >
                 <Icon
                   name="material-symbols:add"
                   class="my-auto"
                   size="15"
                 ></Icon>
-                <span class="text-[12px]">New</span>
+                <span class="text-[12px]">New Chat</span>
               </div>
             </div>
           </div>
@@ -652,7 +651,7 @@ onMounted(() => {
         <div class="">
           <label for="Name">Upload file</label>
           <p class="text-[10px] text-gray-500">
-           Upload relevant files to support generating desired results.
+            Upload relevant files to support generating desired results.
           </p>
         </div>
 

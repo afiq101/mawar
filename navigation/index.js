@@ -84,7 +84,7 @@ export default [
     child: [
       {
         title: "Chatbot",
-        path: "/ai/chatbot",
+        path: "/ai",
         icon: "mdi:robot",
         child: [],
       },
