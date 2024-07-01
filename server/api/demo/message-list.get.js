@@ -75,10 +75,32 @@ const appendClassToPreCode = (htmlMsg) => {
   if (match) {
     const newHtmlMsg = htmlMsg.replace(
       regex,
-      `<pre class="language-javascript"><code>$1</code></pre>`
+      `<pre class="language-javascript"><code>$1</code>
+      
+      <button class="copy-button" style="background-color: white; padding: 5px; color:black;">copy</button>
+      </pre>`
     );
     return newHtmlMsg;
   }
 
   return htmlMsg;
 };
+
+// Add this script to your HTML or Vue component where the messages are rendered
+const copyToClipboard = (event) => {
+  const button = event.target;
+  const code = button.nextElementSibling;
+  navigator.clipboard
+    .writeText(code.textContent)
+    .then(() => {
+      button.textContent = "Copied!";
+      setTimeout(() => {
+        button.textContent = "Copy";
+      }, 2000);
+    })
+    .catch((err) => {
+      console.error("Failed to copy text: ", err);
+    });
+};
+
+//
