@@ -64,6 +64,7 @@
     "prisma": "^5.1.1",
     "prismjs": "^1.29.0",
     "sass": "^1.62.0",
+    "showdown": "^2.1.0",
     "swiper": "^8.4.4",
     "thememirror": "^2.0.1",
     "v-calendar": "^3.0.3",
