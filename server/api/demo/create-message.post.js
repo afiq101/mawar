@@ -41,12 +41,6 @@ export default defineEventHandler(async (event) => {
       }
     }
 
-    // console.log("Thread ID: ", threadId);
-    // console.log("Message: ", message);
-    // console.log("=====================================");
-    // console.log("File: ", JSON.stringify(file));
-    // console.log("File Name: ", fileName);
-
     if (!threadId) {
       return {
         statusCode: 400,
@@ -62,38 +56,30 @@ export default defineEventHandler(async (event) => {
     }
 
     if (file && fileName && !fileID) {
-      // Create a temporary file to store the uploaded data
-      // Create a folder to save the PDF file
-      const pdfFolderPath = path.join(process.cwd(), "assets", "file");
-      console.log("pdfFolderPath: ", pdfFolderPath);
+      // Create a folder to save the file
+      const uploadFolderPath = path.join(process.cwd(), "assets", "file");
+      console.log("uploadFolderPath: ", uploadFolderPath);
 
       // Check if the folder exists, if not create it
-      if (!fs.existsSync(pdfFolderPath)) {
-        fs.mkdirSync(pdfFolderPath, { recursive: true });
+      if (!fs.existsSync(uploadFolderPath)) {
+        fs.mkdirSync(uploadFolderPath, { recursive: true });
       }
 
-      // Create a temporary file to store the uploaded data
-      const tempFilePath = path.join(pdfFolderPath, fileName);
-      console.log("tempFilePath: ", tempFilePath);
+      // Create a file path for the uploaded file
+      const filePath = path.join(uploadFolderPath, fileName);
+      console.log("filePath: ", filePath);
 
-      const writeStream = fs.createWriteStream(tempFilePath);
-      writeStream.write(file);
-      writeStream.end();
+      // Write the file directly
+      fs.writeFileSync(filePath, file);
+      console.log("File written successfully");
 
-      // Ensure the file is fully written before proceeding
-      await new Promise((resolve, reject) => {
-        writeStream.on("finish", resolve);
-        writeStream.on("error", reject);
-      });
+      // Read the file back to verify its contents
+      const fileContent = fs.readFileSync(filePath);
+      console.log("File content length:", fileContent.length);
+      console.log("First few bytes of saved file:", fileContent.slice(0, 10));
 
       // Create a readable stream for the file
-      const fileStream = fs.createReadStream(tempFilePath);
-      console.log("fileStream: ", fileStream);
-
-      // return {
-      //   statusCode: 200,
-      //   message: "Successfully create message and run",
-      // };
+      const fileStream = fs.createReadStream(filePath);
 
       const createFile = await openai.files.create({
         file: fileStream,
@@ -109,15 +95,10 @@ export default defineEventHandler(async (event) => {
       }
 
       // Clean up the temporary file
-      fs.unlinkSync(tempFilePath);
+      fs.unlinkSync(filePath);
 
       fileID = createFile.id;
     }
-
-    // return {
-    //   statusCode: 200,
-    //   message: "Successfully create message and run",
-    // };
 
     const arrayAttachments = fileID
       ? [
@@ -163,6 +144,9 @@ export default defineEventHandler(async (event) => {
     return {
       statusCode: 200,
       message: "Successfully create message and run",
+      data: {
+        fileID: fileID ? fileID : null,
+      },
     };
   } catch (error) {
     console.log(error);

@@ -29,6 +29,7 @@ const newProject = ref(false);
 const newProject1 = ref(false);
 
 const fileAttachment = ref(null);
+const fileId = ref(null);
 
 const newChatOptionList = ref([
   {
@@ -97,8 +98,8 @@ async function handleChat(type, contentType, resp) {
   } catch (error) {
     console.error("error:", error);
     $swal.fire({
-      title: "Session Expired",
-      text: "Your session has expired. Please login again.",
+      title: "Something went wrong!",
+      text: "Please try again later.",
       icon: "warning",
       confirmButtonText: "OK",
     });
@@ -107,17 +108,20 @@ async function handleChat(type, contentType, resp) {
 
 async function getResponseAI(resp) {
   const formData = new FormData();
+  console.log("fileAttachment:", fileAttachment.value);
+
   formData.append("threadId", threadID);
   formData.append("message", resp);
   formData.append(
     "file",
-    fileAttachment.value.length > 0 ? fileAttachment.value[0] : ""
+    !fileId.value && fileAttachment.value ? fileAttachment.value : ""
   );
   formData.append(
     "fileName",
-    fileAttachment.value.length > 0 ? fileAttachment.value[0].name : ""
+    !fileId.value && fileAttachment.value ? fileAttachment.value.name : ""
   );
-  formData.append("fileID", "");
+  formData.append("fileID", fileId.value ? fileId.value : "");
+
   const { data } = await useFetch("/api/demo/create-message", {
     method: "POST",
     body: formData,
@@ -127,6 +131,8 @@ async function getResponseAI(resp) {
     console.error("Error", data.value.message);
     return;
   }
+
+  fileId.value = data.value.data.fileID;
 
   // fileAttachment.value = null;
 
@@ -204,9 +210,14 @@ const chooseFile = () => {
   document.getElementById("attachment").click();
 };
 
-watch(fileAttachment, (newValue) => {
-  // console.log("fileAttachment:", newValue);
-});
+// watch(fileAttachment, (newValue) => {
+//   // console.log("fileAttachment:", newValue);
+// });
+
+const handleFileChange = (event) => {
+  // console.log(event.target.files[0]);
+  fileAttachment.value = event.target.files[0];
+};
 </script>
 
 <template>
@@ -388,9 +399,19 @@ watch(fileAttachment, (newValue) => {
                     >
                       <div
                         v-if="data.type === 'user'"
-                        class="rounded-lg p-2 px-5 ai-chat bg-[#4b4a4a] text-[13px]"
-                        v-html="data.chat"
-                      ></div>
+                        class="rounded-lg p-2 px-5 ai-chat bg-[#4b4a4a] text-[13px] relative"
+                      >
+                        <div v-if="fileAttachment" class="text-[#a6a39a]">
+                          <rs-badge>
+                            <Icon
+                              name="ph:file-light"
+                              class="mr-1 !w-4 !h-4"
+                            ></Icon>
+                            {{ fileAttachment.name }}
+                          </rs-badge>
+                        </div>
+                        <div v-html="data.chat"></div>
+                      </div>
                       <div
                         v-if="
                           data.type === 'assistant' &&
@@ -443,13 +464,10 @@ watch(fileAttachment, (newValue) => {
                   >
                   <span v-else></span>
                 </div>
-                <div
-                  v-if="fileAttachment && fileAttachment.length > 0"
-                  class="text-[#a6a39a]"
-                >
+                <div v-if="fileAttachment" class="text-[#a6a39a]">
                   <rs-badge>
                     <Icon name="ph:file-light" class="mr-1 !w-4 !h-4"></Icon>
-                    {{ fileAttachment[0].name }}
+                    {{ fileAttachment.name }}
                     <Icon
                       @click="fileAttachment = null"
                       name="ph:x-light"
@@ -469,7 +487,7 @@ watch(fileAttachment, (newValue) => {
                     >
                       <Icon name="material-symbols-light:attach-file"></Icon>
                       <FormKit
-                        v-model="fileAttachment"
+                        @change="handleFileChange"
                         id="attachment"
                         type="file"
                         :classes="{

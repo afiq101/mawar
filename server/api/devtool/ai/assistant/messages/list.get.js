@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const getListMessages = await openai.beta.threads.messages.list(threadId);
-    console.log("Messages list: ", getListMessages);
+    // console.log("Messages list: ", getListMessages);
 
     if (!getListMessages) {
       return {

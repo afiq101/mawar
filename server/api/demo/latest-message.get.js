@@ -30,6 +30,9 @@ export default defineEventHandler(async (event) => {
       messageResponse.data[messageResponse.data.length - 1].content[0];
     const role = messageResponse.data[messageResponse.data.length - 1].role;
 
+    console.log("Message: ", message.text.value);
+    console.log("Role: ", role);
+
     // Init showdown converter
     const converter = new showdown.Converter();
     // Convert markdown to HTML

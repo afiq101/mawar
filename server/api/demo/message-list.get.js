@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
     }
 
     const getListMessages = await openai.beta.threads.messages.list(threadId);
-    console.log("Messages list: ", getListMessages);
+    // console.log("Messages list: ", getListMessages);
 
     if (!getListMessages) {
       return {
@@ -25,12 +25,20 @@ export default defineEventHandler(async (event) => {
 
     // Store in an array to loop through
     const messages = [];
+    const attachments = [];
 
     for (let i = 0; i < getListMessages.data.length; i++) {
       let htmlMsg = "";
+
       let message = getListMessages.data[i].content[0];
       let role = getListMessages.data[i].role;
-      //   console.log("Message: ", message);
+
+      // if (
+      //   getListMessages.data[i].attachments &&
+      //   getListMessages.data[i].attachments.length > 0
+      // ) {
+      //   attachments.push(getListMessages.data[i].attachments);
+      // }
 
       // Convert markdown to HTML
       const converter = new showdown.Converter();
