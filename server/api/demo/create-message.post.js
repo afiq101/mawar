@@ -90,10 +90,10 @@ export default defineEventHandler(async (event) => {
       const fileStream = fs.createReadStream(tempFilePath);
       console.log("fileStream: ", fileStream);
 
-      return {
-        statusCode: 200,
-        message: "Successfully create message and run",
-      };
+      // return {
+      //   statusCode: 200,
+      //   message: "Successfully create message and run",
+      // };
 
       const createFile = await openai.files.create({
         file: fileStream,
@@ -114,10 +114,10 @@ export default defineEventHandler(async (event) => {
       fileID = createFile.id;
     }
 
-    return {
-      statusCode: 200,
-      message: "Successfully create message and run",
-    };
+    // return {
+    //   statusCode: 200,
+    //   message: "Successfully create message and run",
+    // };
 
     const arrayAttachments = fileID
       ? [

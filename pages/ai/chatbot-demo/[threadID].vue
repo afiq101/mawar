@@ -28,6 +28,8 @@ const showModal = ref(false);
 const newProject = ref(false);
 const newProject1 = ref(false);
 
+const fileAttachment = ref(null);
+
 const newChatOptionList = ref([
   {
     title: "Create SRS",
@@ -104,15 +106,29 @@ async function handleChat(type, contentType, resp) {
 }
 
 async function getResponseAI(resp) {
+  const formData = new FormData();
+  formData.append("threadId", threadID);
+  formData.append("message", resp);
+  formData.append(
+    "file",
+    fileAttachment.value.length > 0 ? fileAttachment.value[0] : ""
+  );
+  formData.append(
+    "fileName",
+    fileAttachment.value.length > 0 ? fileAttachment.value[0].name : ""
+  );
+  formData.append("fileID", "");
   const { data } = await useFetch("/api/demo/create-message", {
     method: "POST",
-    body: { threadId: threadID, message: resp },
+    body: formData,
   });
 
   if (data.value.statusCode !== 200) {
     console.error("Error", data.value.message);
     return;
   }
+
+  // fileAttachment.value = null;
 
   const { data: latestMsg } = await useFetch("/api/demo/latest-message", {
     method: "GET",
@@ -182,6 +198,14 @@ onMounted(() => {
 
   const chatContainer = document.querySelector(".scrollbar");
   chatContainer.scrollTop = chatContainer.scrollHeight;
+});
+
+const chooseFile = () => {
+  document.getElementById("attachment").click();
+};
+
+watch(fileAttachment, (newValue) => {
+  // console.log("fileAttachment:", newValue);
 });
 </script>
 
@@ -419,6 +443,20 @@ onMounted(() => {
                   >
                   <span v-else></span>
                 </div>
+                <div
+                  v-if="fileAttachment && fileAttachment.length > 0"
+                  class="text-[#a6a39a]"
+                >
+                  <rs-badge>
+                    <Icon name="ph:file-light" class="mr-1 !w-4 !h-4"></Icon>
+                    {{ fileAttachment[0].name }}
+                    <Icon
+                      @click="fileAttachment = null"
+                      name="ph:x-light"
+                      class="ml-1 !w-4 !h-4 hover:bg-[#858f7d] rounded-full cursor-pointer"
+                    ></Icon>
+                  </rs-badge>
+                </div>
                 <div class="relative mt-2 rounded-md shadow-sm">
                   <FormKit
                     type="form"
@@ -426,9 +464,18 @@ onMounted(() => {
                     @submit="handleChat('user', 'text', currentChat)"
                   >
                     <div
-                      class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                      class="cursor-pointer absolute inset-y-0 left-0 flex items-center px-3 hover:bg-[#4b4a4a] rounded-full"
+                      @click="chooseFile"
                     >
                       <Icon name="material-symbols-light:attach-file"></Icon>
+                      <FormKit
+                        v-model="fileAttachment"
+                        id="attachment"
+                        type="file"
+                        :classes="{
+                          outer: 'hidden',
+                        }"
+                      ></FormKit>
                     </div>
                     <input
                       type="text"
@@ -641,7 +688,7 @@ ol {
 
   .ongoingchatbody {
     /* background-color: yellow; */
-    max-width: 100vw
+    max-width: 100vw;
   }
 
   .airesponse {
