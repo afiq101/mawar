@@ -16,6 +16,13 @@ export default defineEventHandler(async (event) => {
     const messageResponse = await openai.beta.threads.messages.list(threadId);
     console.log("Message response: ", messageResponse);
 
+    if (messageResponse.data.length === 0) {
+      return {
+        statusCode: 404,
+        message: "No messages found",
+      };
+    }
+
     // Reverse the order of messages
     messageResponse.data.reverse();
 
